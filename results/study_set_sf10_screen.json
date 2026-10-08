@@ -1,0 +1,31 @@
+{
+ "truth": "tpcds_sf10",
+ "rule": "screen: none >= 1s and top HypoPG index >= 1.3x faster or slower. Cold none then warm index, so large speedups with shared_read falling to 0 are cache. Warm rerun pending.",
+ "queries": [
+  10,
+  13,
+  17,
+  18,
+  19,
+  21,
+  25,
+  26,
+  27,
+  28,
+  29,
+  36,
+  41,
+  44,
+  45,
+  54,
+  58,
+  63,
+  65,
+  70,
+  88,
+  90,
+  94,
+  96,
+  99
+ ]
+}

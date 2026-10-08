@@ -1,0 +1,135 @@
+schema tpcds_sf10 stats fingerprint eb7041cd14fbe1502aec58ea4f003b58
+Q1 none 300000.0 TIMEOUT
+Q3 none 41.144 
+Q5 none 15532.301 
+Q6 none 300000.0 TIMEOUT
+Q7 none 251.517 
+Q8 none 436.879 
+Q9 none 67104.247 
+Q10 none 29184.39 
+Q12 none 121.134 
+Q13 none 21345.116 
+Q14 none 300000.0 TIMEOUT
+Q16 none 300000.0 TIMEOUT
+Q17 none 17917.023 
+Q18 none 533081.4365 
+Q19 none 2093251.201 
+Q20 none 200.251 
+Q21 none 1248669.9695000001 
+Q23 none 300000.0 TIMEOUT
+Q24 none 49.626 
+Q25 none 10275.829 
+Q26 none 5308.771 
+Q27 none 22461.709 
+Q28 none 34743.2765 
+Q29 none 7678.333 
+Q30 none 300000.0 TIMEOUT
+Q32 none 99.847 
+Q33 none 457.195 
+Q35 none 71953.1005 
+Q36 none 24829.452 
+Q37 none 22.51 
+Q40 none 186.736 
+Q41 none 15500.484 
+Q42 none 12958.193 
+Q44 none 28320.807 
+Q45 none 25814.762499999997 
+Q48 none 23624.232 
+Q49 none 445.379 
+Q50 none 145.5 
+Q52 none 12166.833 
+Q53 none 24762.795 
+Q54 none 16614.393 
+Q55 none 11875.77 
+Q56 none 42764.6535 
+Q58 none 1399.119 
+Q60 none 109173.389 
+Q62 none 837.317 
+Q63 none 21348.678 
+Q65 none 42013.9885 
+Q69 none 3084.393 
+Q70 none 91508.8995 
+Q72 none 10231.643 
+Q74 none 300000.0 TIMEOUT
+Q76 none 300000.0 TIMEOUT
+Q77 none 489.62 
+Q78 none 44449.978 
+Q80 none 939.82 
+Q81 none 300000.0 TIMEOUT
+Q82 none 43.766 
+Q83 none 509.87 
+Q84 none 103.66 
+Q85 none 168.401 
+Q86 none 651.743 
+Q88 none 39920.181 
+Q90 none 5383.709 
+Q91 none 91.497 
+Q92 none 79.083 
+Q94 none 5032.935 
+Q95 none 300000.0 TIMEOUT
+Q96 none 9482.441 
+Q97 none 35380.453 
+Q98 none 411.361 
+Q99 none 7193.771 
+Q5 ix_catalog_returns_cr_returned_date_sk 12044.957 (none 15532.3) used=True
+Q91 ix_catalog_returns_cr_returned_date_sk 57.537 (none 91.5) used=True
+Q99 ix_catalog_sales_cs_ship_date_sk 1535.811 (none 7193.8) used=True
+Q10 ix_customer_c_current_addr_sk 11259.355 (none 29184.4) used=True
+Q24 ix_customer_c_current_addr_sk 43.103 (none 49.6) used=True
+Q45 ix_customer_c_current_addr_sk 18750.2955 (none 25814.8) used=True
+Q8 ix_customer_c_preferred_cust_flag_c_current_addr_sk 419.95 (none 436.9) used=True
+Q72 ix_customer_demographics_cd_demo_sk_cd_marital_status 9947.595 (none 10231.6) used=True
+Q85 ix_customer_demographics_cd_demo_sk_cd_marital_status 168.225 (none 168.4) used=False
+Q21 ix_date_dim_d_date_d_date_sk 483.151 (none 1248670.0) used=True
+Q58 ix_date_dim_d_date_d_week_seq 445.028 (none 1399.1) used=True
+Q12 ix_date_dim_d_date_sk_d_date 176.02 (none 121.1) used=True
+Q20 ix_date_dim_d_date_sk_d_date 301.994 (none 200.3) used=True
+Q32 ix_date_dim_d_date_sk_d_date 119.961 (none 99.8) used=True
+Q40 ix_date_dim_d_date_sk_d_date 361.153 (none 186.7) used=True
+Q77 ix_date_dim_d_date_sk_d_date 649.233 (none 489.6) used=True
+Q80 ix_date_dim_d_date_sk_d_date 1495.048 (none 939.8) used=True
+Q92 ix_date_dim_d_date_sk_d_date 98.945 (none 79.1) used=True
+Q98 ix_date_dim_d_date_sk_d_date 595.367 (none 411.4) used=True
+Q65 ix_date_dim_d_date_sk_d_month_seq 74174.8855 (none 42014.0) used=True
+Q70 ix_date_dim_d_date_sk_d_month_seq 126895.795 (none 91508.9) used=True
+Q86 ix_date_dim_d_date_sk_d_month_seq 1282.938 (none 651.7) used=True
+Q97 ix_date_dim_d_date_sk_d_month_seq 37460.3575 (none 35380.5) used=True
+Q3 ix_date_dim_d_date_sk_d_moy 46.234 (none 41.1) used=False
+Q13 ix_date_dim_d_date_sk_d_year 37879.303499999995 (none 21345.1) used=True
+Q18 ix_date_dim_d_date_sk_d_year 2594.496 (none 533081.4) used=True
+Q36 ix_date_dim_d_date_sk_d_year 38338.757 (none 24829.5) used=True
+Q48 ix_date_dim_d_date_sk_d_year 28868.8695 (none 23624.2) used=True
+Q78 ix_date_dim_d_date_sk_d_year 46005.421 (none 44450.0) used=True
+Q35 ix_date_dim_d_year 68563.589 (none 71953.1) used=True
+Q69 ix_date_dim_d_year 3554.074 (none 3084.4) used=True
+Q19 ix_date_dim_d_year_d_moy 12937.583 (none 2093251.2) used=True
+Q42 ix_date_dim_d_year_d_moy 12712.774 (none 12958.2) used=True
+Q52 ix_date_dim_d_year_d_moy 13874.685 (none 12166.8) used=True
+Q54 ix_date_dim_d_year_d_moy 12205.4 (none 16614.4) used=True
+Q55 ix_date_dim_d_year_d_moy 12995.216 (none 11875.8) used=True
+Q53 ix_item_i_brand 27948.212 (none 24762.8) used=True
+Q63 ix_item_i_brand 29515.483 (none 21348.7) used=True
+Q60 ix_item_i_category_i_item_id 123550.188 (none 109173.4) used=True
+Q33 ix_item_i_category_i_manufact_id 411.659 (none 457.2) used=True
+Q56 ix_item_i_color_i_item_id 36950.0545 (none 42764.7) used=True
+Q7 ix_item_i_item_id 149.655 (none 251.5) used=True
+Q26 ix_item_i_item_id 99.591 (none 5308.8) used=True
+Q41 ix_item_i_manufact_i_manufact_id 31.087 (none 15500.5) used=True
+Q37 ix_item_i_manufact_id_i_current_price 8.095 (none 22.5) used=True
+Q82 ix_item_i_manufact_id_i_current_price 20.356 (none 43.8) used=True
+Q84 ix_store_returns_sr_cdemo_sk 35.275 (none 103.7) used=True
+Q17 ix_store_returns_sr_returned_date_sk 35005.0505 (none 17917.0) used=True
+Q25 ix_store_returns_sr_returned_date_sk 35976.1805 (none 10275.8) used=True
+Q29 ix_store_returns_sr_returned_date_sk 24738.518 (none 7678.3) used=True
+Q50 ix_store_returns_sr_returned_date_sk 150.919 (none 145.5) used=True
+Q83 ix_store_returns_sr_returned_date_sk 311.867 (none 509.9) used=True
+Q27 ix_store_sales_ss_cdemo_sk 157.992 (none 22461.7) used=True
+Q9 ix_store_sales_ss_quantity 55779.8285 (none 67104.2) used=True
+Q28 ix_store_sales_ss_quantity 101329.5895 (none 34743.3) used=True
+Q88 ix_store_sales_ss_sold_time_sk 12363.093 (none 39920.2) used=True
+Q96 ix_store_sales_ss_sold_time_sk 87.024 (none 9482.4) used=True
+Q44 ix_store_sales_ss_store_sk_ss_addr_sk 526.107 (none 28320.8) used=True
+Q49 ix_web_returns_wr_return_amt 394.208 (none 445.4) used=True
+Q62 ix_web_sales_ws_ship_date_sk 1535.585 (none 837.3) used=True
+Q94 ix_web_sales_ws_ship_date_sk 3104.98 (none 5032.9) used=True
+Q90 ix_web_sales_ws_web_page_sk 230.829 (none 5383.7) used=True

@@ -1,0 +1,51 @@
+schema tpcds_sf10 stats fingerprint eb7041cd14fbe1502aec58ea4f003b58
+Q10 none 26099.316 
+Q13 none 28709.951 
+Q17 none 16157.709 
+Q18 none 336.931 
+Q19 none 14363.184 
+Q21 none 15371.632 
+Q25 none 10883.359 
+Q26 none 5229.71 
+Q27 none 27163.8725 
+Q28 none 41826.0595 
+Q29 none 7948.964 
+Q36 none 20604.197 
+Q41 none 13866.587 
+Q44 none 22273.578 
+Q45 none 26079.324 
+Q54 none 15829.854 
+Q58 none 1419.336 
+Q63 none 20900.315 
+Q65 none 40145.595 
+Q70 none 83266.82699999999 
+Q88 none 45887.2775 
+Q90 none 7412.561 
+Q94 none 5060.083 
+Q96 none 6417.535 
+Q99 none 8297.645 
+Q99 ix_catalog_sales_cs_ship_date_sk 1436.233 (none 8297.6) used=True
+Q10 ix_customer_c_current_addr_sk 11168.98 (none 26099.3) used=True
+Q45 ix_customer_c_current_addr_sk 24330.2935 (none 26079.3) used=True
+Q21 ix_date_dim_d_date_d_date_sk 475.716 (none 15371.6) used=True
+Q58 ix_date_dim_d_date_d_week_seq 410.988 (none 1419.3) used=True
+Q65 ix_date_dim_d_date_sk_d_month_seq 71309.3775 (none 40145.6) used=True
+Q70 ix_date_dim_d_date_sk_d_month_seq 127556.0405 (none 83266.8) used=True
+Q13 ix_date_dim_d_date_sk_d_year 40726.494 (none 28710.0) used=True
+Q18 ix_date_dim_d_date_sk_d_year 2047.717 (none 336.9) used=True
+Q36 ix_date_dim_d_date_sk_d_year 40202.8195 (none 20604.2) used=True
+Q19 ix_date_dim_d_year_d_moy 13733.369 (none 14363.2) used=True
+Q54 ix_date_dim_d_year_d_moy 16482.827 (none 15829.9) used=True
+Q63 ix_item_i_brand 27920.3115 (none 20900.3) used=True
+Q26 ix_item_i_item_id 97.197 (none 5229.7) used=True
+Q41 ix_item_i_manufact_i_manufact_id 31.417 (none 13866.6) used=True
+Q17 ix_store_returns_sr_returned_date_sk 39813.806 (none 16157.7) used=True
+Q25 ix_store_returns_sr_returned_date_sk 41657.652 (none 10883.4) used=True
+Q29 ix_store_returns_sr_returned_date_sk 28112.1415 (none 7949.0) used=True
+Q27 ix_store_sales_ss_cdemo_sk 154.174 (none 27163.9) used=True
+Q28 ix_store_sales_ss_quantity 118898.342 (none 41826.1) used=True
+Q88 ix_store_sales_ss_sold_time_sk 12864.913 (none 45887.3) used=True
+Q96 ix_store_sales_ss_sold_time_sk 89.552 (none 6417.5) used=True
+Q44 ix_store_sales_ss_store_sk_ss_addr_sk 521.981 (none 22273.6) used=True
+Q94 ix_web_sales_ws_ship_date_sk 3065.935 (none 5060.1) used=True
+Q90 ix_web_sales_ws_web_page_sk 217.4 (none 7412.6) used=True

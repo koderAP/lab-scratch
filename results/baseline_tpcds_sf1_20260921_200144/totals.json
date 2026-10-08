@@ -1,0 +1,12 @@
+{
+  "schema": "tpcds_sf1",
+  "config": "baseline_no_index",
+  "n_queries": 99,
+  "ok": 95,
+  "timeout": 4,
+  "error": 0,
+  "timeout_ms": 120000,
+  "sum_execution_ms": 350907.599,
+  "sum_wall_seconds_ok": 353.036,
+  "out_dir": "/Users/anubhaviitd/Desktop/Sampling_COL868/results/baseline_tpcds_sf1_20260921_200144"
+}

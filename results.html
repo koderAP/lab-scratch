@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TPC-DS SF=1, sample rankings of index configurations</title>
+<style>
+  :root {
+    --ink: #1c1b19;
+    --muted: #5f5b55;
+    --faint: #8a847b;
+    --line: #e3dfd6;
+    --paper: #fffcf7;
+    --blue: #1d4e89;
+    --blue-bar: #2a6299;
+    --amber: #8a5a12;
+    --green: #1e6b3c;
+    --cap: #d9d3c7;
+    --rest: #8aa4c4;
+    --saved: #1d4e89;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.45 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 40px 28px 64px; }
+  h1 { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; margin: 0 0 8px; }
+  h2 { font-size: 18px; font-weight: 650; margin: 36px 0 6px; }
+  p { margin: 0 0 10px; }
+  .lede { color: var(--muted); max-width: 68ch; }
+  .meta { color: var(--faint); font-size: 13px; margin-bottom: 28px; }
+  figure { margin: 18px 0 8px; }
+  figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; max-width: 78ch; }
+  svg { display: block; width: 100%; height: auto; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .swatch { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; font-weight: 650; color: var(--muted); white-space: nowrap; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.ceiling td { background: #f6f3ec; }
+  .note { font-size: 13px; color: var(--muted); margin-top: 28px; }
+  @media print {
+    body { background: white; }
+    main { padding: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Do 5% samples rank index configurations the way the full database does?</h1>
+  <p class="lede">TPC-DS, PostgreSQL 14, scale factor 1. Thirty-three configurations, each a set of indexes, scored by the total runtime of all 99 queries. The same configurations were timed on 5% samples and compared to the full-database ranking.</p>
+  <p class="meta">5 to 6 October 2026. One seed. Per-query cap 20 seconds, counted as 20 seconds. Ground truth is a real CREATE INDEX and a measured time, not optimizer cost.</p>
+
+  <h2>Where the workload time goes</h2>
+  <p class="lede">No extra index takes 190.7 s. The best configuration, a small set of dimension filters, takes 172.9 s. The 17.8 s gap is the whole ranking.</p>
+  <figure>
+    <svg id="stack" viewBox="0 0 880 92" role="img" aria-label="Breakdown of the 190.7 second no-index workload"></svg>
+    <figcaption>Of the no-index total, 140 s is seven queries that hit the 20 s cap under every configuration, including the best one. Indexes only rearrange the other 51 s, and the best of them wins 18.</figcaption>
+  </figure>
+
+  <h2>Ranking agreement</h2>
+  <p class="lede">Kendall tau-b between each reduced database and the first full-database run. The bar is a 95% bootstrap interval over the 33 configurations. The dashed line is a second full-database run scored against the first: that is the noise ceiling, tau 0.45.</p>
+  <figure>
+    <svg id="forest" viewBox="0 0 880 340" role="img" aria-label="Kendall tau with confidence intervals"></svg>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--ink)"></i>Full database, repeated</span>
+      <span><i class="swatch" style="background:var(--blue)"></i>5% sample, its own statistics</span>
+      <span><i class="swatch" style="background:var(--amber)"></i>Same rows, full-database statistics copied on</span>
+    </div>
+    <figcaption>Only stratified sampling picks the true best, and its tau is the weakest. Bernoulli and page miss the winner by 1.4% on the full database and sit on the noise ceiling. Copying the full database's statistics onto Bernoulli and the universe sample made both rankings worse. Intervals are wide. This is one seed.</figcaption>
+  </figure>
+
+  <h2>How much cheaper the evaluation is</h2>
+  <p class="lede">Hours to build every configuration's indexes and run all 99 queries, summed over the 33 configurations. Sample-build time is not included. The axis is logarithmic.</p>
+  <figure>
+    <svg id="cost" viewBox="0 0 880 280" role="img" aria-label="Evaluation time in hours, log scale"></svg>
+    <figcaption>Bernoulli and page shrink every table, so they are about 43x and 90x cheaper than the full database (about 25x and 33x once the time to build the sample is counted). Universe, foreign-key closure and stratified keep the dimension tables in full, so they are only about 3x cheaper.</figcaption>
+  </figure>
+
+  <h2>The configurations are close, and a second run moves them</h2>
+  <p class="lede">Seconds of workload above the best configuration on the first full run. The dashed line at 5.3 s is the median amount by which the same configurations were slower the next morning.</p>
+  <figure>
+    <svg id="gaps" viewBox="0 0 880 790" role="img" aria-label="Seconds slower than the best configuration"></svg>
+    <figcaption>The winner and second place are 2.4 s apart, less than the 5.3 s shift between the two full runs. The second run still picks the same winner and the same second place. Below that the order moves, which is why tau against a repeat of the full database is only 0.45. Adding index build time to the score raises that tau to 0.59 and does not change the winner.</figcaption>
+  </figure>
+
+  <h2>Best configuration from each advisor</h2>
+  <p class="lede">Fastest of that advisor's five configurations on the first full run. Workload seconds, axis starting at 170.</p>
+  <figure>
+    <svg id="advisors" viewBox="0 0 880 250" role="img" aria-label="Best workload per advisor"></svg>
+    <figcaption>HypoPG's greedy set, ranked by optimizer cost and then timed for real, lands with the middle of the pack. The empty configuration is the slowest of the 33.</figcaption>
+  </figure>
+
+  <h2>Numbers behind the figures</h2>
+  <p class="lede">Score is query time only. Regret is the full-database time of the sample's pick, divided by the best full-database time. 1.000 means the sample picked the winner.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Database</th>
+        <th class="num">Tau</th>
+        <th>95% interval</th>
+        <th>Top-1</th>
+        <th class="num">Regret</th>
+        <th>Top-3</th>
+        <th class="num">Cheaper</th>
+        <th>Pick</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="note">Source: results/truth_sf1.jsonl, results/truth_sf1_rep.jsonl, and the seven results/dprime_tpcds_sf1_* jsonl files, scored by scripts/rank_metrics.py. Scale factor 10 was not run at configuration level. Single queries there took hours on this machine.</p>
+</main>
+<script>
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(name, attrs, parent) {
+  const n = document.createElementNS(NS, name);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+  parent.appendChild(n);
+  return n;
+}
+function text(parent, x, y, str, attrs) {
+  const t = svgEl("text", Object.assign({ x, y }, attrs || {}), parent);
+  t.textContent = str;
+  return t;
+}
+
+const rows = [
+  { name: "Full database, second run", tau: 0.45, lo: 0.18, hi: 0.67, top1: "yes", regret: "1.000", top3: "yes", cost: "1.0x", pick: "Grok, dimension filters", tone: "ceiling" },
+  { name: "Bernoulli 5%", tau: 0.51, lo: 0.26, hi: 0.72, top1: "no", regret: "1.014", top3: "yes", cost: "43x", pick: "Opus, light covering", tone: "native" },
+  { name: "Page 5%", tau: 0.46, lo: 0.20, hi: 0.69, top1: "no", regret: "1.014", top3: "yes", cost: "90x", pick: "Opus, light covering", tone: "native" },
+  { name: "Universe 5%", tau: 0.45, lo: 0.27, hi: 0.63, top1: "no", regret: "1.014", top3: "yes", cost: "2.6x", pick: "Opus, light covering", tone: "native" },
+  { name: "Foreign-key closure 5%", tau: 0.42, lo: 0.17, hi: 0.62, top1: "no", regret: "1.014", top3: "yes", cost: "3.5x", pick: "Opus, light covering", tone: "native" },
+  { name: "Stratified 5%", tau: 0.28, lo: -0.01, hi: 0.56, top1: "yes", regret: "1.000", top3: "yes", cost: "3.4x", pick: "Grok, dimension filters", tone: "native" },
+  { name: "Bernoulli, full statistics", tau: 0.24, lo: 0.01, hi: 0.50, top1: "no", regret: "1.014", top3: "no", cost: "30x", pick: "Opus, light covering", tone: "stats" },
+  { name: "Universe, full statistics", tau: 0.30, lo: 0.03, hi: 0.52, top1: "no", regret: "1.078", top3: "yes", cost: "2.4x", pick: "Composer, mixed covering", tone: "stats" },
+];
+
+const toneColor = { ceiling: "#1c1b19", native: "#1d4e89", stats: "#8a5a12" };
+
+(function stack() {
+  const s = document.getElementById("stack");
+  const parts = [
+    { w: 140, label: "140 s  capped", fill: "#d9d3c7", ink: "#1c1b19" },
+    { w: 32.9, label: "33 s  left", fill: "#8aa4c4", ink: "#1c1b19" },
+    { w: 17.8, label: "18 s  won", fill: "#1d4e89", ink: "#fff" },
+  ];
+  const total = 190.7;
+  const x0 = 0, y = 28, h = 36, W = 880;
+  let x = x0;
+  for (const p of parts) {
+    const w = (p.w / total) * W;
+    svgEl("rect", { x, y, width: w - 2, height: h, fill: p.fill }, s);
+    if (w > 70) text(s, x + 12, y + 23, p.label, { fill: p.ink, "font-size": 13, "font-family": "inherit" });
+    x += w;
+  }
+  text(s, 0, 84, "No extra index, 190.7 s for all 99 queries. Best configuration, 172.9 s.", { fill: "#5f5b55", "font-size": 12, "font-family": "inherit" });
+})();
+
+(function forest() {
+  const s = document.getElementById("forest");
+  const lo = -0.15, hi = 0.85;
+  const left = 210, right = 760, top = 18, rowH = 36;
+  const X = (v) => left + ((v - lo) / (hi - lo)) * (right - left);
+  svgEl("line", { x1: X(0), y1: 8, x2: X(0), y2: 8 + rows.length * rowH, stroke: "#e3dfd6" }, s);
+  svgEl("line", { x1: X(0.45), y1: 8, x2: X(0.45), y2: 8 + rows.length * rowH, stroke: "#1c1b19", "stroke-dasharray": "3 4" }, s);
+  for (const t of [0, 0.25, 0.5, 0.75]) {
+    text(s, X(t), top + rows.length * rowH + 16, t.toFixed(2), { fill: "#8a847b", "font-size": 11, "text-anchor": "middle", "font-family": "inherit" });
+  }
+  text(s, (left + right) / 2, top + rows.length * rowH + 34, "Kendall tau-b  (1 is the same order, 0 is no agreement)", { fill: "#5f5b55", "font-size": 12, "text-anchor": "middle", "font-family": "inherit" });
+  rows.forEach((r, i) => {
+    const y = top + i * rowH + 16;
+    const c = toneColor[r.tone];
+    text(s, left - 12, y + 4, r.name, { fill: "#1c1b19", "font-size": 13, "text-anchor": "end", "font-family": "inherit" });
+    svgEl("line", { x1: X(r.lo), y1: y, x2: X(r.hi), y2: y, stroke: c, "stroke-width": 1.5 }, s);
+    svgEl("line", { x1: X(r.lo), y1: y - 4, x2: X(r.lo), y2: y + 4, stroke: c }, s);
+    svgEl("line", { x1: X(r.hi), y1: y - 4, x2: X(r.hi), y2: y + 4, stroke: c }, s);
+    svgEl("circle", { cx: X(r.tau), cy: y, r: 4.5, fill: c }, s);
+    text(s, right + 14, y + 4, r.tau.toFixed(2), { fill: c, "font-size": 13, "font-family": "inherit", "font-weight": 650 });
+  });
+})();
+
+(function cost() {
+  const s = document.getElementById("cost");
+  const items = [
+    ["Full database", 1.74],
+    ["Full, second run", 1.80],
+    ["Universe + statistics", 0.73],
+    ["Universe", 0.67],
+    ["Stratified", 0.51],
+    ["Foreign-key closure", 0.49],
+    ["Bernoulli + statistics", 0.06],
+    ["Bernoulli", 0.04],
+    ["Page", 0.02],
+  ];
+  const left = 180, right = 760, top = 8, rowH = 28;
+  const logMin = Math.log10(0.015), logMax = Math.log10(2.2);
+  const X = (h) => left + ((Math.log10(h) - logMin) / (logMax - logMin)) * (right - left);
+  for (const tick of [0.02, 0.1, 0.5, 2]) {
+    svgEl("line", { x1: X(tick), y1: 4, x2: X(tick), y2: top + items.length * rowH, stroke: "#e3dfd6" }, s);
+    text(s, X(tick), top + items.length * rowH + 16, tick < 1 ? tick + " h" : tick + " h", { fill: "#8a847b", "font-size": 11, "text-anchor": "middle", "font-family": "inherit" });
+  }
+  items.forEach((it, i) => {
+    const y = top + i * rowH;
+    const x = X(it[1]);
+    text(s, left - 12, y + 16, it[0], { fill: "#1c1b19", "font-size": 13, "text-anchor": "end", "font-family": "inherit" });
+    svgEl("rect", { x: left, y: y + 6, width: Math.max(2, x - left), height: 14, fill: i < 2 ? "#1c1b19" : "#1d4e89" }, s);
+    text(s, x + 8, y + 17, it[1].toFixed(2) + " h", { fill: "#5f5b55", "font-size": 12, "font-family": "inherit" });
+  });
+  text(s, (left + right) / 2, top + items.length * rowH + 36, "Evaluation time, hours, log scale", { fill: "#5f5b55", "font-size": 12, "text-anchor": "middle", "font-family": "inherit" });
+})();
+
+(function gaps() {
+  const s = document.getElementById("gaps");
+  const configs = [
+    ["Grok, dimension filters", 0],
+    ["Opus, light covering", 2.5],
+    ["Date and item", 10.8],
+    ["Broad coverage", 11.0],
+    ["Bottlenecks", 12.2],
+    ["Store foreign keys", 12.6],
+    ["Inventory and returns", 12.9],
+    ["Time of day", 13.0],
+    ["HypoPG top 5", 13.0],
+    ["Inventory probes", 13.2],
+    ["Mixed covering", 13.5],
+    ["Balanced suite", 13.5],
+    ["Covering facts", 13.6],
+    ["Dimension filter indexes", 13.7],
+    ["Date and store", 13.9],
+    ["Date on every fact", 14.2],
+    ["HypoPG top 8", 14.2],
+    ["Customer ship", 14.4],
+    ["Store sales scan", 14.5],
+    ["Recommended set", 14.7],
+    ["Order correlation", 14.7],
+    ["Store sales paths", 14.8],
+    ["Wide covering", 14.8],
+    ["Order and shipping", 14.9],
+    ["Customer windows", 15.2],
+    ["Composite joins", 15.7],
+    ["Returns and inventory", 15.7],
+    ["Minimal store date item", 15.9],
+    ["Returns and address", 15.9],
+    ["Secondary date keys", 16.1],
+    ["Three channels", 16.3],
+    ["Order-number semijoins", 16.8],
+    ["No extra index", 17.8],
+  ];
+  const left = 200, right = 800, top = 8, rowH = 22, max = 20;
+  const X = (v) => left + (v / max) * (right - left);
+  svgEl("line", { x1: X(5.3), y1: 4, x2: X(5.3), y2: top + configs.length * rowH, stroke: "#8a5a12", "stroke-dasharray": "3 3" }, s);
+  text(s, right, 16, "dashed line: 5.3 s median shift", { fill: "#8a5a12", "font-size": 11, "text-anchor": "end", "font-family": "inherit" });
+  configs.forEach((c, i) => {
+    const y = top + i * rowH;
+    const x = X(c[1]);
+    const first = i < 2;
+    text(s, left - 10, y + 14, c[0], { fill: first ? "#1c1b19" : "#5f5b55", "font-size": 12, "text-anchor": "end", "font-family": "inherit" });
+    svgEl("line", { x1: left, y1: y + 10, x2: Math.max(left, x), y2: y + 10, stroke: first ? "#1d4e89" : "#c4bfb6" }, s);
+    svgEl("circle", { cx: Math.max(left + 1, x), cy: y + 10, r: first ? 4 : 3, fill: first ? "#1d4e89" : "#1c1b19" }, s);
+  });
+  text(s, (left + right) / 2, top + configs.length * rowH + 18, "Seconds slower than the best configuration on the first full run", { fill: "#5f5b55", "font-size": 12, "text-anchor": "middle", "font-family": "inherit" });
+})();
+
+(function advisors() {
+  const s = document.getElementById("advisors");
+  const items = [
+    ["Grok", 172.9],
+    ["Opus", 175.4],
+    ["GPT", 185.1],
+    ["HypoPG", 185.9],
+    ["Composer", 186.4],
+    ["Gemini", 186.4],
+    ["Fable", 186.5],
+    ["No index", 190.7],
+  ];
+  const left = 160, right = 820, top = 8, rowH = 26;
+  const min = 170, max = 194;
+  const X = (v) => left + ((v - min) / (max - min)) * (right - left);
+  svgEl("line", { x1: X(190.7), y1: 4, x2: X(190.7), y2: top + items.length * rowH, stroke: "#e3dfd6" }, s);
+  items.forEach((it, i) => {
+    const y = top + i * rowH;
+    text(s, left - 10, y + 16, it[0], { fill: "#1c1b19", "font-size": 13, "text-anchor": "end", "font-family": "inherit" });
+    svgEl("rect", { x: X(min), y: y + 6, width: X(it[1]) - X(min), height: 14, fill: i === 0 ? "#1d4e89" : "#8aa4c4" }, s);
+    text(s, X(it[1]) + 6, y + 17, it[1].toFixed(1) + " s", { fill: "#5f5b55", "font-size": 12, "font-family": "inherit" });
+  });
+  text(s, (left + right) / 2, top + items.length * rowH + 22, "Best workload from each source, seconds", { fill: "#5f5b55", "font-size": 12, "text-anchor": "middle", "font-family": "inherit" });
+})();
+
+const tb = document.getElementById("rows");
+for (const r of rows) {
+  const tr = document.createElement("tr");
+  if (r.tone === "ceiling") tr.className = "ceiling";
+  tr.innerHTML = `<td>${r.name}</td><td class="num">${r.tau.toFixed(2)}</td><td>${r.lo.toFixed(2)} to ${r.hi.toFixed(2)}</td><td>${r.top1}</td><td class="num">${r.regret}</td><td>${r.top3}</td><td class="num">${r.cost}</td><td>${r.pick}</td>`;
+  tb.appendChild(tr);
+}
+</script>
+</body>
+</html>

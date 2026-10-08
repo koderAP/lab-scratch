@@ -1,0 +1,19 @@
+{
+  "query_id": 72,
+  "schema": "tpcds_sf10_s1_scaled",
+  "winner_cost": "inv_item_date_wh",
+  "winner_time": "dd_year_week",
+  "cost_time_agree": false,
+  "ranking_cost": [
+    "inv_item_date_wh",
+    "dd_year_week",
+    "none",
+    "cs_sold_ship_item"
+  ],
+  "ranking_time": [
+    "dd_year_week",
+    "cs_sold_ship_item",
+    "inv_item_date_wh",
+    "none"
+  ]
+}

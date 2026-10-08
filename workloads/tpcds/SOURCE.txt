@@ -1,0 +1,7 @@
+TPC-DS query text for PostgreSQL, copied from
+https://github.com/neondatabase/pg_tpcds/tree/main/src/tpcds/queries
+(sparse clone on 2026-09-21, 99 files 01.sql-99.sql).
+
+These are dialect-adjusted TPC-DS templates, not official TPC publication results.
+Data in this project is generated with DuckDB dsdgen; substitution parameters
+are whatever Neon baked into the files (typical dsqgen default stream).

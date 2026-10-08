@@ -1,0 +1,15 @@
+schema tpcds_sf10 stats fingerprint eb7041cd14fbe1502aec58ea4f003b58
+Q1 none 1800000.0 TIMEOUT
+Q6 none 1800000.0 TIMEOUT
+Q14 none 1800000.0 TIMEOUT
+Q16 none 1800000.0 TIMEOUT
+Q23 none 4062373.3525 
+Q30 none 821475.4535000001 
+Q74 none 309877.64249999996 
+Q76 none 23998090.903 
+Q81 none 1800000.0 TIMEOUT
+Q95 none 1800000.0 TIMEOUT
+Q76 ix_catalog_sales_cs_ship_addr_sk 399931.16150000005 (none 23998090.9) used=True
+Q23 ix_date_dim_d_date_sk_d_year 331506.31700000004 (none 4062373.4) used=True
+Q74 ix_date_dim_d_date_sk_d_year 287639.0355 (none 309877.6) used=True
+Q30 ix_web_returns_wr_returned_date_sk 809918.3445 (none 821475.5) used=True

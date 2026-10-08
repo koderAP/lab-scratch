@@ -1,0 +1,66 @@
+{
+  "model": "claude-opus-5",
+  "configs": [
+    {
+      "name": "light dimension covering",
+      "rationale": "Cheapest possible build: six narrow covering indexes on the filtered dimension tables (d_year/d_moy appear in ~90 of the 99 queries) so the planner can seed every star join from an index-only scan instead of a full dimension scan.",
+      "indexes": [
+        {"table": "date_dim", "columns": ["d_year", "d_moy"], "include": ["d_date_sk"]},
+        {"table": "date_dim", "columns": ["d_month_seq"], "include": ["d_date_sk"]},
+        {"table": "date_dim", "columns": ["d_date"], "include": ["d_date_sk"]},
+        {"table": "time_dim", "columns": ["t_hour", "t_minute"], "include": ["t_time_sk"]},
+        {"table": "item", "columns": ["i_category", "i_class"], "include": ["i_item_sk"]},
+        {"table": "customer_address", "columns": ["ca_state"], "include": ["ca_address_sk"]}
+      ]
+    },
+    {
+      "name": "store_sales access paths",
+      "rationale": "Spend the whole budget on store_sales, the table touched by roughly two thirds of the workload, giving it a composite entry point for each leading join key it is probed on (date, item, store, time, demographics, customer).",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk", "ss_store_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_item_sk", "ss_sold_date_sk", "ss_store_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_store_sk", "ss_sold_date_sk", "ss_item_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_sold_time_sk", "ss_store_sk", "ss_hdemo_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_cdemo_sk", "ss_sold_date_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_customer_sk", "ss_sold_date_sk", "ss_item_sk"], "include": []}
+      ]
+    },
+    {
+      "name": "date-leading on every sales and returns table",
+      "rationale": "Apply one uniform strategy across all six sales and returns fact tables, extending the existing single-column date indexes into composites that also carry item and customer so a date-restricted scan resolves the next join key without a heap visit.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk", "ss_store_sk", "ss_customer_sk"], "include": []},
+        {"table": "catalog_sales", "columns": ["cs_sold_date_sk", "cs_item_sk", "cs_bill_customer_sk"], "include": []},
+        {"table": "web_sales", "columns": ["ws_sold_date_sk", "ws_item_sk", "ws_bill_customer_sk"], "include": []},
+        {"table": "store_returns", "columns": ["sr_returned_date_sk", "sr_item_sk", "sr_customer_sk", "sr_ticket_number"], "include": []},
+        {"table": "catalog_returns", "columns": ["cr_returned_date_sk", "cr_item_sk", "cr_order_number"], "include": []},
+        {"table": "web_returns", "columns": ["wr_returned_date_sk", "wr_item_sk", "wr_order_number"], "include": []}
+      ]
+    },
+    {
+      "name": "wide covering for index-only aggregation",
+      "rationale": "Accept a much larger build cost in exchange for true index-only scans, pairing date and item keys with INCLUDE payloads of the measure columns the workload actually aggregates, plus covering indexes for the two largest dimension-like tables.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_store_sk", "ss_item_sk"], "include": ["ss_quantity", "ss_sales_price", "ss_ext_sales_price", "ss_net_profit"]},
+        {"table": "catalog_sales", "columns": ["cs_sold_date_sk", "cs_item_sk"], "include": ["cs_quantity", "cs_list_price", "cs_sales_price", "cs_ext_sales_price"]},
+        {"table": "web_sales", "columns": ["ws_sold_date_sk", "ws_item_sk"], "include": ["ws_quantity", "ws_list_price", "ws_sales_price", "ws_ext_sales_price"]},
+        {"table": "customer_demographics", "columns": ["cd_marital_status", "cd_education_status"], "include": ["cd_demo_sk", "cd_gender", "cd_dep_count", "cd_purchase_estimate", "cd_credit_rating"]},
+        {"table": "inventory", "columns": ["inv_item_sk", "inv_warehouse_sk", "inv_date_sk"], "include": ["inv_quantity_on_hand"]}
+      ]
+    },
+    {
+      "name": "aggressive broad coverage",
+      "rationale": "The maximum-size configuration, mixing fact-table composites, an item-leading inventory index for the 11.7M-row table whose only index is date-leading, and covering indexes on the biggest filtered dimensions, betting that broad coverage outweighs the build time.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk", "ss_store_sk", "ss_customer_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_item_sk", "ss_store_sk", "ss_sold_date_sk"], "include": []},
+        {"table": "catalog_sales", "columns": ["cs_sold_date_sk", "cs_item_sk", "cs_quantity"], "include": []},
+        {"table": "web_sales", "columns": ["ws_sold_date_sk", "ws_item_sk", "ws_quantity"], "include": []},
+        {"table": "inventory", "columns": ["inv_item_sk", "inv_date_sk", "inv_warehouse_sk"], "include": ["inv_quantity_on_hand"]},
+        {"table": "customer_demographics", "columns": ["cd_gender", "cd_marital_status", "cd_education_status"], "include": ["cd_demo_sk"]},
+        {"table": "date_dim", "columns": ["d_year", "d_moy", "d_dom"], "include": ["d_date_sk"]},
+        {"table": "store_returns", "columns": ["sr_returned_date_sk", "sr_customer_sk", "sr_item_sk", "sr_ticket_number"], "include": []}
+      ]
+    }
+  ]
+}

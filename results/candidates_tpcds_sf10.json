@@ -1,0 +1,3239 @@
+{
+ "1": [
+  {
+   "name": "ix_customer_c_customer_id",
+   "ddl": "CREATE INDEX ix_customer_c_customer_id ON customer (c_customer_id)",
+   "table": "customer",
+   "cols": [
+    "c_customer_id"
+   ],
+   "hypopg_cost": 1432029.99,
+   "cost_none": 1465435.12,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 1442862.48,
+   "cost_none": 1465435.12,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_date_sk ON date_dim (d_year, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 1462933.45,
+   "cost_none": 1465435.12,
+   "source": "decoy"
+  }
+ ],
+ "2": [
+  {
+   "name": "ix_date_dim_d_year_d_week_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_week_seq ON date_dim (d_year, d_week_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_week_seq"
+   ],
+   "hypopg_cost": 1078670.45,
+   "cost_none": 1084454.59,
+   "source": "decoy"
+  }
+ ],
+ "3": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 20493.69,
+   "cost_none": 20949.64,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_date_sk ON date_dim (d_moy, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 20493.69,
+   "cost_none": 20949.64,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy ON date_dim (d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy"
+   ],
+   "hypopg_cost": 20949.64,
+   "cost_none": 20949.64,
+   "source": "decoy"
+  }
+ ],
+ "4": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 16809396.44,
+   "cost_none": 16809396.44,
+   "source": "decoy"
+  }
+ ],
+ "5": [
+  {
+   "name": "ix_catalog_returns_cr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returned_date_sk ON catalog_returns (cr_returned_date_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returned_date_sk"
+   ],
+   "hypopg_cost": 1423332.47,
+   "cost_none": 1959538.51,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 1746879.61,
+   "cost_none": 1959538.51,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_date_sk ON date_dim (d_date, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 1954302.51,
+   "cost_none": 1959538.51,
+   "source": "decoy"
+  }
+ ],
+ "6": [
+  {
+   "name": "ix_item_i_category_i_current_price",
+   "ddl": "CREATE INDEX ix_item_i_category_i_current_price ON item (i_category, i_current_price)",
+   "table": "item",
+   "cols": [
+    "i_category",
+    "i_current_price"
+   ],
+   "hypopg_cost": 2965107.99,
+   "cost_none": 62383478.14,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_current_price_i_category",
+   "ddl": "CREATE INDEX ix_item_i_current_price_i_category ON item (i_current_price, i_category)",
+   "table": "item",
+   "cols": [
+    "i_current_price",
+    "i_category"
+   ],
+   "hypopg_cost": 14998329.07,
+   "cost_none": 62383478.14,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_category ON item (i_item_sk, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_category"
+   ],
+   "hypopg_cost": 41326165.57,
+   "cost_none": 62383478.14,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_month_seq ON date_dim (d_date_sk, d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_month_seq"
+   ],
+   "hypopg_cost": 62302880.53,
+   "cost_none": 62383478.14,
+   "source": "decoy"
+  }
+ ],
+ "7": [
+  {
+   "name": "ix_item_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_item_id ON item (i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_item_id"
+   ],
+   "hypopg_cost": 66248.7,
+   "cost_none": 158064.18,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_gender",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_gender ON customer_demographics (cd_demo_sk, cd_gender)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_gender"
+   ],
+   "hypopg_cost": 155627.7,
+   "cost_none": 158064.18,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_marital_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_marital_status ON customer_demographics (cd_demo_sk, cd_marital_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_marital_status"
+   ],
+   "hypopg_cost": 155627.7,
+   "cost_none": 158064.18,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 158064.18,
+   "cost_none": 158064.18,
+   "source": "decoy"
+  }
+ ],
+ "8": [
+  {
+   "name": "ix_customer_c_preferred_cust_flag_c_current_addr_sk",
+   "ddl": "CREATE INDEX ix_customer_c_preferred_cust_flag_c_current_addr_sk ON customer (c_preferred_cust_flag, c_current_addr_sk)",
+   "table": "customer",
+   "cols": [
+    "c_preferred_cust_flag",
+    "c_current_addr_sk"
+   ],
+   "hypopg_cost": 503785.14,
+   "cost_none": 514047.46,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_c_current_addr_sk_c_preferred_cust_flag",
+   "ddl": "CREATE INDEX ix_customer_c_current_addr_sk_c_preferred_cust_flag ON customer (c_current_addr_sk, c_preferred_cust_flag)",
+   "table": "customer",
+   "cols": [
+    "c_current_addr_sk",
+    "c_preferred_cust_flag"
+   ],
+   "hypopg_cost": 506352.31,
+   "cost_none": 514047.46,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_address_sk_ca_zip",
+   "ddl": "CREATE INDEX ix_customer_address_ca_address_sk_ca_zip ON customer_address (ca_address_sk, ca_zip)",
+   "table": "customer_address",
+   "cols": [
+    "ca_address_sk",
+    "ca_zip"
+   ],
+   "hypopg_cost": 509614.51,
+   "cost_none": 514047.46,
+   "source": "decoy"
+  }
+ ],
+ "9": [
+  {
+   "name": "ix_store_sales_ss_quantity",
+   "ddl": "CREATE INDEX ix_store_sales_ss_quantity ON store_sales (ss_quantity)",
+   "table": "store_sales",
+   "cols": [
+    "ss_quantity"
+   ],
+   "hypopg_cost": 8269364.8,
+   "cost_none": 11838690.2,
+   "source": "hypopg"
+  }
+ ],
+ "10": [
+  {
+   "name": "ix_customer_c_current_addr_sk",
+   "ddl": "CREATE INDEX ix_customer_c_current_addr_sk ON customer (c_current_addr_sk)",
+   "table": "customer",
+   "cols": [
+    "c_current_addr_sk"
+   ],
+   "hypopg_cost": 144962459.23,
+   "cost_none": 891695605.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 840077549.71,
+   "cost_none": 891695605.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 841340599.46,
+   "cost_none": 891695605.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 891453952.88,
+   "cost_none": 891695605.03,
+   "source": "decoy"
+  }
+ ],
+ "11": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 9426360.71,
+   "cost_none": 9426360.71,
+   "source": "decoy"
+  }
+ ],
+ "12": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 49768.21,
+   "cost_none": 69560.45,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_category ON item (i_item_sk, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_category"
+   ],
+   "hypopg_cost": 69111.5,
+   "cost_none": 69560.45,
+   "source": "decoy"
+  }
+ ],
+ "13": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 443390.52,
+   "cost_none": 624437.09,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_marital_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_marital_status ON customer_demographics (cd_demo_sk, cd_marital_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_marital_status"
+   ],
+   "hypopg_cost": 624164.17,
+   "cost_none": 624437.09,
+   "source": "decoy"
+  }
+ ],
+ "14": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 2161493.48,
+   "cost_none": 2952153.12,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 2938173.04,
+   "cost_none": 2952153.12,
+   "source": "decoy"
+  }
+ ],
+ "15": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_qoy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_qoy ON date_dim (d_date_sk, d_qoy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_qoy"
+   ],
+   "hypopg_cost": 46878.11,
+   "cost_none": 47187.31,
+   "source": "decoy"
+  }
+ ],
+ "16": [
+  {
+   "name": "ix_catalog_sales_cs_ship_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_date_sk ON catalog_sales (cs_ship_date_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_date_sk"
+   ],
+   "hypopg_cost": 151890.42,
+   "cost_none": 698884.0,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_ship_date_sk_cs_warehouse_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_date_sk_cs_warehouse_sk ON catalog_sales (cs_ship_date_sk, cs_warehouse_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_date_sk",
+    "cs_warehouse_sk"
+   ],
+   "hypopg_cost": 212968.46,
+   "cost_none": 698884.0,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_ship_addr_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_addr_sk ON catalog_sales (cs_ship_addr_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_addr_sk"
+   ],
+   "hypopg_cost": 368897.73,
+   "cost_none": 698884.0,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 695812.56,
+   "cost_none": 698884.0,
+   "source": "decoy"
+  }
+ ],
+ "17": [
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 61927.86,
+   "cost_none": 78360.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk_sr_customer_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk_sr_customer_sk ON store_returns (sr_returned_date_sk, sr_customer_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk",
+    "sr_customer_sk"
+   ],
+   "hypopg_cost": 62486.85,
+   "cost_none": 78360.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_customer_sk_sr_item_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_customer_sk_sr_item_sk ON store_returns (sr_customer_sk, sr_item_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_customer_sk",
+    "sr_item_sk"
+   ],
+   "hypopg_cost": 72667.09,
+   "cost_none": 78360.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_item_sk_cs_sold_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_item_sk_cs_sold_date_sk ON catalog_sales (cs_item_sk, cs_sold_date_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_item_sk",
+    "cs_sold_date_sk"
+   ],
+   "hypopg_cost": 78359.7,
+   "cost_none": 78360.19,
+   "source": "decoy"
+  }
+ ],
+ "18": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 92939.58,
+   "cost_none": 123758.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_gender",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_gender ON customer_demographics (cd_demo_sk, cd_gender)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_gender"
+   ],
+   "hypopg_cost": 116516.38,
+   "cost_none": 123758.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_education_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_education_status ON customer_demographics (cd_demo_sk, cd_education_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_education_status"
+   ],
+   "hypopg_cost": 116528.25,
+   "cost_none": 123758.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_state",
+   "ddl": "CREATE INDEX ix_customer_address_ca_state ON customer_address (ca_state)",
+   "table": "customer_address",
+   "cols": [
+    "ca_state"
+   ],
+   "hypopg_cost": 122599.58,
+   "cost_none": 123758.58,
+   "source": "decoy"
+  }
+ ],
+ "19": [
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 216462.24,
+   "cost_none": 219064.84,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 216465.04,
+   "cost_none": 219064.84,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_year ON date_dim (d_moy, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_year"
+   ],
+   "hypopg_cost": 216480.05,
+   "cost_none": 219064.84,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 217562.03,
+   "cost_none": 219064.84,
+   "source": "decoy"
+  }
+ ],
+ "20": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 10221.84,
+   "cost_none": 14700.8,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_category ON item (i_item_sk, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_category"
+   ],
+   "hypopg_cost": 13806.6,
+   "cost_none": 14700.8,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_category_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_category_i_item_sk ON item (i_category, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_category",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 14177.71,
+   "cost_none": 14700.8,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 14700.8,
+   "cost_none": 14700.8,
+   "source": "decoy"
+  }
+ ],
+ "21": [
+  {
+   "name": "ix_date_dim_d_date_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_date_sk ON date_dim (d_date, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 924100.93,
+   "cost_none": 1405270.41,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 929888.53,
+   "cost_none": 1405270.41,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 1048595.08,
+   "cost_none": 1405270.41,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_current_price",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_current_price ON item (i_item_sk, i_current_price)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_current_price"
+   ],
+   "hypopg_cost": 1401867.99,
+   "cost_none": 1405270.41,
+   "source": "decoy"
+  }
+ ],
+ "22": [
+  {
+   "name": "ix_date_dim_d_month_seq_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq_d_date_sk ON date_dim (d_month_seq, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 1524076.14,
+   "cost_none": 1526684.35,
+   "source": "decoy"
+  }
+ ],
+ "23": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 3511780.68,
+   "cost_none": 3702562.49,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 3697491.98,
+   "cost_none": 3702562.49,
+   "source": "decoy"
+  }
+ ],
+ "24": [
+  {
+   "name": "ix_customer_c_current_addr_sk",
+   "ddl": "CREATE INDEX ix_customer_c_current_addr_sk ON customer (c_current_addr_sk)",
+   "table": "customer",
+   "cols": [
+    "c_current_addr_sk"
+   ],
+   "hypopg_cost": 15883.34,
+   "cost_none": 28078.0,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_zip",
+   "ddl": "CREATE INDEX ix_customer_address_ca_zip ON customer_address (ca_zip)",
+   "table": "customer_address",
+   "cols": [
+    "ca_zip"
+   ],
+   "hypopg_cost": 21724.12,
+   "cost_none": 28078.0,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_ticket_number",
+   "ddl": "CREATE INDEX ix_store_returns_sr_ticket_number ON store_returns (sr_ticket_number)",
+   "table": "store_returns",
+   "cols": [
+    "sr_ticket_number"
+   ],
+   "hypopg_cost": 27983.47,
+   "cost_none": 28078.0,
+   "source": "decoy"
+  }
+ ],
+ "25": [
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 58421.46,
+   "cost_none": 78234.74,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk_sr_customer_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk_sr_customer_sk ON store_returns (sr_returned_date_sk, sr_customer_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk",
+    "sr_customer_sk"
+   ],
+   "hypopg_cost": 58919.42,
+   "cost_none": 78234.74,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_customer_sk_sr_item_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_customer_sk_sr_item_sk ON store_returns (sr_customer_sk, sr_item_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_customer_sk",
+    "sr_item_sk"
+   ],
+   "hypopg_cost": 66940.92,
+   "cost_none": 78234.74,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 78234.24,
+   "cost_none": 78234.74,
+   "source": "decoy"
+  }
+ ],
+ "26": [
+  {
+   "name": "ix_item_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_item_id ON item (i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_item_id"
+   ],
+   "hypopg_cost": 68287.87,
+   "cost_none": 123717.6,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 89500.91,
+   "cost_none": 123717.6,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_gender",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_gender ON customer_demographics (cd_demo_sk, cd_gender)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_gender"
+   ],
+   "hypopg_cost": 114542.05,
+   "cost_none": 123717.6,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 123717.6,
+   "cost_none": 123717.6,
+   "source": "decoy"
+  }
+ ],
+ "27": [
+  {
+   "name": "ix_store_sales_ss_cdemo_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_cdemo_sk ON store_sales (ss_cdemo_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_cdemo_sk"
+   ],
+   "hypopg_cost": 346283.11,
+   "cost_none": 545215.5,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 384249.96,
+   "cost_none": 545215.5,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_gender",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_gender ON customer_demographics (cd_demo_sk, cd_gender)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_gender"
+   ],
+   "hypopg_cost": 536462.35,
+   "cost_none": 545215.5,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 545215.5,
+   "cost_none": 545215.5,
+   "source": "decoy"
+  }
+ ],
+ "28": [
+  {
+   "name": "ix_store_sales_ss_quantity",
+   "ddl": "CREATE INDEX ix_store_sales_ss_quantity ON store_sales (ss_quantity)",
+   "table": "store_sales",
+   "cols": [
+    "ss_quantity"
+   ],
+   "hypopg_cost": 4413548.57,
+   "cost_none": 5573838.35,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_quantity_ss_coupon_amt",
+   "ddl": "CREATE INDEX ix_store_sales_ss_quantity_ss_coupon_amt ON store_sales (ss_quantity, ss_coupon_amt)",
+   "table": "store_sales",
+   "cols": [
+    "ss_quantity",
+    "ss_coupon_amt"
+   ],
+   "hypopg_cost": 4418340.17,
+   "cost_none": 5573838.35,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_quantity_ss_list_price",
+   "ddl": "CREATE INDEX ix_store_sales_ss_quantity_ss_list_price ON store_sales (ss_quantity, ss_list_price)",
+   "table": "store_sales",
+   "cols": [
+    "ss_quantity",
+    "ss_list_price"
+   ],
+   "hypopg_cost": 4423127.37,
+   "cost_none": 5573838.35,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_coupon_amt",
+   "ddl": "CREATE INDEX ix_store_sales_ss_coupon_amt ON store_sales (ss_coupon_amt)",
+   "table": "store_sales",
+   "cols": [
+    "ss_coupon_amt"
+   ],
+   "hypopg_cost": 5573838.35,
+   "cost_none": 5573838.35,
+   "source": "decoy"
+  }
+ ],
+ "29": [
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 38810.18,
+   "cost_none": 76693.78,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk_sr_customer_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk_sr_customer_sk ON store_returns (sr_returned_date_sk, sr_customer_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk",
+    "sr_customer_sk"
+   ],
+   "hypopg_cost": 38978.97,
+   "cost_none": 76693.78,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 74079.8,
+   "cost_none": 76693.78,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_bill_customer_sk_cs_item_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_bill_customer_sk_cs_item_sk ON catalog_sales (cs_bill_customer_sk, cs_item_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_bill_customer_sk",
+    "cs_item_sk"
+   ],
+   "hypopg_cost": 76024.76,
+   "cost_none": 76693.78,
+   "source": "decoy"
+  }
+ ],
+ "30": [
+  {
+   "name": "ix_web_returns_wr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_web_returns_wr_returned_date_sk ON web_returns (wr_returned_date_sk)",
+   "table": "web_returns",
+   "cols": [
+    "wr_returned_date_sk"
+   ],
+   "hypopg_cost": 261101.33,
+   "cost_none": 267752.21,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_date_sk ON date_dim (d_year, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 265250.54,
+   "cost_none": 267752.21,
+   "source": "decoy"
+  }
+ ],
+ "31": [
+  {
+   "name": "ix_date_dim_d_qoy",
+   "ddl": "CREATE INDEX ix_date_dim_d_qoy ON date_dim (d_qoy)",
+   "table": "date_dim",
+   "cols": [
+    "d_qoy"
+   ],
+   "hypopg_cost": 3290168.49,
+   "cost_none": 3290168.49,
+   "source": "decoy"
+  }
+ ],
+ "32": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 29526.21,
+   "cost_none": 39436.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_item_sk ON item (i_manufact_id, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 33699.1,
+   "cost_none": 39436.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id ON item (i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 33795.99,
+   "cost_none": 39436.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 39436.4,
+   "cost_none": 39436.4,
+   "source": "decoy"
+  }
+ ],
+ "33": [
+  {
+   "name": "ix_item_i_category_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_category_i_manufact_id ON item (i_category, i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_category",
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 325486.63,
+   "cost_none": 340908.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id_i_category",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_category ON item (i_manufact_id, i_category)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_category"
+   ],
+   "hypopg_cost": 325729.78,
+   "cost_none": 340908.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id ON item (i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 326535.18,
+   "cost_none": 340908.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 339156.97,
+   "cost_none": 340908.4,
+   "source": "decoy"
+  }
+ ],
+ "34": [
+  {
+   "name": "ix_date_dim_d_dom",
+   "ddl": "CREATE INDEX ix_date_dim_d_dom ON date_dim (d_dom)",
+   "table": "date_dim",
+   "cols": [
+    "d_dom"
+   ],
+   "hypopg_cost": 505491.78,
+   "cost_none": 506042.85,
+   "source": "decoy"
+  }
+ ],
+ "35": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 229420208.47,
+   "cost_none": 235315047.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_date_sk ON date_dim (d_year, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 229831798.63,
+   "cost_none": 235315047.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_qoy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_qoy ON date_dim (d_year, d_qoy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_qoy"
+   ],
+   "hypopg_cost": 229841077.84,
+   "cost_none": 235315047.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_qoy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_qoy ON date_dim (d_date_sk, d_qoy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_qoy"
+   ],
+   "hypopg_cost": 235285907.6,
+   "cost_none": 235315047.95,
+   "source": "decoy"
+  }
+ ],
+ "36": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 396437.31,
+   "cost_none": 555976.81,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 555976.81,
+   "cost_none": 555976.81,
+   "source": "decoy"
+  }
+ ],
+ "37": [
+  {
+   "name": "ix_item_i_manufact_id_i_current_price",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_current_price ON item (i_manufact_id, i_current_price)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_current_price"
+   ],
+   "hypopg_cost": 6114.68,
+   "cost_none": 23339.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_date_sk ON date_dim (d_date, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 7997.93,
+   "cost_none": 23339.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 8008.43,
+   "cost_none": 23339.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_inventory_inv_quantity_on_hand",
+   "ddl": "CREATE INDEX ix_inventory_inv_quantity_on_hand ON inventory (inv_quantity_on_hand)",
+   "table": "inventory",
+   "cols": [
+    "inv_quantity_on_hand"
+   ],
+   "hypopg_cost": 23339.79,
+   "cost_none": 23339.79,
+   "source": "decoy"
+  }
+ ],
+ "38": [
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 914782.58,
+   "cost_none": 914782.58,
+   "source": "decoy"
+  }
+ ],
+ "39": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 1553765.01,
+   "cost_none": 1556253.19,
+   "source": "decoy"
+  }
+ ],
+ "40": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 16949.76,
+   "cost_none": 24830.68,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_current_price",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_current_price ON item (i_item_sk, i_current_price)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_current_price"
+   ],
+   "hypopg_cost": 23071.03,
+   "cost_none": 24830.68,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_returns_cr_order_number",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_order_number ON catalog_returns (cr_order_number)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_order_number"
+   ],
+   "hypopg_cost": 24795.85,
+   "cost_none": 24830.68,
+   "source": "decoy"
+  }
+ ],
+ "41": [
+  {
+   "name": "ix_item_i_manufact_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_manufact_i_manufact_id ON item (i_manufact, i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_manufact",
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 180158.71,
+   "cost_none": 1990027545.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id_i_manufact",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_manufact ON item (i_manufact_id, i_manufact)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_manufact"
+   ],
+   "hypopg_cost": 2117445.32,
+   "cost_none": 1990027545.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_color_i_manufact",
+   "ddl": "CREATE INDEX ix_item_i_color_i_manufact ON item (i_color, i_manufact)",
+   "table": "item",
+   "cols": [
+    "i_color",
+    "i_manufact"
+   ],
+   "hypopg_cost": 3717424.03,
+   "cost_none": 1990027545.95,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_size",
+   "ddl": "CREATE INDEX ix_item_i_size ON item (i_size)",
+   "table": "item",
+   "cols": [
+    "i_size"
+   ],
+   "hypopg_cost": 1990027545.95,
+   "cost_none": 1990027545.95,
+   "source": "decoy"
+  }
+ ],
+ "42": [
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 207172.59,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 207175.39,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_year ON date_dim (d_moy, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_year"
+   ],
+   "hypopg_cost": 207190.4,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 208272.38,
+   "cost_none": 209775.19,
+   "source": "decoy"
+  }
+ ],
+ "43": [
+  {
+   "name": "ix_date_dim_d_day_name",
+   "ddl": "CREATE INDEX ix_date_dim_d_day_name ON date_dim (d_day_name)",
+   "table": "date_dim",
+   "cols": [
+    "d_day_name"
+   ],
+   "hypopg_cost": 537081.69,
+   "cost_none": 537081.69,
+   "source": "decoy"
+  }
+ ],
+ "44": [
+  {
+   "name": "ix_store_sales_ss_store_sk_ss_addr_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_store_sk_ss_addr_sk ON store_sales (ss_store_sk, ss_addr_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_store_sk",
+    "ss_addr_sk"
+   ],
+   "hypopg_cost": 847456.5,
+   "cost_none": 3200800.22,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_store_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_store_sk ON store_sales (ss_store_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_store_sk"
+   ],
+   "hypopg_cost": 1564645.52,
+   "cost_none": 3200800.22,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_store_sk_ss_net_profit",
+   "ddl": "CREATE INDEX ix_store_sales_ss_store_sk_ss_net_profit ON store_sales (ss_store_sk, ss_net_profit)",
+   "table": "store_sales",
+   "cols": [
+    "ss_store_sk",
+    "ss_net_profit"
+   ],
+   "hypopg_cost": 1566951.12,
+   "cost_none": 3200800.22,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_net_profit",
+   "ddl": "CREATE INDEX ix_store_sales_ss_net_profit ON store_sales (ss_net_profit)",
+   "table": "store_sales",
+   "cols": [
+    "ss_net_profit"
+   ],
+   "hypopg_cost": 3200800.22,
+   "cost_none": 3200800.22,
+   "source": "decoy"
+  }
+ ],
+ "45": [
+  {
+   "name": "ix_customer_c_current_addr_sk",
+   "ddl": "CREATE INDEX ix_customer_c_current_addr_sk ON customer (c_current_addr_sk)",
+   "table": "customer",
+   "cols": [
+    "c_current_addr_sk"
+   ],
+   "hypopg_cost": 53727.88,
+   "cost_none": 73832.49,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_qoy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_qoy ON date_dim (d_date_sk, d_qoy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_qoy"
+   ],
+   "hypopg_cost": 73823.89,
+   "cost_none": 73832.49,
+   "source": "decoy"
+  }
+ ],
+ "46": [
+  {
+   "name": "ix_date_dim_d_dow",
+   "ddl": "CREATE INDEX ix_date_dim_d_dow ON date_dim (d_dow)",
+   "table": "date_dim",
+   "cols": [
+    "d_dow"
+   ],
+   "hypopg_cost": 544413.29,
+   "cost_none": 544682.84,
+   "source": "decoy"
+  }
+ ],
+ "47": [
+  {
+   "name": "ix_date_dim_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy ON date_dim (d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy"
+   ],
+   "hypopg_cost": 612712.43,
+   "cost_none": 612712.43,
+   "source": "decoy"
+  }
+ ],
+ "48": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 428670.88,
+   "cost_none": 608249.34,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_marital_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_marital_status ON customer_demographics (cd_demo_sk, cd_marital_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_marital_status"
+   ],
+   "hypopg_cost": 604506.6,
+   "cost_none": 608249.34,
+   "source": "decoy"
+  }
+ ],
+ "49": [
+  {
+   "name": "ix_web_returns_wr_return_amt",
+   "ddl": "CREATE INDEX ix_web_returns_wr_return_amt ON web_returns (wr_return_amt)",
+   "table": "web_returns",
+   "cols": [
+    "wr_return_amt"
+   ],
+   "hypopg_cost": 113916.33,
+   "cost_none": 127659.68,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_returns_wr_return_amt_wr_item_sk",
+   "ddl": "CREATE INDEX ix_web_returns_wr_return_amt_wr_item_sk ON web_returns (wr_return_amt, wr_item_sk)",
+   "table": "web_returns",
+   "cols": [
+    "wr_return_amt",
+    "wr_item_sk"
+   ],
+   "hypopg_cost": 113926.23,
+   "cost_none": 127659.68,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_returns_wr_return_amt_wr_order_number",
+   "ddl": "CREATE INDEX ix_web_returns_wr_return_amt_wr_order_number ON web_returns (wr_return_amt, wr_order_number)",
+   "table": "web_returns",
+   "cols": [
+    "wr_return_amt",
+    "wr_order_number"
+   ],
+   "hypopg_cost": 113926.23,
+   "cost_none": 127659.68,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 127072.93,
+   "cost_none": 127659.68,
+   "source": "decoy"
+  }
+ ],
+ "50": [
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 29352.57,
+   "cost_none": 75462.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk_sr_customer_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk_sr_customer_sk ON store_returns (sr_returned_date_sk, sr_customer_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk",
+    "sr_customer_sk"
+   ],
+   "hypopg_cost": 29400.79,
+   "cost_none": 75462.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 72863.7,
+   "cost_none": 75462.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 74883.23,
+   "cost_none": 75462.19,
+   "source": "decoy"
+  }
+ ],
+ "51": [
+  {
+   "name": "ix_store_sales_ss_item_sk_ss_sold_date_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_item_sk_ss_sold_date_sk ON store_sales (ss_item_sk, ss_sold_date_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_item_sk",
+    "ss_sold_date_sk"
+   ],
+   "hypopg_cost": 775964.83,
+   "cost_none": 775964.83,
+   "source": "decoy"
+  }
+ ],
+ "52": [
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 207172.59,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 207175.39,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_year ON date_dim (d_moy, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_year"
+   ],
+   "hypopg_cost": 207190.4,
+   "cost_none": 209775.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 208272.38,
+   "cost_none": 209775.19,
+   "source": "decoy"
+  }
+ ],
+ "53": [
+  {
+   "name": "ix_item_i_brand",
+   "ddl": "CREATE INDEX ix_item_i_brand ON item (i_brand)",
+   "table": "item",
+   "cols": [
+    "i_brand"
+   ],
+   "hypopg_cost": 29642.55,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_brand_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_brand_i_item_sk ON item (i_brand, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_brand",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 29651.35,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_brand_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_brand_i_manufact_id ON item (i_brand, i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_brand",
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 29651.35,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_category",
+   "ddl": "CREATE INDEX ix_item_i_category ON item (i_category)",
+   "table": "item",
+   "cols": [
+    "i_category"
+   ],
+   "hypopg_cost": 32134.72,
+   "cost_none": 32135.58,
+   "source": "decoy"
+  }
+ ],
+ "54": [
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 36834.44,
+   "cost_none": 45545.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 36842.85,
+   "cost_none": 45545.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_year ON date_dim (d_moy, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_year"
+   ],
+   "hypopg_cost": 36887.86,
+   "cost_none": 45545.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_category_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_category_i_item_sk ON item (i_category, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_category",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 45103.97,
+   "cost_none": 45545.79,
+   "source": "decoy"
+  }
+ ],
+ "55": [
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 211906.55,
+   "cost_none": 214509.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 211909.36,
+   "cost_none": 214509.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_moy_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy_d_year ON date_dim (d_moy, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy",
+    "d_year"
+   ],
+   "hypopg_cost": 211924.36,
+   "cost_none": 214509.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 213006.34,
+   "cost_none": 214509.16,
+   "source": "decoy"
+  }
+ ],
+ "56": [
+  {
+   "name": "ix_item_i_color_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_color_i_item_id ON item (i_color, i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_color",
+    "i_item_id"
+   ],
+   "hypopg_cost": 100767.86,
+   "cost_none": 115634.25,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_id_i_color",
+   "ddl": "CREATE INDEX ix_item_i_item_id_i_color ON item (i_item_id, i_color)",
+   "table": "item",
+   "cols": [
+    "i_item_id",
+    "i_color"
+   ],
+   "hypopg_cost": 104118.96,
+   "cost_none": 115634.25,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_color",
+   "ddl": "CREATE INDEX ix_item_i_color ON item (i_color)",
+   "table": "item",
+   "cols": [
+    "i_color"
+   ],
+   "hypopg_cost": 107430.96,
+   "cost_none": 115634.25,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_address_sk_ca_gmt_offset",
+   "ddl": "CREATE INDEX ix_customer_address_ca_address_sk_ca_gmt_offset ON customer_address (ca_address_sk, ca_gmt_offset)",
+   "table": "customer_address",
+   "cols": [
+    "ca_address_sk",
+    "ca_gmt_offset"
+   ],
+   "hypopg_cost": 114854.57,
+   "cost_none": 115634.25,
+   "source": "decoy"
+  }
+ ],
+ "57": [
+  {
+   "name": "ix_date_dim_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_moy ON date_dim (d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_moy"
+   ],
+   "hypopg_cost": 161242.72,
+   "cost_none": 161242.72,
+   "source": "decoy"
+  }
+ ],
+ "58": [
+  {
+   "name": "ix_date_dim_d_date_d_week_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_week_seq ON date_dim (d_date, d_week_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_week_seq"
+   ],
+   "hypopg_cost": 9679.13,
+   "cost_none": 31328.02,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_date_sk ON date_dim (d_date, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 15549.63,
+   "cost_none": 31328.02,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 15714.09,
+   "cost_none": 31328.02,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_item_id ON item (i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_item_id"
+   ],
+   "hypopg_cost": 31328.02,
+   "cost_none": 31328.02,
+   "source": "decoy"
+  }
+ ],
+ "59": [
+  {
+   "name": "ix_date_dim_d_month_seq_d_week_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq_d_week_seq ON date_dim (d_month_seq, d_week_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq",
+    "d_week_seq"
+   ],
+   "hypopg_cost": 1870072.83,
+   "cost_none": 1876194.64,
+   "source": "decoy"
+  }
+ ],
+ "60": [
+  {
+   "name": "ix_item_i_category_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_category_i_item_id ON item (i_category, i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_category",
+    "i_item_id"
+   ],
+   "hypopg_cost": 266433.53,
+   "cost_none": 280599.92,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_id_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_id_i_category ON item (i_item_id, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_id",
+    "i_category"
+   ],
+   "hypopg_cost": 270431.06,
+   "cost_none": 280599.92,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_id",
+   "ddl": "CREATE INDEX ix_item_i_item_id ON item (i_item_id)",
+   "table": "item",
+   "cols": [
+    "i_item_id"
+   ],
+   "hypopg_cost": 272724.4,
+   "cost_none": 280599.92,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 278833.99,
+   "cost_none": 280599.92,
+   "source": "decoy"
+  }
+ ],
+ "61": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_moy ON date_dim (d_date_sk, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_moy"
+   ],
+   "hypopg_cost": 470765.25,
+   "cost_none": 471937.84,
+   "source": "decoy"
+  }
+ ],
+ "62": [
+  {
+   "name": "ix_web_sales_ws_ship_date_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_ship_date_sk ON web_sales (ws_ship_date_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_ship_date_sk"
+   ],
+   "hypopg_cost": 196833.9,
+   "cost_none": 284215.96,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq_d_date_sk ON date_dim (d_month_seq, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 281607.75,
+   "cost_none": 284215.96,
+   "source": "decoy"
+  }
+ ],
+ "63": [
+  {
+   "name": "ix_item_i_brand",
+   "ddl": "CREATE INDEX ix_item_i_brand ON item (i_brand)",
+   "table": "item",
+   "cols": [
+    "i_brand"
+   ],
+   "hypopg_cost": 29642.55,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_brand_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_brand_i_item_sk ON item (i_brand, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_brand",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 29651.35,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_brand_i_manager_id",
+   "ddl": "CREATE INDEX ix_item_i_brand_i_manager_id ON item (i_brand, i_manager_id)",
+   "table": "item",
+   "cols": [
+    "i_brand",
+    "i_manager_id"
+   ],
+   "hypopg_cost": 29651.35,
+   "cost_none": 32135.58,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_category",
+   "ddl": "CREATE INDEX ix_item_i_category ON item (i_category)",
+   "table": "item",
+   "cols": [
+    "i_category"
+   ],
+   "hypopg_cost": 32134.72,
+   "cost_none": 32135.58,
+   "source": "decoy"
+  }
+ ],
+ "64": [
+  {
+   "name": "ix_item_i_current_price_i_color",
+   "ddl": "CREATE INDEX ix_item_i_current_price_i_color ON item (i_current_price, i_color)",
+   "table": "item",
+   "cols": [
+    "i_current_price",
+    "i_color"
+   ],
+   "hypopg_cost": 411431.3,
+   "cost_none": 411952.47,
+   "source": "decoy"
+  }
+ ],
+ "65": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_month_seq ON date_dim (d_date_sk, d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_month_seq"
+   ],
+   "hypopg_cost": 810988.51,
+   "cost_none": 1119269.75,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq ON date_dim (d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq"
+   ],
+   "hypopg_cost": 1119269.75,
+   "cost_none": 1119269.75,
+   "source": "decoy"
+  }
+ ],
+ "66": [
+  {
+   "name": "ix_time_dim_t_time_sk_t_time",
+   "ddl": "CREATE INDEX ix_time_dim_t_time_sk_t_time ON time_dim (t_time_sk, t_time)",
+   "table": "time_dim",
+   "cols": [
+    "t_time_sk",
+    "t_time"
+   ],
+   "hypopg_cost": 327893.24,
+   "cost_none": 329725.03,
+   "source": "decoy"
+  }
+ ],
+ "67": [
+  {
+   "name": "ix_date_dim_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq ON date_dim (d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq"
+   ],
+   "hypopg_cost": 671638.12,
+   "cost_none": 671638.12,
+   "source": "decoy"
+  }
+ ],
+ "68": [
+  {
+   "name": "ix_date_dim_d_dom",
+   "ddl": "CREATE INDEX ix_date_dim_d_dom ON date_dim (d_dom)",
+   "table": "date_dim",
+   "cols": [
+    "d_dom"
+   ],
+   "hypopg_cost": 432611.25,
+   "cost_none": 433295.44,
+   "source": "decoy"
+  }
+ ],
+ "69": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 219502.25,
+   "cost_none": 438102.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 221859.03,
+   "cost_none": 438102.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_ship_customer_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_customer_sk ON catalog_sales (cs_ship_customer_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_customer_sk"
+   ],
+   "hypopg_cost": 425981.04,
+   "cost_none": 438102.19,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_date_sk ON date_dim (d_year, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 435471.22,
+   "cost_none": 438102.19,
+   "source": "decoy"
+  }
+ ],
+ "70": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_month_seq ON date_dim (d_date_sk, d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_month_seq"
+   ],
+   "hypopg_cost": 774584.68,
+   "cost_none": 1085921.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq ON date_dim (d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq"
+   ],
+   "hypopg_cost": 1085921.79,
+   "cost_none": 1085921.79,
+   "source": "decoy"
+  }
+ ],
+ "71": [
+  {
+   "name": "ix_item_i_manager_id",
+   "ddl": "CREATE INDEX ix_item_i_manager_id ON item (i_manager_id)",
+   "table": "item",
+   "cols": [
+    "i_manager_id"
+   ],
+   "hypopg_cost": 317618.59,
+   "cost_none": 319467.21,
+   "source": "decoy"
+  }
+ ],
+ "72": [
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_marital_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_marital_status ON customer_demographics (cd_demo_sk, cd_marital_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_marital_status"
+   ],
+   "hypopg_cost": 118194.56,
+   "cost_none": 121728.57,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_marital_status_cd_demo_sk",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_marital_status_cd_demo_sk ON customer_demographics (cd_marital_status, cd_demo_sk)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_marital_status",
+    "cd_demo_sk"
+   ],
+   "hypopg_cost": 118194.56,
+   "cost_none": 121728.57,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_week_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_week_seq ON date_dim (d_week_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_week_seq"
+   ],
+   "hypopg_cost": 119545.61,
+   "cost_none": 121728.57,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 121716.2,
+   "cost_none": 121728.57,
+   "source": "decoy"
+  }
+ ],
+ "73": [
+  {
+   "name": "ix_date_dim_d_dom",
+   "ddl": "CREATE INDEX ix_date_dim_d_dom ON date_dim (d_dom)",
+   "table": "date_dim",
+   "cols": [
+    "d_dom"
+   ],
+   "hypopg_cost": 427513.03,
+   "cost_none": 428197.22,
+   "source": "decoy"
+  }
+ ],
+ "74": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 739783.87,
+   "cost_none": 987408.92,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 987408.92,
+   "cost_none": 987408.92,
+   "source": "decoy"
+  }
+ ],
+ "75": [
+  {
+   "name": "ix_item_i_item_sk_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_category ON item (i_item_sk, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_category"
+   ],
+   "hypopg_cost": 2477610.67,
+   "cost_none": 2483886.86,
+   "source": "decoy"
+  }
+ ],
+ "76": [
+  {
+   "name": "ix_catalog_sales_cs_ship_addr_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_addr_sk ON catalog_sales (cs_ship_addr_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_addr_sk"
+   ],
+   "hypopg_cost": 1002757.14,
+   "cost_none": 1347254.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_ship_addr_sk_cs_sold_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_addr_sk_cs_sold_date_sk ON catalog_sales (cs_ship_addr_sk, cs_sold_date_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_addr_sk",
+    "cs_sold_date_sk"
+   ],
+   "hypopg_cost": 1002878.14,
+   "cost_none": 1347254.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_sales_cs_item_sk_cs_ship_addr_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_item_sk_cs_ship_addr_sk ON catalog_sales (cs_item_sk, cs_ship_addr_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_item_sk",
+    "cs_ship_addr_sk"
+   ],
+   "hypopg_cost": 1009870.38,
+   "cost_none": 1347254.16,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_sales_ss_store_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_store_sk ON store_sales (ss_store_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_store_sk"
+   ],
+   "hypopg_cost": 1347254.16,
+   "cost_none": 1347254.16,
+   "source": "decoy"
+  }
+ ],
+ "77": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 385627.46,
+   "cost_none": 478493.86,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 429222.03,
+   "cost_none": 478493.86,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_returns_cr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returned_date_sk ON catalog_returns (cr_returned_date_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returned_date_sk"
+   ],
+   "hypopg_cost": 433387.88,
+   "cost_none": 478493.86,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_return_amt",
+   "ddl": "CREATE INDEX ix_store_returns_sr_return_amt ON store_returns (sr_return_amt)",
+   "table": "store_returns",
+   "cols": [
+    "sr_return_amt"
+   ],
+   "hypopg_cost": 478493.86,
+   "cost_none": 478493.86,
+   "source": "decoy"
+  }
+ ],
+ "78": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 637609.77,
+   "cost_none": 905611.05,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_ticket_number",
+   "ddl": "CREATE INDEX ix_store_returns_sr_ticket_number ON store_returns (sr_ticket_number)",
+   "table": "store_returns",
+   "cols": [
+    "sr_ticket_number"
+   ],
+   "hypopg_cost": 878883.99,
+   "cost_none": 905611.05,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_returns_cr_order_number",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_order_number ON catalog_returns (cr_order_number)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_order_number"
+   ],
+   "hypopg_cost": 890892.53,
+   "cost_none": 905611.05,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_returns_wr_order_number",
+   "ddl": "CREATE INDEX ix_web_returns_wr_order_number ON web_returns (wr_order_number)",
+   "table": "web_returns",
+   "cols": [
+    "wr_order_number"
+   ],
+   "hypopg_cost": 898220.06,
+   "cost_none": 905611.05,
+   "source": "decoy"
+  }
+ ],
+ "79": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_dow",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_dow ON date_dim (d_date_sk, d_dow)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_dow"
+   ],
+   "hypopg_cost": 507628.15,
+   "cost_none": 508164.45,
+   "source": "decoy"
+  }
+ ],
+ "80": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 242868.29,
+   "cost_none": 332107.8,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_current_price_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_current_price_i_item_sk ON item (i_current_price, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_current_price",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 330059.9,
+   "cost_none": 332107.8,
+   "source": "decoy"
+  }
+ ],
+ "81": [
+  {
+   "name": "ix_catalog_returns_cr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returned_date_sk ON catalog_returns (cr_returned_date_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returned_date_sk"
+   ],
+   "hypopg_cost": 1130272.41,
+   "cost_none": 1166086.4,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_date_sk ON date_dim (d_year, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 1163584.73,
+   "cost_none": 1166086.4,
+   "source": "decoy"
+  }
+ ],
+ "82": [
+  {
+   "name": "ix_item_i_manufact_id_i_current_price",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_current_price ON item (i_manufact_id, i_current_price)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_current_price"
+   ],
+   "hypopg_cost": 7767.01,
+   "cost_none": 33748.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_d_date_sk ON date_dim (d_date, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_date",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 9202.29,
+   "cost_none": 33748.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 9219.09,
+   "cost_none": 33748.79,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_inventory_inv_quantity_on_hand",
+   "ddl": "CREATE INDEX ix_inventory_inv_quantity_on_hand ON inventory (inv_quantity_on_hand)",
+   "table": "inventory",
+   "cols": [
+    "inv_quantity_on_hand"
+   ],
+   "hypopg_cost": 33748.79,
+   "cost_none": 33748.79,
+   "source": "decoy"
+  }
+ ],
+ "83": [
+  {
+   "name": "ix_store_returns_sr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_returned_date_sk ON store_returns (sr_returned_date_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_returned_date_sk"
+   ],
+   "hypopg_cost": 94861.14,
+   "cost_none": 166656.91,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_returns_cr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returned_date_sk ON catalog_returns (cr_returned_date_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returned_date_sk"
+   ],
+   "hypopg_cost": 120382.1,
+   "cost_none": 166656.91,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_returns_wr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_web_returns_wr_returned_date_sk ON web_returns (wr_returned_date_sk)",
+   "table": "web_returns",
+   "cols": [
+    "wr_returned_date_sk"
+   ],
+   "hypopg_cost": 145326.57,
+   "cost_none": 166656.91,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_store_returns_sr_return_quantity",
+   "ddl": "CREATE INDEX ix_store_returns_sr_return_quantity ON store_returns (sr_return_quantity)",
+   "table": "store_returns",
+   "cols": [
+    "sr_return_quantity"
+   ],
+   "hypopg_cost": 166656.91,
+   "cost_none": 166656.91,
+   "source": "decoy"
+  }
+ ],
+ "84": [
+  {
+   "name": "ix_store_returns_sr_cdemo_sk",
+   "ddl": "CREATE INDEX ix_store_returns_sr_cdemo_sk ON store_returns (sr_cdemo_sk)",
+   "table": "store_returns",
+   "cols": [
+    "sr_cdemo_sk"
+   ],
+   "hypopg_cost": 20917.39,
+   "cost_none": 93419.33,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_c_current_addr_sk",
+   "ddl": "CREATE INDEX ix_customer_c_current_addr_sk ON customer (c_current_addr_sk)",
+   "table": "customer",
+   "cols": [
+    "c_current_addr_sk"
+   ],
+   "hypopg_cost": 82620.16,
+   "cost_none": 93419.33,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_city_ca_address_sk",
+   "ddl": "CREATE INDEX ix_customer_address_ca_city_ca_address_sk ON customer_address (ca_city, ca_address_sk)",
+   "table": "customer_address",
+   "cols": [
+    "ca_city",
+    "ca_address_sk"
+   ],
+   "hypopg_cost": 87713.45,
+   "cost_none": 93419.33,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_c_current_cdemo_sk",
+   "ddl": "CREATE INDEX ix_customer_c_current_cdemo_sk ON customer (c_current_cdemo_sk)",
+   "table": "customer",
+   "cols": [
+    "c_current_cdemo_sk"
+   ],
+   "hypopg_cost": 93419.33,
+   "cost_none": 93419.33,
+   "source": "decoy"
+  }
+ ],
+ "85": [
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_marital_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_marital_status ON customer_demographics (cd_demo_sk, cd_marital_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_marital_status"
+   ],
+   "hypopg_cost": 34783.85,
+   "cost_none": 49543.44,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_demographics_cd_demo_sk_cd_education_status",
+   "ddl": "CREATE INDEX ix_customer_demographics_cd_demo_sk_cd_education_status ON customer_demographics (cd_demo_sk, cd_education_status)",
+   "table": "customer_demographics",
+   "cols": [
+    "cd_demo_sk",
+    "cd_education_status"
+   ],
+   "hypopg_cost": 34949.27,
+   "cost_none": 49543.44,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_returns_wr_refunded_addr_sk",
+   "ddl": "CREATE INDEX ix_web_returns_wr_refunded_addr_sk ON web_returns (wr_refunded_addr_sk)",
+   "table": "web_returns",
+   "cols": [
+    "wr_refunded_addr_sk"
+   ],
+   "hypopg_cost": 46442.71,
+   "cost_none": 49543.44,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date_sk_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_year ON date_dim (d_date_sk, d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_year"
+   ],
+   "hypopg_cost": 49543.18,
+   "cost_none": 49543.44,
+   "source": "decoy"
+  }
+ ],
+ "86": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_month_seq ON date_dim (d_date_sk, d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_month_seq"
+   ],
+   "hypopg_cost": 145953.89,
+   "cost_none": 203710.2,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq ON date_dim (d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq"
+   ],
+   "hypopg_cost": 203710.2,
+   "cost_none": 203710.2,
+   "source": "decoy"
+  }
+ ],
+ "87": [
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 917298.82,
+   "cost_none": 917298.82,
+   "source": "decoy"
+  }
+ ],
+ "88": [
+  {
+   "name": "ix_store_sales_ss_sold_time_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_sold_time_sk ON store_sales (ss_sold_time_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_sold_time_sk"
+   ],
+   "hypopg_cost": 3753700.59,
+   "cost_none": 6171674.65,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_time_dim_t_hour",
+   "ddl": "CREATE INDEX ix_time_dim_t_hour ON time_dim (t_hour)",
+   "table": "time_dim",
+   "cols": [
+    "t_hour"
+   ],
+   "hypopg_cost": 6156717.22,
+   "cost_none": 6171674.65,
+   "source": "decoy"
+  }
+ ],
+ "89": [
+  {
+   "name": "ix_date_dim_d_year",
+   "ddl": "CREATE INDEX ix_date_dim_d_year ON date_dim (d_year)",
+   "table": "date_dim",
+   "cols": [
+    "d_year"
+   ],
+   "hypopg_cost": 247403.15,
+   "cost_none": 249894.72,
+   "source": "decoy"
+  }
+ ],
+ "90": [
+  {
+   "name": "ix_web_sales_ws_web_page_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_web_page_sk ON web_sales (ws_web_page_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_web_page_sk"
+   ],
+   "hypopg_cost": 256184.2,
+   "cost_none": 564376.18,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_sales_ws_sold_time_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_sold_time_sk ON web_sales (ws_sold_time_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_sold_time_sk"
+   ],
+   "hypopg_cost": 389286.16,
+   "cost_none": 564376.18,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_time_dim_t_time_sk_t_hour",
+   "ddl": "CREATE INDEX ix_time_dim_t_time_sk_t_hour ON time_dim (t_time_sk, t_hour)",
+   "table": "time_dim",
+   "cols": [
+    "t_time_sk",
+    "t_hour"
+   ],
+   "hypopg_cost": 562576.51,
+   "cost_none": 564376.18,
+   "source": "decoy"
+  }
+ ],
+ "91": [
+  {
+   "name": "ix_catalog_returns_cr_returned_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returned_date_sk ON catalog_returns (cr_returned_date_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returned_date_sk"
+   ],
+   "hypopg_cost": 4892.44,
+   "cost_none": 49888.42,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_catalog_returns_cr_returning_customer_sk",
+   "ddl": "CREATE INDEX ix_catalog_returns_cr_returning_customer_sk ON catalog_returns (cr_returning_customer_sk)",
+   "table": "catalog_returns",
+   "cols": [
+    "cr_returning_customer_sk"
+   ],
+   "hypopg_cost": 22588.27,
+   "cost_none": 49888.42,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_year_d_moy",
+   "ddl": "CREATE INDEX ix_date_dim_d_year_d_moy ON date_dim (d_year, d_moy)",
+   "table": "date_dim",
+   "cols": [
+    "d_year",
+    "d_moy"
+   ],
+   "hypopg_cost": 47285.82,
+   "cost_none": 49888.42,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_customer_address_ca_address_sk_ca_gmt_offset",
+   "ddl": "CREATE INDEX ix_customer_address_ca_address_sk_ca_gmt_offset ON customer_address (ca_address_sk, ca_gmt_offset)",
+   "table": "customer_address",
+   "cols": [
+    "ca_address_sk",
+    "ca_gmt_offset"
+   ],
+   "hypopg_cost": 49848.77,
+   "cost_none": 49888.42,
+   "source": "decoy"
+  }
+ ],
+ "92": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 109709.5,
+   "cost_none": 153769.32,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id_i_item_sk",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id_i_item_sk ON item (i_manufact_id, i_item_sk)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id",
+    "i_item_sk"
+   ],
+   "hypopg_cost": 148032.02,
+   "cost_none": 153769.32,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_manufact_id",
+   "ddl": "CREATE INDEX ix_item_i_manufact_id ON item (i_manufact_id)",
+   "table": "item",
+   "cols": [
+    "i_manufact_id"
+   ],
+   "hypopg_cost": 148128.91,
+   "cost_none": 153769.32,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date ON date_dim (d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date"
+   ],
+   "hypopg_cost": 153769.32,
+   "cost_none": 153769.32,
+   "source": "decoy"
+  }
+ ],
+ "93": [
+  {
+   "name": "ix_store_sales_ss_quantity",
+   "ddl": "CREATE INDEX ix_store_sales_ss_quantity ON store_sales (ss_quantity)",
+   "table": "store_sales",
+   "cols": [
+    "ss_quantity"
+   ],
+   "hypopg_cost": 86346.91,
+   "cost_none": 86346.91,
+   "source": "decoy"
+  }
+ ],
+ "94": [
+  {
+   "name": "ix_web_sales_ws_ship_date_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_ship_date_sk ON web_sales (ws_ship_date_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_ship_date_sk"
+   ],
+   "hypopg_cost": 174716.32,
+   "cost_none": 347391.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_sales_ws_ship_date_sk_ws_warehouse_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_ship_date_sk_ws_warehouse_sk ON web_sales (ws_ship_date_sk, ws_warehouse_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_ship_date_sk",
+    "ws_warehouse_sk"
+   ],
+   "hypopg_cost": 174919.03,
+   "cost_none": 347391.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_sales_ws_ship_addr_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_ship_addr_sk ON web_sales (ws_ship_addr_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_ship_addr_sk"
+   ],
+   "hypopg_cost": 202465.85,
+   "cost_none": 347391.03,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_sales_ws_warehouse_sk_ws_order_number",
+   "ddl": "CREATE INDEX ix_web_sales_ws_warehouse_sk_ws_order_number ON web_sales (ws_warehouse_sk, ws_order_number)",
+   "table": "web_sales",
+   "cols": [
+    "ws_warehouse_sk",
+    "ws_order_number"
+   ],
+   "hypopg_cost": 347390.61,
+   "cost_none": 347391.03,
+   "source": "decoy"
+  }
+ ],
+ "95": [
+  {
+   "name": "ix_web_sales_ws_order_number",
+   "ddl": "CREATE INDEX ix_web_sales_ws_order_number ON web_sales (ws_order_number)",
+   "table": "web_sales",
+   "cols": [
+    "ws_order_number"
+   ],
+   "hypopg_cost": 35000177.84,
+   "cost_none": 35399832.93,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_web_sales_ws_ship_addr_sk",
+   "ddl": "CREATE INDEX ix_web_sales_ws_ship_addr_sk ON web_sales (ws_ship_addr_sk)",
+   "table": "web_sales",
+   "cols": [
+    "ws_ship_addr_sk"
+   ],
+   "hypopg_cost": 35046431.15,
+   "cost_none": 35399832.93,
+   "source": "decoy"
+  }
+ ],
+ "96": [
+  {
+   "name": "ix_store_sales_ss_sold_time_sk",
+   "ddl": "CREATE INDEX ix_store_sales_ss_sold_time_sk ON store_sales (ss_sold_time_sk)",
+   "table": "store_sales",
+   "cols": [
+    "ss_sold_time_sk"
+   ],
+   "hypopg_cost": 470319.24,
+   "cost_none": 771344.27,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_time_dim_t_hour",
+   "ddl": "CREATE INDEX ix_time_dim_t_hour ON time_dim (t_hour)",
+   "table": "time_dim",
+   "cols": [
+    "t_hour"
+   ],
+   "hypopg_cost": 769482.67,
+   "cost_none": 771344.27,
+   "source": "decoy"
+  }
+ ],
+ "97": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_month_seq ON date_dim (d_date_sk, d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_month_seq"
+   ],
+   "hypopg_cost": 482551.95,
+   "cost_none": 665946.75,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq ON date_dim (d_month_seq)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq"
+   ],
+   "hypopg_cost": 665946.75,
+   "cost_none": 665946.75,
+   "source": "decoy"
+  }
+ ],
+ "98": [
+  {
+   "name": "ix_date_dim_d_date_sk_d_date",
+   "ddl": "CREATE INDEX ix_date_dim_d_date_sk_d_date ON date_dim (d_date_sk, d_date)",
+   "table": "date_dim",
+   "cols": [
+    "d_date_sk",
+    "d_date"
+   ],
+   "hypopg_cost": 170677.55,
+   "cost_none": 236645.76,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_item_i_item_sk_i_category",
+   "ddl": "CREATE INDEX ix_item_i_item_sk_i_category ON item (i_item_sk, i_category)",
+   "table": "item",
+   "cols": [
+    "i_item_sk",
+    "i_category"
+   ],
+   "hypopg_cost": 234928.06,
+   "cost_none": 236645.76,
+   "source": "decoy"
+  }
+ ],
+ "99": [
+  {
+   "name": "ix_catalog_sales_cs_ship_date_sk",
+   "ddl": "CREATE INDEX ix_catalog_sales_cs_ship_date_sk ON catalog_sales (cs_ship_date_sk)",
+   "table": "catalog_sales",
+   "cols": [
+    "cs_ship_date_sk"
+   ],
+   "hypopg_cost": 114776.17,
+   "cost_none": 563663.15,
+   "source": "hypopg"
+  },
+  {
+   "name": "ix_date_dim_d_month_seq_d_date_sk",
+   "ddl": "CREATE INDEX ix_date_dim_d_month_seq_d_date_sk ON date_dim (d_month_seq, d_date_sk)",
+   "table": "date_dim",
+   "cols": [
+    "d_month_seq",
+    "d_date_sk"
+   ],
+   "hypopg_cost": 561054.94,
+   "cost_none": 563663.15,
+   "source": "decoy"
+  }
+ ]
+}

@@ -1,0 +1,2399 @@
+{
+ "schema": "tpcds_sf1",
+ "configs": [
+  {
+   "id": "none:none",
+   "n": 0,
+   "source": "none",
+   "name": "none",
+   "rationale": "no extra index (starting point)",
+   "indexes": []
+  },
+  {
+   "id": "hypopg:top5",
+   "n": 1,
+   "source": "hypopg",
+   "name": "top5",
+   "rationale": "the 5 indexes with the largest summed HypoPG cost gain over the workload",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c1_0",
+     "ddl": "CREATE INDEX ix_c1_0 ON date_dim (d_year)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_qoy"
+     ],
+     "include": [],
+     "name": "ix_c1_1",
+     "ddl": "CREATE INDEX ix_c1_1 ON date_dim (d_year, d_qoy)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c1_2",
+     "ddl": "CREATE INDEX ix_c1_2 ON date_dim (d_year, d_date_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c1_3",
+     "ddl": "CREATE INDEX ix_c1_3 ON customer (c_current_addr_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy"
+     ],
+     "include": [],
+     "name": "ix_c1_4",
+     "ddl": "CREATE INDEX ix_c1_4 ON date_dim (d_year, d_moy)"
+    }
+   ]
+  },
+  {
+   "id": "hypopg:top8",
+   "n": 2,
+   "source": "hypopg",
+   "name": "top8",
+   "rationale": "the 8 indexes with the largest summed HypoPG cost gain over the workload",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c2_0",
+     "ddl": "CREATE INDEX ix_c2_0 ON date_dim (d_year)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_qoy"
+     ],
+     "include": [],
+     "name": "ix_c2_1",
+     "ddl": "CREATE INDEX ix_c2_1 ON date_dim (d_year, d_qoy)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c2_2",
+     "ddl": "CREATE INDEX ix_c2_2 ON date_dim (d_year, d_date_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c2_3",
+     "ddl": "CREATE INDEX ix_c2_3 ON customer (c_current_addr_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy"
+     ],
+     "include": [],
+     "name": "ix_c2_4",
+     "ddl": "CREATE INDEX ix_c2_4 ON date_dim (d_year, d_moy)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_quantity"
+     ],
+     "include": [],
+     "name": "ix_c2_5",
+     "ddl": "CREATE INDEX ix_c2_5 ON store_sales (ss_quantity)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c2_6",
+     "ddl": "CREATE INDEX ix_c2_6 ON date_dim (d_date_sk, d_year)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c2_7",
+     "ddl": "CREATE INDEX ix_c2_7 ON store_sales (ss_sold_time_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-fable-5-1:lean-order-number-semijoins",
+   "n": 3,
+   "source": "claude-fable-5-1",
+   "name": "lean-order-number-semijoins",
+   "rationale": "Smallest, cheapest-to-build set: order-number indexes on the catalog/web sales and returns tables so the correlated EXISTS / NOT EXISTS and IN subqueries in q16, q94 and q95 become index nested-loop semi/anti joins instead of full hash joins.",
+   "indexes": [
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c3_0",
+     "ddl": "CREATE INDEX ix_c3_0 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c3_1",
+     "ddl": "CREATE INDEX ix_c3_1 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c3_2",
+     "ddl": "CREATE INDEX ix_c3_2 ON web_returns (wr_order_number)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c3_3",
+     "ddl": "CREATE INDEX ix_c3_3 ON catalog_returns (cr_order_number)"
+    }
+   ]
+  },
+  {
+   "id": "claude-fable-5-1:secondary-date-and-time-keys",
+   "n": 4,
+   "source": "claude-fable-5-1",
+   "name": "secondary-date-and-time-keys",
+   "rationale": "Targets the fact-table date/time foreign keys that have no index yet (ship dates, return dates, sold time) so date_dim/time_dim-driven filters in q16/q94/q95/q62/q99, the returns-side filters in q1/q5/q17/q25/q29/q50, and the time-of-day scans in q88/q90/q96 can use index nested loops instead of seq scans.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_hdemo_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c4_0",
+     "ddl": "CREATE INDEX ix_c4_0 ON store_sales (ss_sold_time_sk, ss_hdemo_sk, ss_store_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_time_sk",
+      "ws_ship_hdemo_sk",
+      "ws_web_page_sk"
+     ],
+     "include": [],
+     "name": "ix_c4_1",
+     "ddl": "CREATE INDEX ix_c4_1 ON web_sales (ws_sold_time_sk, ws_ship_hdemo_sk, ws_web_page_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c4_2",
+     "ddl": "CREATE INDEX ix_c4_2 ON catalog_sales (cs_ship_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c4_3",
+     "ddl": "CREATE INDEX ix_c4_3 ON web_sales (ws_ship_date_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [
+      "sr_item_sk",
+      "sr_ticket_number",
+      "sr_customer_sk",
+      "sr_store_sk"
+     ],
+     "name": "ix_c4_4",
+     "ddl": "CREATE INDEX ix_c4_4 ON store_returns (sr_returned_date_sk) INCLUDE (sr_item_sk, sr_ticket_number, sr_customer_sk, sr_store_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk"
+     ],
+     "include": [
+      "cr_item_sk",
+      "cr_order_number",
+      "cr_returning_customer_sk"
+     ],
+     "name": "ix_c4_5",
+     "ddl": "CREATE INDEX ix_c4_5 ON catalog_returns (cr_returned_date_sk) INCLUDE (cr_item_sk, cr_order_number, cr_returning_customer_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk"
+     ],
+     "include": [
+      "wr_item_sk",
+      "wr_order_number",
+      "wr_returning_customer_sk"
+     ],
+     "name": "ix_c4_6",
+     "ddl": "CREATE INDEX ix_c4_6 ON web_returns (wr_returned_date_sk) INCLUDE (wr_item_sk, wr_order_number, wr_returning_customer_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-fable-5-1:dimension-filter-indexes",
+   "n": 5,
+   "source": "claude-fable-5-1",
+   "name": "dimension-filter-indexes",
+   "rationale": "Leaves the big fact tables alone and instead indexes the selective dimension predicates (d_year/d_moy, d_month_seq, d_date, d_week_seq, t_hour, and the marital/education/gender filters on the 1.9M-row customer_demographics) so the many repeated dimension subqueries and lookups become index-only scans with very low build cost.",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c5_0",
+     "ddl": "CREATE INDEX ix_c5_0 ON date_dim (d_year, d_moy) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_month_seq"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c5_1",
+     "ddl": "CREATE INDEX ix_c5_1 ON date_dim (d_month_seq) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date"
+     ],
+     "include": [
+      "d_date_sk",
+      "d_week_seq"
+     ],
+     "name": "ix_c5_2",
+     "ddl": "CREATE INDEX ix_c5_2 ON date_dim (d_date) INCLUDE (d_date_sk, d_week_seq)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_week_seq"
+     ],
+     "include": [
+      "d_date_sk",
+      "d_date"
+     ],
+     "name": "ix_c5_3",
+     "ddl": "CREATE INDEX ix_c5_3 ON date_dim (d_week_seq) INCLUDE (d_date_sk, d_date)"
+    },
+    {
+     "table": "time_dim",
+     "columns": [
+      "t_hour",
+      "t_minute"
+     ],
+     "include": [
+      "t_time_sk"
+     ],
+     "name": "ix_c5_4",
+     "ddl": "CREATE INDEX ix_c5_4 ON time_dim (t_hour, t_minute) INCLUDE (t_time_sk)"
+    },
+    {
+     "table": "customer_demographics",
+     "columns": [
+      "cd_marital_status",
+      "cd_education_status",
+      "cd_gender"
+     ],
+     "include": [
+      "cd_demo_sk"
+     ],
+     "name": "ix_c5_5",
+     "ddl": "CREATE INDEX ix_c5_5 ON customer_demographics (cd_marital_status, cd_education_status, cd_gender) INCLUDE (cd_demo_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-fable-5-1:balanced-recommended",
+   "n": 6,
+   "source": "claude-fable-5-1",
+   "name": "balanced-recommended",
+   "rationale": "Mid-size set combining the highest-ROI items: order-number semi-join indexes for q16/q94/q95, the store_sales time/hdemo/store index for q88/q96, ship-date indexes on catalog/web sales, and a covering returned-date index on store_returns, all with modest build times.",
+   "indexes": [
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c6_0",
+     "ddl": "CREATE INDEX ix_c6_0 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c6_1",
+     "ddl": "CREATE INDEX ix_c6_1 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c6_2",
+     "ddl": "CREATE INDEX ix_c6_2 ON web_returns (wr_order_number)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c6_3",
+     "ddl": "CREATE INDEX ix_c6_3 ON catalog_returns (cr_order_number)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_hdemo_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c6_4",
+     "ddl": "CREATE INDEX ix_c6_4 ON store_sales (ss_sold_time_sk, ss_hdemo_sk, ss_store_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [
+      "sr_item_sk",
+      "sr_ticket_number",
+      "sr_customer_sk",
+      "sr_store_sk"
+     ],
+     "name": "ix_c6_5",
+     "ddl": "CREATE INDEX ix_c6_5 ON store_returns (sr_returned_date_sk) INCLUDE (sr_item_sk, sr_ticket_number, sr_customer_sk, sr_store_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c6_6",
+     "ddl": "CREATE INDEX ix_c6_6 ON catalog_sales (cs_ship_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c6_7",
+     "ddl": "CREATE INDEX ix_c6_7 ON web_sales (ws_ship_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-fable-5-1:aggressive-covering-facts",
+   "n": 7,
+   "source": "claude-fable-5-1",
+   "name": "aggressive-covering-facts",
+   "rationale": "Accepts large build times for wide covering indexes on the three sales facts keyed by (sold_date, item) with the most-used measures INCLUDEd so date- and item-driven aggregates can run as index-only scans, plus an item-leading inventory index to turn the inventory joins in q37/q72/q82 into index lookups, and the order-number and time indexes for the semi-join and time-of-day queries.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [
+      "ss_store_sk",
+      "ss_customer_sk",
+      "ss_quantity",
+      "ss_sales_price",
+      "ss_ext_sales_price",
+      "ss_net_profit"
+     ],
+     "name": "ix_c7_0",
+     "ddl": "CREATE INDEX ix_c7_0 ON store_sales (ss_sold_date_sk, ss_item_sk) INCLUDE (ss_store_sk, ss_customer_sk, ss_quantity, ss_sales_price, ss_ext_sales_price, ss_net_profit)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [
+      "cs_bill_customer_sk",
+      "cs_quantity",
+      "cs_sales_price",
+      "cs_ext_sales_price",
+      "cs_net_profit"
+     ],
+     "name": "ix_c7_1",
+     "ddl": "CREATE INDEX ix_c7_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk) INCLUDE (cs_bill_customer_sk, cs_quantity, cs_sales_price, cs_ext_sales_price, cs_net_profit)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [
+      "ws_bill_customer_sk",
+      "ws_quantity",
+      "ws_sales_price",
+      "ws_ext_sales_price",
+      "ws_net_profit"
+     ],
+     "name": "ix_c7_2",
+     "ddl": "CREATE INDEX ix_c7_2 ON web_sales (ws_sold_date_sk, ws_item_sk) INCLUDE (ws_bill_customer_sk, ws_quantity, ws_sales_price, ws_ext_sales_price, ws_net_profit)"
+    },
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [
+      "inv_warehouse_sk",
+      "inv_quantity_on_hand"
+     ],
+     "name": "ix_c7_3",
+     "ddl": "CREATE INDEX ix_c7_3 ON inventory (inv_item_sk, inv_date_sk) INCLUDE (inv_warehouse_sk, inv_quantity_on_hand)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c7_4",
+     "ddl": "CREATE INDEX ix_c7_4 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c7_5",
+     "ddl": "CREATE INDEX ix_c7_5 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_hdemo_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c7_6",
+     "ddl": "CREATE INDEX ix_c7_6 ON store_sales (ss_sold_time_sk, ss_hdemo_sk, ss_store_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [
+      "sr_item_sk",
+      "sr_ticket_number",
+      "sr_customer_sk",
+      "sr_store_sk"
+     ],
+     "name": "ix_c7_7",
+     "ddl": "CREATE INDEX ix_c7_7 ON store_returns (sr_returned_date_sk) INCLUDE (sr_item_sk, sr_ticket_number, sr_customer_sk, sr_store_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-opus-5:light_dimension_covering",
+   "n": 8,
+   "source": "claude-opus-5",
+   "name": "light dimension covering",
+   "rationale": "Cheapest possible build: six narrow covering indexes on the filtered dimension tables (d_year/d_moy appear in ~90 of the 99 queries) so the planner can seed every star join from an index-only scan instead of a full dimension scan.",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c8_0",
+     "ddl": "CREATE INDEX ix_c8_0 ON date_dim (d_year, d_moy) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_month_seq"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c8_1",
+     "ddl": "CREATE INDEX ix_c8_1 ON date_dim (d_month_seq) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c8_2",
+     "ddl": "CREATE INDEX ix_c8_2 ON date_dim (d_date) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "time_dim",
+     "columns": [
+      "t_hour",
+      "t_minute"
+     ],
+     "include": [
+      "t_time_sk"
+     ],
+     "name": "ix_c8_3",
+     "ddl": "CREATE INDEX ix_c8_3 ON time_dim (t_hour, t_minute) INCLUDE (t_time_sk)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_category",
+      "i_class"
+     ],
+     "include": [
+      "i_item_sk"
+     ],
+     "name": "ix_c8_4",
+     "ddl": "CREATE INDEX ix_c8_4 ON item (i_category, i_class) INCLUDE (i_item_sk)"
+    },
+    {
+     "table": "customer_address",
+     "columns": [
+      "ca_state"
+     ],
+     "include": [
+      "ca_address_sk"
+     ],
+     "name": "ix_c8_5",
+     "ddl": "CREATE INDEX ix_c8_5 ON customer_address (ca_state) INCLUDE (ca_address_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-opus-5:store_sales_access_paths",
+   "n": 9,
+   "source": "claude-opus-5",
+   "name": "store_sales access paths",
+   "rationale": "Spend the whole budget on store_sales, the table touched by roughly two thirds of the workload, giving it a composite entry point for each leading join key it is probed on (date, item, store, time, demographics, customer).",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_0",
+     "ddl": "CREATE INDEX ix_c9_0 ON store_sales (ss_sold_date_sk, ss_item_sk, ss_store_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_item_sk",
+      "ss_sold_date_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_1",
+     "ddl": "CREATE INDEX ix_c9_1 ON store_sales (ss_item_sk, ss_sold_date_sk, ss_store_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk",
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_2",
+     "ddl": "CREATE INDEX ix_c9_2 ON store_sales (ss_store_sk, ss_sold_date_sk, ss_item_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_store_sk",
+      "ss_hdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_3",
+     "ddl": "CREATE INDEX ix_c9_3 ON store_sales (ss_sold_time_sk, ss_store_sk, ss_hdemo_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_cdemo_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_4",
+     "ddl": "CREATE INDEX ix_c9_4 ON store_sales (ss_cdemo_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_customer_sk",
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c9_5",
+     "ddl": "CREATE INDEX ix_c9_5 ON store_sales (ss_customer_sk, ss_sold_date_sk, ss_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "claude-opus-5:date-leading_on_every_sales_and_returns_table",
+   "n": 10,
+   "source": "claude-opus-5",
+   "name": "date-leading on every sales and returns table",
+   "rationale": "Apply one uniform strategy across all six sales and returns fact tables, extending the existing single-column date indexes into composites that also carry item and customer so a date-restricted scan resolves the next join key without a heap visit.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk",
+      "ss_store_sk",
+      "ss_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c10_0",
+     "ddl": "CREATE INDEX ix_c10_0 ON store_sales (ss_sold_date_sk, ss_item_sk, ss_store_sk, ss_customer_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk",
+      "cs_bill_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c10_1",
+     "ddl": "CREATE INDEX ix_c10_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk, cs_bill_customer_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk",
+      "ws_bill_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c10_2",
+     "ddl": "CREATE INDEX ix_c10_2 ON web_sales (ws_sold_date_sk, ws_item_sk, ws_bill_customer_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_item_sk",
+      "sr_customer_sk",
+      "sr_ticket_number"
+     ],
+     "include": [],
+     "name": "ix_c10_3",
+     "ddl": "CREATE INDEX ix_c10_3 ON store_returns (sr_returned_date_sk, sr_item_sk, sr_customer_sk, sr_ticket_number)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk",
+      "cr_item_sk",
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c10_4",
+     "ddl": "CREATE INDEX ix_c10_4 ON catalog_returns (cr_returned_date_sk, cr_item_sk, cr_order_number)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk",
+      "wr_item_sk",
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c10_5",
+     "ddl": "CREATE INDEX ix_c10_5 ON web_returns (wr_returned_date_sk, wr_item_sk, wr_order_number)"
+    }
+   ]
+  },
+  {
+   "id": "claude-opus-5:wide_covering_for_index-only_aggregation",
+   "n": 11,
+   "source": "claude-opus-5",
+   "name": "wide covering for index-only aggregation",
+   "rationale": "Accept a much larger build cost in exchange for true index-only scans, pairing date and item keys with INCLUDE payloads of the measure columns the workload actually aggregates, plus covering indexes for the two largest dimension-like tables.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_store_sk",
+      "ss_item_sk"
+     ],
+     "include": [
+      "ss_quantity",
+      "ss_sales_price",
+      "ss_ext_sales_price",
+      "ss_net_profit"
+     ],
+     "name": "ix_c11_0",
+     "ddl": "CREATE INDEX ix_c11_0 ON store_sales (ss_sold_date_sk, ss_store_sk, ss_item_sk) INCLUDE (ss_quantity, ss_sales_price, ss_ext_sales_price, ss_net_profit)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [
+      "cs_quantity",
+      "cs_list_price",
+      "cs_sales_price",
+      "cs_ext_sales_price"
+     ],
+     "name": "ix_c11_1",
+     "ddl": "CREATE INDEX ix_c11_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk) INCLUDE (cs_quantity, cs_list_price, cs_sales_price, cs_ext_sales_price)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [
+      "ws_quantity",
+      "ws_list_price",
+      "ws_sales_price",
+      "ws_ext_sales_price"
+     ],
+     "name": "ix_c11_2",
+     "ddl": "CREATE INDEX ix_c11_2 ON web_sales (ws_sold_date_sk, ws_item_sk) INCLUDE (ws_quantity, ws_list_price, ws_sales_price, ws_ext_sales_price)"
+    },
+    {
+     "table": "customer_demographics",
+     "columns": [
+      "cd_marital_status",
+      "cd_education_status"
+     ],
+     "include": [
+      "cd_demo_sk",
+      "cd_gender",
+      "cd_dep_count",
+      "cd_purchase_estimate",
+      "cd_credit_rating"
+     ],
+     "name": "ix_c11_3",
+     "ddl": "CREATE INDEX ix_c11_3 ON customer_demographics (cd_marital_status, cd_education_status) INCLUDE (cd_demo_sk, cd_gender, cd_dep_count, cd_purchase_estimate, cd_credit_rating)"
+    },
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_warehouse_sk",
+      "inv_date_sk"
+     ],
+     "include": [
+      "inv_quantity_on_hand"
+     ],
+     "name": "ix_c11_4",
+     "ddl": "CREATE INDEX ix_c11_4 ON inventory (inv_item_sk, inv_warehouse_sk, inv_date_sk) INCLUDE (inv_quantity_on_hand)"
+    }
+   ]
+  },
+  {
+   "id": "claude-opus-5:aggressive_broad_coverage",
+   "n": 12,
+   "source": "claude-opus-5",
+   "name": "aggressive broad coverage",
+   "rationale": "The maximum-size configuration, mixing fact-table composites, an item-leading inventory index for the 11.7M-row table whose only index is date-leading, and covering indexes on the biggest filtered dimensions, betting that broad coverage outweighs the build time.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk",
+      "ss_store_sk",
+      "ss_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c12_0",
+     "ddl": "CREATE INDEX ix_c12_0 ON store_sales (ss_sold_date_sk, ss_item_sk, ss_store_sk, ss_customer_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_item_sk",
+      "ss_store_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c12_1",
+     "ddl": "CREATE INDEX ix_c12_1 ON store_sales (ss_item_sk, ss_store_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk",
+      "cs_quantity"
+     ],
+     "include": [],
+     "name": "ix_c12_2",
+     "ddl": "CREATE INDEX ix_c12_2 ON catalog_sales (cs_sold_date_sk, cs_item_sk, cs_quantity)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk",
+      "ws_quantity"
+     ],
+     "include": [],
+     "name": "ix_c12_3",
+     "ddl": "CREATE INDEX ix_c12_3 ON web_sales (ws_sold_date_sk, ws_item_sk, ws_quantity)"
+    },
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk",
+      "inv_warehouse_sk"
+     ],
+     "include": [
+      "inv_quantity_on_hand"
+     ],
+     "name": "ix_c12_4",
+     "ddl": "CREATE INDEX ix_c12_4 ON inventory (inv_item_sk, inv_date_sk, inv_warehouse_sk) INCLUDE (inv_quantity_on_hand)"
+    },
+    {
+     "table": "customer_demographics",
+     "columns": [
+      "cd_gender",
+      "cd_marital_status",
+      "cd_education_status"
+     ],
+     "include": [
+      "cd_demo_sk"
+     ],
+     "name": "ix_c12_5",
+     "ddl": "CREATE INDEX ix_c12_5 ON customer_demographics (cd_gender, cd_marital_status, cd_education_status) INCLUDE (cd_demo_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy",
+      "d_dom"
+     ],
+     "include": [
+      "d_date_sk"
+     ],
+     "name": "ix_c12_6",
+     "ddl": "CREATE INDEX ix_c12_6 ON date_dim (d_year, d_moy, d_dom) INCLUDE (d_date_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_customer_sk",
+      "sr_item_sk",
+      "sr_ticket_number"
+     ],
+     "include": [],
+     "name": "ix_c12_7",
+     "ddl": "CREATE INDEX ix_c12_7 ON store_returns (sr_returned_date_sk, sr_customer_sk, sr_item_sk, sr_ticket_number)"
+    }
+   ]
+  },
+  {
+   "id": "composer-2-5:minimal-store-date-item",
+   "n": 13,
+   "source": "composer-2-5",
+   "name": "minimal-store-date-item",
+   "rationale": "Single low-build-cost composite on the largest fact table to accelerate the pervasive date_dim join plus item lookup pattern without touching other channels.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c13_0",
+     "ddl": "CREATE INDEX ix_c13_0 ON store_sales (ss_sold_date_sk, ss_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "composer-2-5:date-dim-plus-store",
+   "n": 14,
+   "source": "composer-2-5",
+   "name": "date-dim-plus-store",
+   "rationale": "Adds a calendar slice index on date_dim alongside store_sales date-item access so year/month predicates can resolve date keys before probing facts.",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c14_0",
+     "ddl": "CREATE INDEX ix_c14_0 ON date_dim (d_year, d_moy, d_date_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c14_1",
+     "ddl": "CREATE INDEX ix_c14_1 ON store_sales (ss_sold_date_sk, ss_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "composer-2-5:tri-channel-facts",
+   "n": 15,
+   "source": "composer-2-5",
+   "name": "tri-channel-facts",
+   "rationale": "Mirrors the same sold-date and item join pattern across store, catalog, and web sales for queries that union or compare all three channels.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c15_0",
+     "ddl": "CREATE INDEX ix_c15_0 ON store_sales (ss_sold_date_sk, ss_item_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c15_1",
+     "ddl": "CREATE INDEX ix_c15_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c15_2",
+     "ddl": "CREATE INDEX ix_c15_2 ON web_sales (ws_sold_date_sk, ws_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "composer-2-5:returns-and-inventory",
+   "n": 16,
+   "source": "composer-2-5",
+   "name": "returns-and-inventory",
+   "rationale": "Targets return fact tables and inventory, which are joined by returned or inventory date and item rather than by the existing single-column sold-date indexes on sales.",
+   "indexes": [
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c16_0",
+     "ddl": "CREATE INDEX ix_c16_0 ON inventory (inv_item_sk, inv_date_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c16_1",
+     "ddl": "CREATE INDEX ix_c16_1 ON store_returns (sr_returned_date_sk, sr_item_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk",
+      "cr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c16_2",
+     "ddl": "CREATE INDEX ix_c16_2 ON catalog_returns (cr_returned_date_sk, cr_item_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk",
+      "wr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c16_3",
+     "ddl": "CREATE INDEX ix_c16_3 ON web_returns (wr_returned_date_sk, wr_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "composer-2-5:aggressive-mixed-covering",
+   "n": 17,
+   "source": "composer-2-5",
+   "name": "aggressive-mixed-covering",
+   "rationale": "Broad eight-index bundle combining channel fact composites, dimension filters, store-level sales, returns, and INCLUDE columns to reduce heap fetches on heavy aggregations.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [
+      "ss_quantity",
+      "ss_list_price",
+      "ss_net_paid",
+      "ss_ext_sales_price"
+     ],
+     "name": "ix_c17_0",
+     "ddl": "CREATE INDEX ix_c17_0 ON store_sales (ss_sold_date_sk, ss_item_sk) INCLUDE (ss_quantity, ss_list_price, ss_net_paid, ss_ext_sales_price)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [
+      "cs_quantity",
+      "cs_list_price",
+      "cs_net_paid"
+     ],
+     "name": "ix_c17_1",
+     "ddl": "CREATE INDEX ix_c17_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk) INCLUDE (cs_quantity, cs_list_price, cs_net_paid)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [
+      "ws_quantity",
+      "ws_list_price",
+      "ws_net_paid"
+     ],
+     "name": "ix_c17_2",
+     "ddl": "CREATE INDEX ix_c17_2 ON web_sales (ws_sold_date_sk, ws_item_sk) INCLUDE (ws_quantity, ws_list_price, ws_net_paid)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy"
+     ],
+     "include": [],
+     "name": "ix_c17_3",
+     "ddl": "CREATE INDEX ix_c17_3 ON date_dim (d_year, d_moy)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_category_id",
+      "i_class_id",
+      "i_brand_id"
+     ],
+     "include": [],
+     "name": "ix_c17_4",
+     "ddl": "CREATE INDEX ix_c17_4 ON item (i_category_id, i_class_id, i_brand_id)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c17_5",
+     "ddl": "CREATE INDEX ix_c17_5 ON store_sales (ss_store_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "customer_address",
+     "columns": [
+      "ca_state",
+      "ca_city"
+     ],
+     "include": [],
+     "name": "ix_c17_6",
+     "ddl": "CREATE INDEX ix_c17_6 ON customer_address (ca_state, ca_city)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c17_7",
+     "ddl": "CREATE INDEX ix_c17_7 ON store_returns (sr_returned_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gemini-3-8-flash:returns_and_address_fks",
+   "n": 18,
+   "source": "gemini-3-8-flash",
+   "name": "returns_and_address_fks",
+   "rationale": "Adds missing return date indexes on the three returns tables and foreign key index on customer address to eliminate repetitive sequential scans across multiple queries with negligible build overhead.",
+   "indexes": [
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c18_0",
+     "ddl": "CREATE INDEX ix_c18_0 ON store_returns (sr_returned_date_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c18_1",
+     "ddl": "CREATE INDEX ix_c18_1 ON catalog_returns (cr_returned_date_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c18_2",
+     "ddl": "CREATE INDEX ix_c18_2 ON web_returns (wr_returned_date_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c18_3",
+     "ddl": "CREATE INDEX ix_c18_3 ON customer (c_current_addr_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gemini-3-8-flash:store_sales_scan_reduction",
+   "n": 19,
+   "source": "gemini-3-8-flash",
+   "name": "store_sales_scan_reduction",
+   "rationale": "Targets store_sales to replace repetitive full table scans in queries 09, 44, and 88 with index-only and targeted index scans on quantity, store, and composite sold date.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_quantity"
+     ],
+     "include": [
+      "ss_ext_discount_amt",
+      "ss_net_paid"
+     ],
+     "name": "ix_c19_0",
+     "ddl": "CREATE INDEX ix_c19_0 ON store_sales (ss_quantity) INCLUDE (ss_ext_discount_amt, ss_net_paid)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c19_1",
+     "ddl": "CREATE INDEX ix_c19_1 ON store_sales (ss_store_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c19_2",
+     "ddl": "CREATE INDEX ix_c19_2 ON store_sales (ss_sold_date_sk, ss_item_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c19_3",
+     "ddl": "CREATE INDEX ix_c19_3 ON store_returns (sr_returned_date_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c19_4",
+     "ddl": "CREATE INDEX ix_c19_4 ON customer (c_current_addr_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gemini-3-8-flash:remote_order_and_shipping",
+   "n": 20,
+   "source": "gemini-3-8-flash",
+   "name": "remote_order_and_shipping",
+   "rationale": "Indexes order numbers and shipping dates across catalog and web channels to optimize anti-joins, existence subqueries, and delivery interval calculations.",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c20_0",
+     "ddl": "CREATE INDEX ix_c20_0 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c20_1",
+     "ddl": "CREATE INDEX ix_c20_1 ON catalog_returns (cr_order_number)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c20_2",
+     "ddl": "CREATE INDEX ix_c20_2 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c20_3",
+     "ddl": "CREATE INDEX ix_c20_3 ON web_returns (wr_order_number)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c20_4",
+     "ddl": "CREATE INDEX ix_c20_4 ON catalog_sales (cs_ship_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c20_5",
+     "ddl": "CREATE INDEX ix_c20_5 ON web_sales (ws_ship_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gemini-3-8-flash:composite_joins_and_dimensions",
+   "n": 21,
+   "source": "gemini-3-8-flash",
+   "name": "composite_joins_and_dimensions",
+   "rationale": "Uses composite date-item indexes across sales channels along with indexing customer demographics and inventory to accelerate complex multi-table joins.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_0",
+     "ddl": "CREATE INDEX ix_c21_0 ON store_sales (ss_sold_date_sk, ss_item_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_1",
+     "ddl": "CREATE INDEX ix_c21_1 ON catalog_sales (cs_sold_date_sk, cs_item_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_2",
+     "ddl": "CREATE INDEX ix_c21_2 ON web_sales (ws_sold_date_sk, ws_item_sk)"
+    },
+    {
+     "table": "customer_demographics",
+     "columns": [
+      "cd_marital_status",
+      "cd_education_status",
+      "cd_gender"
+     ],
+     "include": [],
+     "name": "ix_c21_3",
+     "ddl": "CREATE INDEX ix_c21_3 ON customer_demographics (cd_marital_status, cd_education_status, cd_gender)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_4",
+     "ddl": "CREATE INDEX ix_c21_4 ON store_sales (ss_store_sk)"
+    },
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_5",
+     "ddl": "CREATE INDEX ix_c21_5 ON inventory (inv_item_sk, inv_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gemini-3-8-flash:balanced_workload_suite",
+   "n": 22,
+   "source": "gemini-3-8-flash",
+   "name": "balanced_workload_suite",
+   "rationale": "Provides a comprehensive balanced set of eight high-impact indexes addressing the primary bottleneck queries across store, catalog, and web sales and returns.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_quantity"
+     ],
+     "include": [
+      "ss_ext_discount_amt",
+      "ss_net_paid"
+     ],
+     "name": "ix_c22_0",
+     "ddl": "CREATE INDEX ix_c22_0 ON store_sales (ss_quantity) INCLUDE (ss_ext_discount_amt, ss_net_paid)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c22_1",
+     "ddl": "CREATE INDEX ix_c22_1 ON store_sales (ss_store_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c22_2",
+     "ddl": "CREATE INDEX ix_c22_2 ON store_returns (sr_returned_date_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c22_3",
+     "ddl": "CREATE INDEX ix_c22_3 ON catalog_returns (cr_returned_date_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c22_4",
+     "ddl": "CREATE INDEX ix_c22_4 ON web_returns (wr_returned_date_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c22_5",
+     "ddl": "CREATE INDEX ix_c22_5 ON customer (c_current_addr_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number"
+     ],
+     "include": [],
+     "name": "ix_c22_6",
+     "ddl": "CREATE INDEX ix_c22_6 ON catalog_sales (cs_order_number)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number"
+     ],
+     "include": [],
+     "name": "ix_c22_7",
+     "ddl": "CREATE INDEX ix_c22_7 ON web_sales (ws_order_number)"
+    }
+   ]
+  },
+  {
+   "id": "gpt-5-6-sol:order_correlation",
+   "n": 23,
+   "source": "gpt-5-6-sol",
+   "name": "order correlation",
+   "rationale": "Accelerate the repeated same-order self joins and return anti-joins in the catalog and web shipping queries.",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c23_0",
+     "ddl": "CREATE INDEX ix_c23_0 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c23_1",
+     "ddl": "CREATE INDEX ix_c23_1 ON catalog_returns (cr_order_number)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk",
+      "cs_ship_addr_sk",
+      "cs_call_center_sk",
+      "cs_order_number"
+     ],
+     "include": [
+      "cs_warehouse_sk",
+      "cs_ext_ship_cost",
+      "cs_net_profit"
+     ],
+     "name": "ix_c23_2",
+     "ddl": "CREATE INDEX ix_c23_2 ON catalog_sales (cs_ship_date_sk, cs_ship_addr_sk, cs_call_center_sk, cs_order_number) INCLUDE (cs_warehouse_sk, cs_ext_ship_cost, cs_net_profit)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c23_3",
+     "ddl": "CREATE INDEX ix_c23_3 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c23_4",
+     "ddl": "CREATE INDEX ix_c23_4 ON web_returns (wr_order_number)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk",
+      "ws_ship_addr_sk",
+      "ws_web_site_sk",
+      "ws_order_number"
+     ],
+     "include": [
+      "ws_warehouse_sk",
+      "ws_ext_ship_cost",
+      "ws_net_profit"
+     ],
+     "name": "ix_c23_5",
+     "ddl": "CREATE INDEX ix_c23_5 ON web_sales (ws_ship_date_sk, ws_ship_addr_sk, ws_web_site_sk, ws_order_number) INCLUDE (ws_warehouse_sk, ws_ext_ship_cost, ws_net_profit)"
+    }
+   ]
+  },
+  {
+   "id": "gpt-5-6-sol:customer_windows",
+   "n": 24,
+   "source": "gpt-5-6-sol",
+   "name": "customer windows",
+   "rationale": "Target customer existence checks and date-bounded return aggregation while keeping all join keys adjacent.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_customer_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c24_0",
+     "ddl": "CREATE INDEX ix_c24_0 ON store_sales (ss_customer_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_bill_customer_sk",
+      "ws_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c24_1",
+     "ddl": "CREATE INDEX ix_c24_1 ON web_sales (ws_bill_customer_sk, ws_sold_date_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_customer_sk",
+      "cs_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c24_2",
+     "ddl": "CREATE INDEX ix_c24_2 ON catalog_sales (cs_ship_customer_sk, cs_sold_date_sk)"
+    },
+    {
+     "table": "customer_address",
+     "columns": [
+      "ca_state",
+      "ca_address_sk"
+     ],
+     "include": [],
+     "name": "ix_c24_3",
+     "ddl": "CREATE INDEX ix_c24_3 ON customer_address (ca_state, ca_address_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk",
+      "c_customer_sk",
+      "c_current_cdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c24_4",
+     "ddl": "CREATE INDEX ix_c24_4 ON customer (c_current_addr_sk, c_customer_sk, c_current_cdemo_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_customer_sk",
+      "sr_store_sk"
+     ],
+     "include": [
+      "sr_return_amt"
+     ],
+     "name": "ix_c24_5",
+     "ddl": "CREATE INDEX ix_c24_5 ON store_returns (sr_returned_date_sk, sr_customer_sk, sr_store_sk) INCLUDE (sr_return_amt)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk",
+      "cr_returning_customer_sk",
+      "cr_returning_addr_sk"
+     ],
+     "include": [
+      "cr_return_amt_inc_tax"
+     ],
+     "name": "ix_c24_6",
+     "ddl": "CREATE INDEX ix_c24_6 ON catalog_returns (cr_returned_date_sk, cr_returning_customer_sk, cr_returning_addr_sk) INCLUDE (cr_return_amt_inc_tax)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk",
+      "wr_returning_customer_sk",
+      "wr_returning_addr_sk"
+     ],
+     "include": [
+      "wr_return_amt"
+     ],
+     "name": "ix_c24_7",
+     "ddl": "CREATE INDEX ix_c24_7 ON web_returns (wr_returned_date_sk, wr_returning_customer_sk, wr_returning_addr_sk) INCLUDE (wr_return_amt)"
+    }
+   ]
+  },
+  {
+   "id": "gpt-5-6-sol:time_of_day",
+   "n": 25,
+   "source": "gpt-5-6-sol",
+   "name": "time of day",
+   "rationale": "Reduce the repeated fact-table scans driven by narrow hour, minute, household, and channel-location predicates.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_store_sk",
+      "ss_hdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c25_0",
+     "ddl": "CREATE INDEX ix_c25_0 ON store_sales (ss_sold_time_sk, ss_store_sk, ss_hdemo_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_time_sk",
+      "ws_web_page_sk",
+      "ws_ship_hdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c25_1",
+     "ddl": "CREATE INDEX ix_c25_1 ON web_sales (ws_sold_time_sk, ws_web_page_sk, ws_ship_hdemo_sk)"
+    },
+    {
+     "table": "time_dim",
+     "columns": [
+      "t_hour",
+      "t_minute",
+      "t_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c25_2",
+     "ddl": "CREATE INDEX ix_c25_2 ON time_dim (t_hour, t_minute, t_time_sk)"
+    },
+    {
+     "table": "household_demographics",
+     "columns": [
+      "hd_dep_count",
+      "hd_vehicle_count",
+      "hd_demo_sk"
+     ],
+     "include": [],
+     "name": "ix_c25_3",
+     "ddl": "CREATE INDEX ix_c25_3 ON household_demographics (hd_dep_count, hd_vehicle_count, hd_demo_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gpt-5-6-sol:inventory_probes",
+   "n": 26,
+   "source": "gpt-5-6-sol",
+   "name": "inventory probes",
+   "rationale": "Make item-led inventory probes and selective price or manufacturer ranges efficient without duplicating the date-led inventory key.",
+   "indexes": [
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [
+      "inv_warehouse_sk",
+      "inv_quantity_on_hand"
+     ],
+     "name": "ix_c26_0",
+     "ddl": "CREATE INDEX ix_c26_0 ON inventory (inv_item_sk, inv_date_sk) INCLUDE (inv_warehouse_sk, inv_quantity_on_hand)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_manufact_id",
+      "i_current_price",
+      "i_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c26_1",
+     "ddl": "CREATE INDEX ix_c26_1 ON item (i_manufact_id, i_current_price, i_item_sk)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_current_price",
+      "i_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c26_2",
+     "ddl": "CREATE INDEX ix_c26_2 ON item (i_current_price, i_item_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c26_3",
+     "ddl": "CREATE INDEX ix_c26_3 ON date_dim (d_date, d_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "gpt-5-6-sol:aggressive_bottlenecks",
+   "n": 27,
+   "source": "gpt-5-6-sol",
+   "name": "aggressive bottlenecks",
+   "rationale": "Combine the highest-impact order-correlation, time-of-day, and item-led inventory indexes for the most scan-heavy workload bottlenecks.",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number",
+      "cs_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c27_0",
+     "ddl": "CREATE INDEX ix_c27_0 ON catalog_sales (cs_order_number, cs_warehouse_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c27_1",
+     "ddl": "CREATE INDEX ix_c27_1 ON catalog_returns (cr_order_number)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk",
+      "cs_ship_addr_sk",
+      "cs_call_center_sk",
+      "cs_order_number"
+     ],
+     "include": [
+      "cs_warehouse_sk",
+      "cs_ext_ship_cost",
+      "cs_net_profit"
+     ],
+     "name": "ix_c27_2",
+     "ddl": "CREATE INDEX ix_c27_2 ON catalog_sales (cs_ship_date_sk, cs_ship_addr_sk, cs_call_center_sk, cs_order_number) INCLUDE (cs_warehouse_sk, cs_ext_ship_cost, cs_net_profit)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_order_number",
+      "ws_warehouse_sk"
+     ],
+     "include": [],
+     "name": "ix_c27_3",
+     "ddl": "CREATE INDEX ix_c27_3 ON web_sales (ws_order_number, ws_warehouse_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_order_number"
+     ],
+     "include": [],
+     "name": "ix_c27_4",
+     "ddl": "CREATE INDEX ix_c27_4 ON web_returns (wr_order_number)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk",
+      "ws_ship_addr_sk",
+      "ws_web_site_sk",
+      "ws_order_number"
+     ],
+     "include": [
+      "ws_warehouse_sk",
+      "ws_ext_ship_cost",
+      "ws_net_profit"
+     ],
+     "name": "ix_c27_5",
+     "ddl": "CREATE INDEX ix_c27_5 ON web_sales (ws_ship_date_sk, ws_ship_addr_sk, ws_web_site_sk, ws_order_number) INCLUDE (ws_warehouse_sk, ws_ext_ship_cost, ws_net_profit)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk",
+      "ss_store_sk",
+      "ss_hdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c27_6",
+     "ddl": "CREATE INDEX ix_c27_6 ON store_sales (ss_sold_time_sk, ss_store_sk, ss_hdemo_sk)"
+    },
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [
+      "inv_warehouse_sk",
+      "inv_quantity_on_hand"
+     ],
+     "name": "ix_c27_7",
+     "ddl": "CREATE INDEX ix_c27_7 ON inventory (inv_item_sk, inv_date_sk) INCLUDE (inv_warehouse_sk, inv_quantity_on_hand)"
+    }
+   ]
+  },
+  {
+   "id": "grok-4-7:small-dimension-filters",
+   "n": 28,
+   "source": "grok-4-7",
+   "name": "small-dimension-filters",
+   "rationale": "Cheap indexes only on dimension tables so year, month, date, item, address, customer-name, and hour predicates are index lookups while index build stays small.",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_moy",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_0",
+     "ddl": "CREATE INDEX ix_c28_0 ON date_dim (d_year, d_moy, d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_1",
+     "ddl": "CREATE INDEX ix_c28_1 ON date_dim (d_date, d_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_month_seq",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_2",
+     "ddl": "CREATE INDEX ix_c28_2 ON date_dim (d_month_seq, d_date_sk)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_item_id"
+     ],
+     "include": [],
+     "name": "ix_c28_3",
+     "ddl": "CREATE INDEX ix_c28_3 ON item (i_item_id)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_category",
+      "i_class",
+      "i_brand",
+      "i_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_4",
+     "ddl": "CREATE INDEX ix_c28_4 ON item (i_category, i_class, i_brand, i_item_sk)"
+    },
+    {
+     "table": "customer_address",
+     "columns": [
+      "ca_state",
+      "ca_zip",
+      "ca_address_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_5",
+     "ddl": "CREATE INDEX ix_c28_5 ON customer_address (ca_state, ca_zip, ca_address_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_last_name",
+      "c_first_name",
+      "c_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_6",
+     "ddl": "CREATE INDEX ix_c28_6 ON customer (c_last_name, c_first_name, c_customer_sk)"
+    },
+    {
+     "table": "time_dim",
+     "columns": [
+      "t_hour",
+      "t_minute",
+      "t_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c28_7",
+     "ddl": "CREATE INDEX ix_c28_7 ON time_dim (t_hour, t_minute, t_time_sk)"
+    }
+   ]
+  },
+  {
+   "id": "grok-4-7:store-channel-fks",
+   "n": 29,
+   "source": "grok-4-7",
+   "name": "store-channel-fks",
+   "rationale": "Indexes the store_sales foreign keys that are not already covered so store, household, address, demographics, promotion, time, and item-plus-date joins can probe the largest sales fact, with a date index on store_returns.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_0",
+     "ddl": "CREATE INDEX ix_c29_0 ON store_sales (ss_store_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_hdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_1",
+     "ddl": "CREATE INDEX ix_c29_1 ON store_sales (ss_hdemo_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_2",
+     "ddl": "CREATE INDEX ix_c29_2 ON store_sales (ss_addr_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_cdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_3",
+     "ddl": "CREATE INDEX ix_c29_3 ON store_sales (ss_cdemo_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_promo_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_4",
+     "ddl": "CREATE INDEX ix_c29_4 ON store_sales (ss_promo_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_item_sk",
+      "ss_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_5",
+     "ddl": "CREATE INDEX ix_c29_5 ON store_sales (ss_item_sk, ss_sold_date_sk)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_6",
+     "ddl": "CREATE INDEX ix_c29_6 ON store_sales (ss_sold_time_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_store_sk",
+      "sr_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_7",
+     "ddl": "CREATE INDEX ix_c29_7 ON store_returns (sr_returned_date_sk, sr_store_sk, sr_customer_sk)"
+    }
+   ]
+  },
+  {
+   "id": "grok-4-7:inventory-and-returns",
+   "n": 30,
+   "source": "grok-4-7",
+   "name": "inventory-and-returns",
+   "rationale": "Aims at inventory, whose primary key leads with date rather than item, and at the three returns tables, which have no date or customer indexes.",
+   "indexes": [
+    {
+     "table": "inventory",
+     "columns": [
+      "inv_item_sk",
+      "inv_date_sk"
+     ],
+     "include": [
+      "inv_quantity_on_hand",
+      "inv_warehouse_sk"
+     ],
+     "name": "ix_c30_0",
+     "ddl": "CREATE INDEX ix_c30_0 ON inventory (inv_item_sk, inv_date_sk) INCLUDE (inv_quantity_on_hand, inv_warehouse_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk",
+      "sr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c30_1",
+     "ddl": "CREATE INDEX ix_c30_1 ON store_returns (sr_returned_date_sk, sr_item_sk)"
+    },
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_customer_sk",
+      "sr_ticket_number"
+     ],
+     "include": [],
+     "name": "ix_c30_2",
+     "ddl": "CREATE INDEX ix_c30_2 ON store_returns (sr_customer_sk, sr_ticket_number)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_returned_date_sk",
+      "cr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c30_3",
+     "ddl": "CREATE INDEX ix_c30_3 ON catalog_returns (cr_returned_date_sk, cr_item_sk)"
+    },
+    {
+     "table": "catalog_returns",
+     "columns": [
+      "cr_refunded_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c30_4",
+     "ddl": "CREATE INDEX ix_c30_4 ON catalog_returns (cr_refunded_customer_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_returned_date_sk",
+      "wr_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c30_5",
+     "ddl": "CREATE INDEX ix_c30_5 ON web_returns (wr_returned_date_sk, wr_item_sk)"
+    },
+    {
+     "table": "web_returns",
+     "columns": [
+      "wr_refunded_customer_sk"
+     ],
+     "include": [],
+     "name": "ix_c30_6",
+     "ddl": "CREATE INDEX ix_c30_6 ON web_returns (wr_refunded_customer_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_order_number"
+     ],
+     "include": [],
+     "name": "ix_c30_7",
+     "ddl": "CREATE INDEX ix_c30_7 ON catalog_sales (cs_order_number)"
+    }
+   ]
+  },
+  {
+   "id": "grok-4-7:cross-channel-date-item",
+   "n": 31,
+   "source": "grok-4-7",
+   "name": "cross-channel-date-item",
+   "rationale": "Puts date-then-item and item-then-date composites on all three sales facts so the dominant date_dim and item joins can use a matching column order on every channel.",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_date_sk",
+      "ss_item_sk",
+      "ss_store_sk"
+     ],
+     "include": [
+      "ss_quantity",
+      "ss_ext_sales_price"
+     ],
+     "name": "ix_c31_0",
+     "ddl": "CREATE INDEX ix_c31_0 ON store_sales (ss_sold_date_sk, ss_item_sk, ss_store_sk) INCLUDE (ss_quantity, ss_ext_sales_price)"
+    },
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_item_sk",
+      "ss_sold_date_sk",
+      "ss_store_sk"
+     ],
+     "include": [],
+     "name": "ix_c31_1",
+     "ddl": "CREATE INDEX ix_c31_1 ON store_sales (ss_item_sk, ss_sold_date_sk, ss_store_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_sold_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [
+      "cs_quantity",
+      "cs_ext_sales_price"
+     ],
+     "name": "ix_c31_2",
+     "ddl": "CREATE INDEX ix_c31_2 ON catalog_sales (cs_sold_date_sk, cs_item_sk) INCLUDE (cs_quantity, cs_ext_sales_price)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_item_sk",
+      "cs_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c31_3",
+     "ddl": "CREATE INDEX ix_c31_3 ON catalog_sales (cs_item_sk, cs_sold_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_sold_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [
+      "ws_quantity",
+      "ws_ext_sales_price"
+     ],
+     "name": "ix_c31_4",
+     "ddl": "CREATE INDEX ix_c31_4 ON web_sales (ws_sold_date_sk, ws_item_sk) INCLUDE (ws_quantity, ws_ext_sales_price)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_item_sk",
+      "ws_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c31_5",
+     "ddl": "CREATE INDEX ix_c31_5 ON web_sales (ws_item_sk, ws_sold_date_sk)"
+    },
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_year",
+      "d_qoy",
+      "d_moy",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c31_6",
+     "ddl": "CREATE INDEX ix_c31_6 ON date_dim (d_year, d_qoy, d_moy, d_date_sk)"
+    },
+    {
+     "table": "item",
+     "columns": [
+      "i_manufact_id",
+      "i_category_id",
+      "i_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c31_7",
+     "ddl": "CREATE INDEX ix_c31_7 ON item (i_manufact_id, i_category_id, i_item_sk)"
+    }
+   ]
+  },
+  {
+   "id": "grok-4-7:customer-ship-paths",
+   "n": 32,
+   "source": "grok-4-7",
+   "name": "customer-ship-paths",
+   "rationale": "Follows customer, ship-date, address, and demographics paths on catalog and web sales, which the existing bill-customer and sold-date indexes do not cover.",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_customer_sk",
+      "cs_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_0",
+     "ddl": "CREATE INDEX ix_c32_0 ON catalog_sales (cs_ship_customer_sk, cs_sold_date_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk",
+      "cs_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_1",
+     "ddl": "CREATE INDEX ix_c32_1 ON catalog_sales (cs_ship_date_sk, cs_item_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_bill_cdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_2",
+     "ddl": "CREATE INDEX ix_c32_2 ON catalog_sales (cs_bill_cdemo_sk)"
+    },
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_bill_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_3",
+     "ddl": "CREATE INDEX ix_c32_3 ON catalog_sales (cs_bill_addr_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_customer_sk",
+      "ws_sold_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_4",
+     "ddl": "CREATE INDEX ix_c32_4 ON web_sales (ws_ship_customer_sk, ws_sold_date_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk",
+      "ws_item_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_5",
+     "ddl": "CREATE INDEX ix_c32_5 ON web_sales (ws_ship_date_sk, ws_item_sk)"
+    },
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_bill_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_6",
+     "ddl": "CREATE INDEX ix_c32_6 ON web_sales (ws_bill_addr_sk)"
+    },
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c32_7",
+     "ddl": "CREATE INDEX ix_c32_7 ON customer (c_current_addr_sk)"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "truth": "tpcds_sf10",
+ "rule": "warm rerun: none >= 1s and top HypoPG index >= 1.3x faster or slower. Q23 and Q76 added from the timeout rerun; Q76's no-index time ran for hours because the cap did not cancel a disk read.",
+ "queries": [
+  10,
+  13,
+  17,
+  21,
+  23,
+  25,
+  26,
+  27,
+  28,
+  29,
+  36,
+  41,
+  44,
+  58,
+  63,
+  65,
+  70,
+  76,
+  88,
+  90,
+  94,
+  96,
+  99
+ ]
+}

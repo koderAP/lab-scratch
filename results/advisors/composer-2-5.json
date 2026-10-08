@@ -1,0 +1,53 @@
+{
+  "model": "composer-2.5-fast",
+  "configs": [
+    {
+      "name": "minimal-store-date-item",
+      "rationale": "Single low-build-cost composite on the largest fact table to accelerate the pervasive date_dim join plus item lookup pattern without touching other channels.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk"], "include": []}
+      ]
+    },
+    {
+      "name": "date-dim-plus-store",
+      "rationale": "Adds a calendar slice index on date_dim alongside store_sales date-item access so year/month predicates can resolve date keys before probing facts.",
+      "indexes": [
+        {"table": "date_dim", "columns": ["d_year", "d_moy", "d_date_sk"], "include": []},
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk"], "include": []}
+      ]
+    },
+    {
+      "name": "tri-channel-facts",
+      "rationale": "Mirrors the same sold-date and item join pattern across store, catalog, and web sales for queries that union or compare all three channels.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk"], "include": []},
+        {"table": "catalog_sales", "columns": ["cs_sold_date_sk", "cs_item_sk"], "include": []},
+        {"table": "web_sales", "columns": ["ws_sold_date_sk", "ws_item_sk"], "include": []}
+      ]
+    },
+    {
+      "name": "returns-and-inventory",
+      "rationale": "Targets return fact tables and inventory, which are joined by returned or inventory date and item rather than by the existing single-column sold-date indexes on sales.",
+      "indexes": [
+        {"table": "inventory", "columns": ["inv_item_sk", "inv_date_sk"], "include": []},
+        {"table": "store_returns", "columns": ["sr_returned_date_sk", "sr_item_sk"], "include": []},
+        {"table": "catalog_returns", "columns": ["cr_returned_date_sk", "cr_item_sk"], "include": []},
+        {"table": "web_returns", "columns": ["wr_returned_date_sk", "wr_item_sk"], "include": []}
+      ]
+    },
+    {
+      "name": "aggressive-mixed-covering",
+      "rationale": "Broad eight-index bundle combining channel fact composites, dimension filters, store-level sales, returns, and INCLUDE columns to reduce heap fetches on heavy aggregations.",
+      "indexes": [
+        {"table": "store_sales", "columns": ["ss_sold_date_sk", "ss_item_sk"], "include": ["ss_quantity", "ss_list_price", "ss_net_paid", "ss_ext_sales_price"]},
+        {"table": "catalog_sales", "columns": ["cs_sold_date_sk", "cs_item_sk"], "include": ["cs_quantity", "cs_list_price", "cs_net_paid"]},
+        {"table": "web_sales", "columns": ["ws_sold_date_sk", "ws_item_sk"], "include": ["ws_quantity", "ws_list_price", "ws_net_paid"]},
+        {"table": "date_dim", "columns": ["d_year", "d_moy"], "include": []},
+        {"table": "item", "columns": ["i_category_id", "i_class_id", "i_brand_id"], "include": []},
+        {"table": "store_sales", "columns": ["ss_store_sk", "ss_sold_date_sk"], "include": []},
+        {"table": "customer_address", "columns": ["ca_state", "ca_city"], "include": []},
+        {"table": "store_returns", "columns": ["sr_returned_date_sk"], "include": []}
+      ]
+    }
+  ]
+}

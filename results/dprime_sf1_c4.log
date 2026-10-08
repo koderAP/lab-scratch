@@ -1,0 +1,137 @@
+=== 04:23:21 tpcds_sf1_b0_p5 c4
+schema tpcds_sf1_b0_p5 stats fingerprint 91bd9a3118e7556f91246c65050db66b
+[1/33] none:none: build 0.0s workload 4.4s timeouts 0 (this config 18s, total 18s)
+[2/33] hypopg:top5: build 0.1s workload 4.2s timeouts 0 (this config 17s, total 35s)
+[3/33] hypopg:top8: build 0.2s workload 4.2s timeouts 0 (this config 17s, total 53s)
+[4/33] claude-fable-5-1:lean-order-number-semijoins: build 0.1s workload 4.3s timeouts 0 (this config 18s, total 71s)
+[5/33] claude-fable-5-1:secondary-date-and-time-keys: build 0.2s workload 4.2s timeouts 0 (this config 18s, total 88s)
+[6/33] claude-fable-5-1:dimension-filter-indexes: build 0.2s workload 4.1s timeouts 0 (this config 17s, total 105s)
+[7/33] claude-fable-5-1:balanced-recommended: build 0.2s workload 4.2s timeouts 0 (this config 18s, total 123s)
+[8/33] claude-fable-5-1:aggressive-covering-facts: build 0.5s workload 4.2s timeouts 0 (this config 18s, total 141s)
+[9/33] claude-opus-5:light_dimension_covering: build 0.1s workload 3.7s timeouts 0 (this config 16s, total 156s)
+[10/33] claude-opus-5:store_sales_access_paths: build 0.3s workload 4.3s timeouts 0 (this config 18s, total 174s)
+[11/33] claude-opus-5:date-leading_on_every_sales_and_returns_table: build 0.2s workload 7.8s timeouts 0 (this config 29s, total 203s)
+[12/33] claude-opus-5:wide_covering_for_index-only_aggregation: build 0.7s workload 6.8s timeouts 0 (this config 30s, total 233s)
+[13/33] claude-opus-5:aggressive_broad_coverage: build 0.9s workload 6.9s timeouts 0 (this config 29s, total 262s)
+[14/33] composer-2-5:minimal-store-date-item: build 0.1s workload 7.2s timeouts 0 (this config 30s, total 292s)
+[15/33] composer-2-5:date-dim-plus-store: build 0.1s workload 6.7s timeouts 0 (this config 28s, total 320s)
+[16/33] composer-2-5:tri-channel-facts: build 0.2s workload 7.5s timeouts 0 (this config 30s, total 350s)
+[17/33] composer-2-5:returns-and-inventory: build 0.4s workload 7.1s timeouts 0 (this config 30s, total 379s)
+[18/33] composer-2-5:aggressive-mixed-covering: build 0.5s workload 6.8s timeouts 0 (this config 29s, total 408s)
+[19/33] gemini-3-8-flash:returns_and_address_fks: build 0.1s workload 8.1s timeouts 0 (this config 31s, total 439s)
+[20/33] gemini-3-8-flash:store_sales_scan_reduction: build 0.3s workload 6.7s timeouts 0 (this config 28s, total 467s)
+[21/33] gemini-3-8-flash:remote_order_and_shipping: build 0.2s workload 6.9s timeouts 0 (this config 29s, total 496s)
+[22/33] gemini-3-8-flash:composite_joins_and_dimensions: build 0.7s workload 7.0s timeouts 0 (this config 30s, total 526s)
+[23/33] gemini-3-8-flash:balanced_workload_suite: build 0.3s workload 6.9s timeouts 0 (this config 29s, total 554s)
+[24/33] gpt-5-6-sol:order_correlation: build 0.3s workload 7.0s timeouts 0 (this config 30s, total 584s)
+[25/33] gpt-5-6-sol:customer_windows: build 0.4s workload 7.0s timeouts 0 (this config 29s, total 613s)
+[26/33] gpt-5-6-sol:time_of_day: build 0.2s workload 7.0s timeouts 0 (this config 29s, total 642s)
+[27/33] gpt-5-6-sol:inventory_probes: build 0.4s workload 6.9s timeouts 0 (this config 29s, total 671s)
+[28/33] gpt-5-6-sol:aggressive_bottlenecks: build 0.7s workload 6.8s timeouts 0 (this config 29s, total 700s)
+[29/33] grok-4-7:small-dimension-filters: build 0.4s workload 6.2s timeouts 0 (this config 27s, total 727s)
+[30/33] grok-4-7:store-channel-fks: build 0.6s workload 6.9s timeouts 0 (this config 29s, total 756s)
+[31/33] grok-4-7:inventory-and-returns: build 0.5s workload 6.9s timeouts 0 (this config 29s, total 785s)
+[32/33] grok-4-7:cross-channel-date-item: build 0.4s workload 6.7s timeouts 0 (this config 29s, total 814s)
+[33/33] grok-4-7:customer-ship-paths: build 0.4s workload 7.0s timeouts 0 (this config 29s, total 843s)
+=== 04:37:24 tpcds_sf1_uitem_p5 c4
+schema tpcds_sf1_uitem_p5 stats fingerprint 91bd9a3118e7556f91246c65050db66b
+  Q59 error ERROR:  division by zero
+
+[1/33] none:none: build 0.0s workload 80.7s timeouts 3 (this config 100s, total 100s)
+  Q59 error ERROR:  division by zero
+
+[2/33] hypopg:top5: build 0.2s workload 80.3s timeouts 3 (this config 99s, total 200s)
+  Q59 error ERROR:  division by zero
+
+[3/33] hypopg:top8: build 0.4s workload 80.4s timeouts 3 (this config 99s, total 299s)
+  Q59 error ERROR:  division by zero
+
+[4/33] claude-fable-5-1:lean-order-number-semijoins: build 0.2s workload 80.9s timeouts 3 (this config 100s, total 399s)
+  Q59 error ERROR:  division by zero
+
+[5/33] claude-fable-5-1:secondary-date-and-time-keys: build 0.3s workload 81.0s timeouts 3 (this config 99s, total 498s)
+  Q59 error ERROR:  division by zero
+
+[6/33] claude-fable-5-1:dimension-filter-indexes: build 3.5s workload 79.9s timeouts 3 (this config 101s, total 599s)
+  Q59 error ERROR:  division by zero
+
+[7/33] claude-fable-5-1:balanced-recommended: build 0.3s workload 80.6s timeouts 3 (this config 98s, total 697s)
+  Q59 error ERROR:  division by zero
+
+[8/33] claude-fable-5-1:aggressive-covering-facts: build 0.7s workload 81.1s timeouts 3 (this config 100s, total 797s)
+  Q59 error ERROR:  division by zero
+
+[9/33] claude-opus-5:light_dimension_covering: build 0.3s workload 77.4s timeouts 3 (this config 93s, total 891s)
+  Q59 error ERROR:  division by zero
+
+[10/33] claude-opus-5:store_sales_access_paths: build 0.6s workload 80.8s timeouts 3 (this config 101s, total 991s)
+  Q59 error ERROR:  division by zero
+
+[11/33] claude-opus-5:date-leading_on_every_sales_and_returns_table: build 0.4s workload 80.7s timeouts 3 (this config 99s, total 1090s)
+  Q59 error ERROR:  division by zero
+
+[12/33] claude-opus-5:wide_covering_for_index-only_aggregation: build 3.9s workload 80.6s timeouts 3 (this config 104s, total 1194s)
+  Q59 error ERROR:  division by zero
+
+[13/33] claude-opus-5:aggressive_broad_coverage: build 4.9s workload 80.5s timeouts 3 (this config 103s, total 1297s)
+  Q59 error ERROR:  division by zero
+
+[14/33] composer-2-5:minimal-store-date-item: build 0.1s workload 82.2s timeouts 3 (this config 103s, total 1400s)
+  Q59 error ERROR:  division by zero
+
+[15/33] composer-2-5:date-dim-plus-store: build 0.1s workload 80.8s timeouts 3 (this config 100s, total 1500s)
+  Q59 error ERROR:  division by zero
+
+[16/33] composer-2-5:tri-channel-facts: build 35.2s workload 104.9s timeouts 3 (this config 17534s, total 19034s)
+  Q59 error ERROR:  division by zero
+
+[17/33] composer-2-5:returns-and-inventory: build 0.4s workload 75.9s timeouts 3 (this config 85s, total 19120s)
+  Q59 error ERROR:  division by zero
+
+[18/33] composer-2-5:aggressive-mixed-covering: build 0.3s workload 72.6s timeouts 3 (this config 76s, total 19196s)
+  Q59 error ERROR:  division by zero
+
+[19/33] gemini-3-8-flash:returns_and_address_fks: build 0.1s workload 74.4s timeouts 3 (this config 81s, total 19277s)
+  Q59 error ERROR:  division by zero
+
+[20/33] gemini-3-8-flash:store_sales_scan_reduction: build 0.2s workload 74.8s timeouts 3 (this config 83s, total 19359s)
+  Q59 error ERROR:  division by zero
+
+[21/33] gemini-3-8-flash:remote_order_and_shipping: build 0.1s workload 74.9s timeouts 3 (this config 83s, total 19442s)
+  Q59 error ERROR:  division by zero
+
+[22/33] gemini-3-8-flash:composite_joins_and_dimensions: build 2.1s workload 75.2s timeouts 3 (this config 86s, total 19528s)
+  Q59 error ERROR:  division by zero
+
+[23/33] gemini-3-8-flash:balanced_workload_suite: build 0.2s workload 75.1s timeouts 3 (this config 83s, total 19611s)
+  Q59 error ERROR:  division by zero
+
+[24/33] gpt-5-6-sol:order_correlation: build 0.2s workload 74.9s timeouts 3 (this config 83s, total 19694s)
+  Q59 error ERROR:  division by zero
+
+[25/33] gpt-5-6-sol:customer_windows: build 0.3s workload 75.0s timeouts 3 (this config 83s, total 19777s)
+  Q59 error ERROR:  division by zero
+
+[26/33] gpt-5-6-sol:time_of_day: build 0.1s workload 75.3s timeouts 3 (this config 83s, total 19861s)
+  Q59 error ERROR:  division by zero
+
+[27/33] gpt-5-6-sol:inventory_probes: build 0.3s workload 75.0s timeouts 3 (this config 83s, total 19944s)
+  Q59 error ERROR:  division by zero
+
+[28/33] gpt-5-6-sol:aggressive_bottlenecks: build 0.4s workload 75.0s timeouts 3 (this config 83s, total 20027s)
+  Q59 error ERROR:  division by zero
+
+[29/33] grok-4-7:small-dimension-filters: build 0.5s workload 72.6s timeouts 3 (this config 78s, total 20106s)
+  Q59 error ERROR:  division by zero
+
+[30/33] grok-4-7:store-channel-fks: build 0.3s workload 74.9s timeouts 3 (this config 83s, total 20189s)
+  Q59 error ERROR:  division by zero
+
+[31/33] grok-4-7:inventory-and-returns: build 0.3s workload 74.9s timeouts 3 (this config 83s, total 20272s)
+  Q59 error ERROR:  division by zero
+
+[32/33] grok-4-7:cross-channel-date-item: build 0.3s workload 74.5s timeouts 3 (this config 82s, total 20354s)
+  Q59 error ERROR:  division by zero
+
+[33/33] grok-4-7:customer-ship-paths: build 0.3s workload 75.0s timeouts 3 (this config 83s, total 20437s)
+=== 10:18:02 C4 DONE
