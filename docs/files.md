@@ -9,6 +9,10 @@ The experiment that answers the spec is `docs/protocol.md`. Everything under `sc
 | `problem_statement.md` | The project as assigned: LLM candidates, measure cost and time, compare samples to the full database. |
 | `README.md` | How to set the machine up and run the protocol once. |
 | `results.html` | One-page figure report of the SF=1 protocol run. Self-contained, so it can be attached to an email and opened in a browser. |
+| `protocol.html` | Step-by-step diagrams of the experiment, including the math for each sampler. Self-contained HTML. |
+| `review.html` | Reviewer guide for a first-time reader: problem, design decisions, results, threats, review questions. Self-contained HTML. |
+| `reviewer.html` | First-read briefing for someone reviewing the work: question, design choices, measured results, and what is still missing. |
+| `papers/` | Local copies of the related papers (`python3 papers/fetch.py`). PDFs are gitignored. List: `papers/README.md`. |
 
 ## Scripts
 

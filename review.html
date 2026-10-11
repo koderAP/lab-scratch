@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reviewer guide: can a 5% sample pick the best index configuration?</title>
+<style>
+  :root{--ink:#1c1b19;--muted:#5f5b55;--faint:#8a847b;--line:#e3dfd6;--paper:#fffcf7;--blue:#1d4e89;--amber:#8a5a12;--green:#1e6b3c;--red:#a23b36;--box:#f6f3ec;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Segoe UI",-apple-system,BlinkMacSystemFont,sans-serif}
+  .wrap{display:flex;max-width:1180px;margin:0 auto}
+  nav{position:sticky;top:0;align-self:flex-start;width:230px;padding:32px 16px 32px 24px;font-size:13px;max-height:100vh;overflow:auto}
+  nav a{display:block;color:var(--muted);text-decoration:none;padding:3px 0}
+  nav a:hover{color:var(--blue)}
+  nav .t{font-weight:650;color:var(--ink);margin-bottom:8px}
+  main{flex:1;max-width:900px;padding:36px 28px 80px}
+  h1{font-size:28px;letter-spacing:-0.02em;margin:0 0 8px}
+  h2{font-size:21px;margin:48px 0 8px;padding-top:8px;border-top:1px solid var(--line)}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 10px}
+  ul,ol{margin:4px 0 12px;padding-left:22px}
+  li{margin:3px 0}
+  code{background:var(--box);padding:1px 5px;border-radius:3px;font-size:13px}
+  .lede{color:var(--muted);font-size:17px}
+  .meta{color:var(--faint);font-size:13px;margin-bottom:20px}
+  .muted{color:var(--muted)}
+  .box{background:var(--box);border-left:4px solid var(--blue);padding:12px 16px;margin:14px 0;border-radius:2px}
+  .box.warn{border-color:var(--amber)}
+  .box.bad{border-color:var(--red)}
+  .box.good{border-color:var(--green)}
+  .box p:last-child,.box ul:last-child{margin-bottom:0}
+  .tag{display:inline-block;font-size:11px;font-weight:650;padding:1px 7px;border-radius:9px;margin-right:4px;vertical-align:1px;color:#fff}
+  .t-fact{background:var(--green)}.t-mine{background:var(--blue)}.t-risk{background:var(--red)}.t-derived{background:var(--amber)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;color:var(--muted);font-weight:650}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hl td{background:#eef3f9}
+  svg{display:block;width:100%;height:auto}
+  figure{margin:14px 0}
+  figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}
+  .sw{display:inline-block;width:10px;height:10px;margin-right:5px}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
+  .step{flex:1 1 150px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 11px;font-size:13px}
+  .step b{display:block;font-size:12px;color:var(--blue);margin-bottom:3px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .check li{list-style:none;margin-left:-20px}
+  .check li:before{content:"\2610  ";color:var(--faint)}
+  @media(max-width:900px){nav{display:none}.grid2{grid-template-columns:1fr}}
+  @media print{nav{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <div class="t">Contents</div>
+  <a href="#start">0. Start here</a>
+  <a href="#problem">1. The problem</a>
+  <a href="#claim">2. Question and claim</a>
+  <a href="#setup">3. Setup</a>
+  <a href="#protocol">4. Protocol</a>
+  <a href="#decisions">5. Design decisions</a>
+  <a href="#advisors">6. LLM candidates</a>
+  <a href="#samplers">7. The samplers</a>
+  <a href="#metrics">8. Metrics</a>
+  <a href="#results">9. Results</a>
+  <a href="#why">10. Why the numbers look like this</a>
+  <a href="#expected">11. Expected vs found</a>
+  <a href="#threats">12. Threats to validity</a>
+  <a href="#history">13. Process history</a>
+  <a href="#guidance">14. Guidance for you</a>
+  <a href="#files">15. Where things are</a>
+</nav>
+<main>
+
+<h1 id="start">Can a 5% sample pick the best index configuration?</h1>
+<p class="lede">A reviewer's guide to the COL868 project. It assumes you are seeing the work for the first time, and it gives the problem, the design, every important decision with its reason, all headline results, and the places where I think the work is weakest.</p>
+<p class="meta">PostgreSQL 14, TPC-DS scale factor 1, 99 queries, 33 index configurations, 5% samples, one seed. Results dated 5 to 6 October 2026.</p>
+
+<div class="box">
+<p><b>How to read the labels used on this page.</b></p>
+<p><span class="tag t-fact">FACT</span>read directly from a result file or script in the repo.
+<span class="tag t-mine">CHOICE</span>a design decision that was mine, not the assignment's.
+<span class="tag t-derived">DERIVED</span>my own analysis of the result files for this guide. It is not in the project docs, so please check it.
+<span class="tag t-risk">RISK</span>a weakness or open question.</p>
+</div>
+
+<h3>If you have 5 minutes</h3>
+<ol>
+<li>Read the one-paragraph summary below.</li>
+<li>Look at the three figures in <a href="#results">section 9</a>.</li>
+<li>Read <a href="#threats">section 12</a> and the questions in <a href="#guidance">section 14</a>.</li>
+</ol>
+
+<h3>One-paragraph summary</h3>
+<p>Choosing database indexes by the optimizer's cost estimate is unreliable, and building every candidate on a big database to measure it is too slow. We asked whether a small <b>5% sample</b> of the database can rank candidate index sets the way the full database does. Six LLMs proposed index sets, and we timed 33 of them on the full database and on seven different 5% samples. The samples rank the configurations about as consistently as the full database ranks itself on a repeat run (Kendall tau around 0.45 to 0.5 against a noise ceiling of 0.45). Five of seven samples pick the same configuration, which is the second-best on the full database and only 1.4% slower than the best. They cost 25 to 90 times less for the random samples, and only about 3 times less for the join-aware ones. Join-aware sampling did not beat plain random sampling, and copying the full database's statistics onto the sample made rankings worse. The configurations differ by very little (31 of 33 are within 4% of each other), so the evidence is real but weak, and it comes from one seed, one rate and a database that fits in memory.</p>
+
+<h2 id="problem">1. The problem</h2>
+<h3>Indexes and index tuning</h3>
+<p>An <b>index</b> lets a database find rows without scanning a whole table, like the index at the back of a book. The right set of indexes can speed up queries enormously, and the wrong set wastes space and slows writes. <b>Index tuning</b> chooses that set for a given <b>workload</b>, which is a collection of queries.</p>
+<h3>How tuners judge a candidate, and why that is a problem</h3>
+<p>Tuners do not build candidate indexes. They ask the optimizer a "what-if" question: what would this query cost if these indexes existed? PostgreSQL's extension for this is <b>HypoPG</b>. The answer is an <i>estimate</i>, and estimates can be wrong. Wu et al. (SIGMOD 2025, <code>papers/01-wu-qpr-sigmod2025.pdf</code>) show that the configuration with the lowest estimated cost can run slower than the alternative once the indexes are actually built. They call this <b>query performance regression (QPR)</b>. They report that about 11% of indexes created by Azure SQL's auto-indexing had to be reverted for this reason, and that most serious regressions are plan-shape changes, especially a new expensive nested-loop join.</p>
+<h3>The obvious fix and why it is too expensive</h3>
+<p>Build each candidate for real, run the workload, and keep the fastest. That is accurate, but on a 100 GB database the index builds and the query runs take days.</p>
+<h3>This project's idea</h3>
+<div class="box"><p><b>Do the real build-and-run on a small sample of the database, and check whether the sample picks the same winner as the full database.</b></p></div>
+<p>The closest prior work is <b>SQL:Trek</b> (Airbnb, PVLDB 2025), which builds candidate indexes on a uniform 5% simulation database and runs the workload to prune false positives. It uses one sampling recipe and mostly transactional workloads. It does not measure agreement with the full database or compare sampling strategies. Details are in <code>docs/related-work.md</code>.</p>
+
+<h2 id="claim">2. Research question and what is being claimed</h2>
+<p><b>Question (from the assignment, <code>problem_statement.md</code>).</b> Do index-selection decisions made on sampled databases match those from full-database execution-time measurements, and which sampling strategy is most effective?</p>
+<h3>What this work claims</h3>
+<ul>
+<li>At SF=1 on PostgreSQL, 5% samples reproduce the full database's near-top choices and rank to within the measurement noise of the full database itself.</li>
+<li>Among the strategies tried, join-aware and statistics-copying variants did not improve on plain random samples.</li>
+</ul>
+<h3>What it does not claim</h3>
+<ul>
+<li>It does not claim a sample reliably finds the exact best configuration. It does not, in 5 of 7 cases.</li>
+<li>It does not claim anything about 100 GB databases, SQL Server, or sample rates other than 5%.</li>
+<li>It does not claim any sampler is better or worse than another. The confidence intervals overlap.</li>
+</ul>
+
+<h3>Deviations from the assignment <span class="tag t-risk">RISK</span></h3>
+<table>
+<tr><th>Assignment says</th><th>What was done</th><th>Why</th></tr>
+<tr><td>SQL Server</td><td>PostgreSQL 14</td><td>Runs locally with free tooling (HypoPG, <code>EXPLAIN ANALYZE</code>).</td></tr>
+<tr><td>TPC-DS 100 GB</td><td>TPC-DS SF=1 (about 1.1 GB on disk)</td><td>99 queries x 33 configurations x several samples did not finish at SF=10 on a 16 GB laptop. Single queries ran for hours.</td></tr>
+<tr><td>Samples at 1%, 5%, 10%</td><td>5% only</td><td>Time. Other rates and seeds are the first thing to run next.</td></tr>
+<tr><td>Best index <i>per query</i></td><td>Best <i>configuration</i> for the whole workload</td><td>Per-query winners were too noisy (<a href="#history">section 13</a>). Configurations of several indexes also match the protocol text.</td></tr>
+<tr><td>Measure optimizer cost and execution time</td><td>Execution time (and build time) is ranked. Optimizer cost is not part of the comparison reported here</td><td>The question is about execution time. The cost-versus-time gap is taken from Wu et al., not re-measured.</td></tr>
+<tr><td>Random, stratified, statistics-aware and workload-aware sampling</td><td>Random (Bernoulli, page), universe, FK closure, stratified, and a statistics transplant. Workload-aware is not done</td><td>See <code>docs/sampling-taxonomy.md</code> for the full list considered.</td></tr>
+</table>
+
+<h2 id="setup">3. Setup</h2>
+<table>
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Machine</td><td>Apple M3, 16 GB RAM, macOS</td></tr>
+<tr><td>Database</td><td>PostgreSQL 14 (Homebrew), HypoPG installed. Settings in <code>config/postgresql-tpcds.conf</code>: <code>shared_buffers=2GB</code>, <code>work_mem=64MB</code>, <code>max_parallel_workers_per_gather=4</code>, <code>random_page_cost=1.1</code>, <code>jit=on</code>, <code>autovacuum=off</code></td></tr>
+<tr><td>Data</td><td>TPC-DS generated by DuckDB at scale factor 1 and loaded into schema <code>tpcds_sf1</code>. Primary keys applied afterwards (<code>sql/tpcds_pks.sql</code>)</td></tr>
+<tr><td>Workload</td><td>All 99 TPC-DS queries in PostgreSQL dialect, <code>workloads/tpcds/01.sql</code> to <code>99.sql</code>. No query is dropped</td></tr>
+<tr><td>Largest tables (full)</td><td><code>inventory</code> 11.7M rows, <code>store_sales</code> 2.88M, <code>catalog_sales</code> 1.44M, <code>web_sales</code> 0.72M</td></tr>
+</table>
+
+<h2 id="protocol">4. The protocol</h2>
+<p>Authoritative text: <code>docs/protocol.md</code>. Diagrams: <code>protocol.html</code>.</p>
+<div class="flow">
+<div class="step"><b>1. Candidates</b>Six LLMs x 5 configurations, plus no index, plus HypoPG top-5 and top-8. 33 configurations after de-duplication.</div>
+<div class="step"><b>2. Full database (D)</b>For each configuration: create its indexes (timed), run all 99 queries, drop the indexes.</div>
+<div class="step"><b>3. Ground truth</b>Rank the 33 by total workload time. Repeat the whole thing once more to measure noise.</div>
+<div class="step"><b>4. Samples (D')</b>Build 5% samples with several samplers.</div>
+<div class="step"><b>5. Same measurement on D'</b>Same 33 configurations, same 99 queries, same rules.</div>
+<div class="step"><b>6. Compare</b>Kendall tau, top-1, regret, top-3, and cost reduction.</div>
+</div>
+<p>A <b>configuration</b> is a set of 1 to 8 indexes meant to serve the whole workload. A configuration is scored by the sum of its 99 query times. The index build time is recorded separately and used in a second score.</p>
+
+<h2 id="decisions">5. Design decisions and the reasoning behind them</h2>
+<p>These are the choices that were not dictated by the assignment (from <code>docs/protocol.md</code> and <code>docs/lab-notes.md</code>). For each I list what it risks, since those are the likeliest review comments.</p>
+<table>
+<tr><th style="width:18%">Decision</th><th style="width:28%">Choice</th><th style="width:27%">Reason</th><th>What it risks</th></tr>
+<tr><td>Ranking score <span class="tag t-mine">CHOICE</span></td><td>Primary A: sum of the 99 query times. Secondary B: build time plus that sum. Both reported.</td><td>The target is the execution-time-best configuration. Build time is a one-off cost and also an input in the assignment, so it is a second ranking rather than dropped.</td><td>A sum is dominated by the long queries. Short-query behaviour is hidden.</td></tr>
+<tr><td>Scale <span class="tag t-mine">CHOICE</span></td><td>SF=1 for the full protocol. SF=10 only as a later capped check.</td><td>Feasibility on a 16 GB laptop.</td><td>The whole database fits in memory, so I/O effects that matter at 100 GB are absent. Conclusions may not transfer.</td></tr>
+<tr><td>Per-query cap <span class="tag t-mine">CHOICE</span></td><td>20 s. A capped query counts as 20 s on both the full database and the sample.</td><td>Keeps every run finite.</td><td>Censoring. A configuration that fixes a capped query is credited only for the part below 20 s. Seven queries are capped under every configuration, which is 140 s of the 190.7 s total.</td></tr>
+<tr><td>Repeats <span class="tag t-mine">CHOICE</span></td><td>One discarded warm-up. Then 2 timed runs if the first took 2 s or less, otherwise 1. Median.</td><td>A sum over 99 queries averages out per-query noise. Long queries are expensive to repeat.</td><td>Single-run timings of long queries remain noisy.</td></tr>
+<tr><td>Statistics <span class="tag t-mine">CHOICE</span></td><td><code>ANALYZE</code> once per database, then frozen. Autovacuum off.</td><td>Lesson from the Q72 retraction: statistics changing between runs flipped plans.</td><td>Frozen statistics are not what a production system has, but they remove a noise source.</td></tr>
+<tr><td>Isolation <span class="tag t-mine">CHOICE</span></td><td>One configuration at a time: create all its indexes, run 99 queries, drop them.</td><td>Stops configurations affecting each other.</td><td>Index creation time counts toward cache warmth for the first queries. A warm-up run reduces this.</td></tr>
+<tr><td>Keep all 99 queries <span class="tag t-fact">FACT</span></td><td>No filtering to "index-sensitive" queries.</td><td>The assignment's protocol says to keep them all. Filtering was part of the earlier pilot and was dropped.</td><td>Most queries are insensitive to indexes, so a lot of the sum is noise.</td></tr>
+<tr><td>Who proposes candidates <span class="tag t-mine">CHOICE</span></td><td>Six LLMs, run as isolated agents with the schema, existing indexes and the 99 query texts, with no database access. 5 configurations each, 1 to 8 indexes each.</td><td>The assignment asks for LLM candidates and for stronger models than a baseline.</td><td>Candidates are what the LLMs happened to propose. Diversity is uneven (see <a href="#advisors">section 6</a>).</td></tr>
+<tr><td>Baselines <span class="tag t-mine">CHOICE</span></td><td>No extra index, and HypoPG-greedy sets of 5 and 8 indexes (largest summed estimated gain over the workload).</td><td>Gives a floor and a classical what-if reference.</td><td>None of the HypoPG sets is a strong performer in the results.</td></tr>
+<tr><td>Which samples <span class="tag t-mine">CHOICE</span></td><td>5% of SF=1: Bernoulli, Bernoulli with full statistics, page, universe on item, FK closure, stratified (and universe with full statistics).</td><td>Reuses the builders already written. One rate first, then more.</td><td>One rate, one seed.</td></tr>
+<tr><td>Same rules on D and D' <span class="tag t-fact">FACT</span></td><td>Same cap, same repeats, same statistics policy.</td><td>So differences come from the data, not the harness.</td><td>The cap is the same in seconds even though the sample is much faster, so on a small sample almost nothing is capped.</td></tr>
+</table>
+
+<h2 id="advisors">6. The LLM candidates</h2>
+<p>Prompt: <code>advisors/prompt.md</code>. Output: <code>results/advisors/*.json</code>.</p>
+<ul>
+<li><b>Models:</b> Claude Opus 5, Claude Fable 5.1, GPT 5.6 Sol, Gemini 3.8 Flash, Grok 4.7, and Composer 2.5 as a deliberately weaker baseline.</li>
+<li><b>Constraints in the prompt:</b> B-tree indexes only, up to 4 key columns plus an <code>INCLUDE</code> list, no partial or expression indexes, nothing on tables under 1000 rows, no duplicates of existing indexes, and make the 5 configurations meaningfully different.</li>
+<li><b>After cleaning:</b> 33 configurations in total, and every index builds. Unknown columns, tiny tables, existing indexes and duplicates are dropped by <code>scripts/build_configs.py</code>.</li>
+<li><b>The LLMs never see the sample or any data.</b> The sample is used afterwards to test their suggestions.</li>
+</ul>
+<div class="box warn"><p><b>Independence check <span class="tag t-fact">FACT</span></b></p>
+<p>The advisors had file access to the whole repo even though the prompt named three inputs. I read each advisor's transcript for the files it opened. Five models opened only the allowed inputs. <b>Gemini's first run also opened earlier measured results</b> (the study set and HypoPG shortlist), which are exactly the kind of result this experiment tests. That output is kept in <code>results/advisors_excluded/</code> and is not used. Gemini was rerun with an explicit allowed-file list, and the rerun's transcript is clean.</p></div>
+<p>Another procedural slip is documented in <code>docs/lab-notes.md</code>: leftover indexes from an interrupted run made the configuration builder silently drop 26 indexes (198 became 172). It was caught because the total changed and the configurations were rebuilt. A guard in <code>build_configs.py</code> is still on the to-do list.</p>
+
+<h2 id="samplers">7. The samplers</h2>
+<p>Built by <code>scripts/make_sample.py</code> (seed 42, 5%). Full catalogue and sources: <code>docs/sampling-taxonomy.md</code>.</p>
+<table>
+<tr><th>Name</th><th>What it keeps</th><th>Why it is in the study</th><th class="num">Build (s)</th><th class="num">Size</th></tr>
+<tr><td><b>Bernoulli (b0)</b></td><td>Each row independently with probability 5% per table, with a floor of 20K rows and a cap of 1M rows (so small tables such as the returns tables are above 5%).</td><td>SQL:Trek's recipe. The baseline to beat.</td><td class="num">3.3</td><td class="num">230 MB</td></tr>
+<tr><td><b>Page (sys)</b></td><td>Random disk pages, <code>TABLESAMPLE SYSTEM</code>.</td><td>The cheapest sampler. Rows are clustered.</td><td class="num">2.9</td><td class="num">225 MB</td></tr>
+<tr><td><b>Universe (uitem)</b></td><td>A row survives only if <code>hash(item key)</code> is under a threshold, in every table that joins on the item key. Dimension tables are kept in full.</td><td>Keeps joins on that key consistent. From Quickr and Joins on Samples.</td><td class="num">3.9</td><td class="num">528 MB</td></tr>
+<tr><td><b>FK closure (fk)</b></td><td>Sample the big fact tables, keep every dimension row they reference, and pull in matching returns rows.</td><td>Keeps foreign-key joins consistent. From Join Synopses.</td><td class="num">6.2</td><td class="num">532 MB</td></tr>
+<tr><td><b>Stratified (strat)</b></td><td>Samples within groups (date, frequent items) with a floor per group.</td><td>Protects skewed values. From STRAT.</td><td class="num">12.4</td><td class="num">546 MB</td></tr>
+<tr><td><b>Statistics transplant (C4)</b></td><td>Any sample, then copy the full database's <code>pg_statistic</code> onto it and set <code>reltuples</code> and <code>relpages</code> to the full values. No <code>ANALYZE</code> afterwards.</td><td>Tests whether the planner choosing different plans on a sample is the problem. SQL:Trek lists this as future work.</td><td class="num">(on top)</td><td class="num">same</td></tr>
+</table>
+<p><b>Why independent sampling is risky.</b> Sampling <code>store_sales</code> and <code>item</code> independently at 5% keeps only about 0.25% of their join matches, which is why join-aware samplers were included. The Bernoulli sample row counts are what they should be (for example <code>store_sales</code> 143,451 of 2,880,404, which is 5.0%). Build times in the table are the sampling step only. The full build including keys and <code>VACUUM</code> took roughly 100 to 120 s.</p>
+<p><b>What the statistics transplant leaves inconsistent.</b> The data and the indexes on the sample are small, but the statistics say the table is full size. The planner therefore gets full-size selectivities with small-index costs. This is a hypothesis for the result in <a href="#results">section 9</a>, not something that was tested separately.</p>
+
+<h2 id="metrics">8. Metrics, in plain words</h2>
+<table>
+<tr><th style="width:22%">Metric</th><th>Meaning</th></tr>
+<tr><td><b>Kendall tau-b</b></td><td>Rank agreement between the sample's ordering of the 33 configurations and the full database's. 1 is the same order, 0 is unrelated, negative is reversed. The "b" version handles ties. The 95% interval is a bootstrap over the 33 configurations.</td></tr>
+<tr><td><b>Top-1</b></td><td>Does the sample's fastest configuration equal the full database's fastest?</td></tr>
+<tr><td><b>Regret</b></td><td>How much slower the sample's pick is than the true best on the full database. 1.014 means 1.4% slower. 1.000 means the pick is the best.</td></tr>
+<tr><td><b>Top-3 hit</b></td><td>Is the true best inside the sample's top three?</td></tr>
+<tr><td><b>Cost reduction</b></td><td>(index build time plus summed query time over all configurations on the full database) divided by (the same on the sample). Reported with and without the cost of building the sample.</td></tr>
+<tr><td><b>Noise ceiling</b></td><td>The full database ranked against a second full run of itself. No sample can be expected to agree with the first run better than the full database agrees with itself.</td></tr>
+</table>
+<p>Code: <code>scripts/rank_metrics.py</code>. Full output for every sample and both scores: <code>results/rank_sf1_p5.md</code>.</p>
+
+<h2 id="results">9. Results</h2>
+
+<h3>9.1 Ground truth: how much do the configurations differ?</h3>
+<p>Run 1 gives the ground truth. Each bar is the total workload time for one configuration on the full database. The diamond is the same configuration in the repeat run the next morning.</p>
+<figure>
+<svg viewBox="0 0 900 685" role="img" aria-label="Workload time of the 33 configurations on the full database, two runs">
+<line x1="330.0" y1="18" x2="330.0" y2="655" stroke="#e3dfd6"/><text x="330.0" y="671" font-size="11" text-anchor="middle" fill="#8a847b">165</text>
+<line x1="393.8" y1="18" x2="393.8" y2="655" stroke="#e3dfd6"/><text x="393.8" y="671" font-size="11" text-anchor="middle" fill="#8a847b">170</text>
+<line x1="457.5" y1="18" x2="457.5" y2="655" stroke="#e3dfd6"/><text x="457.5" y="671" font-size="11" text-anchor="middle" fill="#8a847b">175</text>
+<line x1="521.2" y1="18" x2="521.2" y2="655" stroke="#e3dfd6"/><text x="521.2" y="671" font-size="11" text-anchor="middle" fill="#8a847b">180</text>
+<line x1="585.0" y1="18" x2="585.0" y2="655" stroke="#e3dfd6"/><text x="585.0" y="671" font-size="11" text-anchor="middle" fill="#8a847b">185</text>
+<line x1="648.8" y1="18" x2="648.8" y2="655" stroke="#e3dfd6"/><text x="648.8" y="671" font-size="11" text-anchor="middle" fill="#8a847b">190</text>
+<line x1="712.5" y1="18" x2="712.5" y2="655" stroke="#e3dfd6"/><text x="712.5" y="671" font-size="11" text-anchor="middle" fill="#8a847b">195</text>
+<line x1="776.2" y1="18" x2="776.2" y2="655" stroke="#e3dfd6"/><text x="776.2" y="671" font-size="11" text-anchor="middle" fill="#8a847b">200</text>
+<line x1="840.0" y1="18" x2="840.0" y2="655" stroke="#e3dfd6"/><text x="840.0" y="671" font-size="11" text-anchor="middle" fill="#8a847b">205</text>
+<text x="585.0" y="684" font-size="11" text-anchor="middle" fill="#5f5b55">total workload time, seconds (99 queries, 20 s cap)</text>
+<text x="322" y="37" font-size="11" text-anchor="end" fill="#1c1b19">grok-4-7: small-dimension-filters</text>
+<rect x="330.0" y="27" width="101.3" height="11" fill="#1d4e89" opacity="0.85"/>
+<text x="435.3" y="37" font-size="10" fill="#5f5b55">172.9</text>
+<path d="M487.3 26 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="56" font-size="11" text-anchor="end" fill="#1c1b19">claude-opus-5: light dimension covering</text>
+<rect x="330.0" y="46" width="132.3" height="11" fill="#8a5a12" opacity="0.85"/>
+<text x="466.3" y="56" font-size="10" fill="#5f5b55">175.4</text>
+<path d="M583.1 45 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="75" font-size="11" text-anchor="end" fill="#1c1b19">grok-4-7: cross-channel-date-item</text>
+<rect x="330.0" y="65" width="238.6" height="11" fill="#1d4e89" opacity="0.85"/>
+<text x="572.6" y="75" font-size="10" fill="#5f5b55">183.7</text>
+<path d="M636.9 64 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="94" font-size="11" text-anchor="end" fill="#1c1b19">claude-opus-5: aggressive broad coverage</text>
+<rect x="330.0" y="84" width="241.2" height="11" fill="#8a5a12" opacity="0.85"/>
+<text x="575.2" y="94" font-size="10" fill="#5f5b55">183.9</text>
+<path d="M643.5 83 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="113" font-size="11" text-anchor="end" fill="#1c1b19">gpt-5-6-sol: aggressive bottlenecks</text>
+<rect x="330.0" y="103" width="256.8" height="11" fill="#1e6b3c" opacity="0.85"/>
+<text x="590.8" y="113" font-size="10" fill="#5f5b55">185.1</text>
+<path d="M648.8 102 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="132" font-size="11" text-anchor="end" fill="#1c1b19">grok-4-7: store-channel-fks</text>
+<rect x="330.0" y="122" width="261.6" height="11" fill="#1d4e89" opacity="0.85"/>
+<text x="595.6" y="132" font-size="10" fill="#5f5b55">185.5</text>
+<path d="M660.3 121 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="151" font-size="11" text-anchor="end" fill="#1c1b19">grok-4-7: inventory-and-returns</text>
+<rect x="330.0" y="141" width="264.7" height="11" fill="#1d4e89" opacity="0.85"/>
+<text x="598.7" y="151" font-size="10" fill="#5f5b55">185.8</text>
+<path d="M656.1 140 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="170" font-size="11" text-anchor="end" fill="#1c1b19">gpt-5-6-sol: time of day</text>
+<rect x="330.0" y="160" width="266.3" height="11" fill="#1e6b3c" opacity="0.85"/>
+<text x="600.3" y="170" font-size="10" fill="#5f5b55">185.9</text>
+<path d="M657.8 159 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="189" font-size="11" text-anchor="end" fill="#1c1b19">hypopg: top5</text>
+<rect x="330.0" y="179" width="266.6" height="11" fill="#2a8f8f" opacity="0.85"/>
+<text x="600.6" y="189" font-size="10" fill="#5f5b55">185.9</text>
+<path d="M740.0 178 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="208" font-size="11" text-anchor="end" fill="#1c1b19">gpt-5-6-sol: inventory probes</text>
+<rect x="330.0" y="198" width="269.5" height="11" fill="#1e6b3c" opacity="0.85"/>
+<text x="603.5" y="208" font-size="10" fill="#5f5b55">186.1</text>
+<path d="M671.3 197 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="227" font-size="11" text-anchor="end" fill="#1c1b19">composer-2-5: aggressive-mixed-covering</text>
+<rect x="330.0" y="217" width="272.7" height="11" fill="#7a7a7a" opacity="0.85"/>
+<text x="606.7" y="227" font-size="10" fill="#5f5b55">186.4</text>
+<path d="M643.4 216 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="246" font-size="11" text-anchor="end" fill="#1c1b19">gemini-3-8-flash: balanced_workload_suite</text>
+<rect x="330.0" y="236" width="273.4" height="11" fill="#b0413e" opacity="0.85"/>
+<text x="607.4" y="246" font-size="10" fill="#5f5b55">186.4</text>
+<path d="M628.5 235 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="265" font-size="11" text-anchor="end" fill="#1c1b19">claude-fable-5-1: aggressive-covering-facts</text>
+<rect x="330.0" y="255" width="274.6" height="11" fill="#6b4a9a" opacity="0.85"/>
+<text x="608.6" y="265" font-size="10" fill="#5f5b55">186.5</text>
+<path d="M711.1 254 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="284" font-size="11" text-anchor="end" fill="#1c1b19">claude-fable-5-1: dimension-filter-indexes</text>
+<rect x="330.0" y="274" width="275.2" height="11" fill="#6b4a9a" opacity="0.85"/>
+<text x="609.2" y="284" font-size="10" fill="#5f5b55">186.6</text>
+<path d="M709.7 273 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="303" font-size="11" text-anchor="end" fill="#1c1b19">composer-2-5: date-dim-plus-store</text>
+<rect x="330.0" y="293" width="278.1" height="11" fill="#7a7a7a" opacity="0.85"/>
+<text x="612.1" y="303" font-size="10" fill="#5f5b55">186.8</text>
+<path d="M650.9 292 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="322" font-size="11" text-anchor="end" fill="#1c1b19">claude-opus-5: date-leading on every sales and retur</text>
+<rect x="330.0" y="312" width="281.8" height="11" fill="#8a5a12" opacity="0.85"/>
+<text x="615.8" y="322" font-size="10" fill="#5f5b55">187.1</text>
+<path d="M696.3 311 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="341" font-size="11" text-anchor="end" fill="#1c1b19">hypopg: top8</text>
+<rect x="330.0" y="331" width="282.1" height="11" fill="#2a8f8f" opacity="0.85"/>
+<text x="616.1" y="341" font-size="10" fill="#5f5b55">187.1</text>
+<path d="M687.2 330 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="360" font-size="11" text-anchor="end" fill="#1c1b19">grok-4-7: customer-ship-paths</text>
+<rect x="330.0" y="350" width="284.6" height="11" fill="#1d4e89" opacity="0.85"/>
+<text x="618.6" y="360" font-size="10" fill="#5f5b55">187.3</text>
+<path d="M692.4 349 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="379" font-size="11" text-anchor="end" fill="#1c1b19">gemini-3-8-flash: store_sales_scan_reduction</text>
+<rect x="330.0" y="369" width="286.1" height="11" fill="#b0413e" opacity="0.85"/>
+<text x="620.1" y="379" font-size="10" fill="#5f5b55">187.4</text>
+<path d="M668.2 368 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="398" font-size="11" text-anchor="end" fill="#1c1b19">claude-fable-5-1: balanced-recommended</text>
+<rect x="330.0" y="388" width="288.4" height="11" fill="#6b4a9a" opacity="0.85"/>
+<text x="622.4" y="398" font-size="10" fill="#5f5b55">187.6</text>
+<path d="M725.3 387 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="417" font-size="11" text-anchor="end" fill="#1c1b19">gpt-5-6-sol: order correlation</text>
+<rect x="330.0" y="407" width="288.7" height="11" fill="#1e6b3c" opacity="0.85"/>
+<text x="622.7" y="417" font-size="10" fill="#5f5b55">187.6</text>
+<path d="M664.2 406 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="436" font-size="11" text-anchor="end" fill="#1c1b19">claude-opus-5: store_sales access paths</text>
+<rect x="330.0" y="426" width="288.9" height="11" fill="#8a5a12" opacity="0.85"/>
+<text x="622.9" y="436" font-size="10" fill="#5f5b55">187.7</text>
+<path d="M696.7 425 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="455" font-size="11" text-anchor="end" fill="#1c1b19">claude-opus-5: wide covering for index-only aggregat</text>
+<rect x="330.0" y="445" width="289.4" height="11" fill="#8a5a12" opacity="0.85"/>
+<text x="623.4" y="455" font-size="10" fill="#5f5b55">187.7</text>
+<path d="M687.0 444 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="474" font-size="11" text-anchor="end" fill="#1c1b19">gemini-3-8-flash: remote_order_and_shipping</text>
+<rect x="330.0" y="464" width="290.4" height="11" fill="#b0413e" opacity="0.85"/>
+<text x="624.4" y="474" font-size="10" fill="#5f5b55">187.8</text>
+<path d="M668.4 463 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="493" font-size="11" text-anchor="end" fill="#1c1b19">gpt-5-6-sol: customer windows</text>
+<rect x="330.0" y="483" width="294.5" height="11" fill="#1e6b3c" opacity="0.85"/>
+<text x="628.5" y="493" font-size="10" fill="#5f5b55">188.1</text>
+<path d="M652.8 482 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="512" font-size="11" text-anchor="end" fill="#1c1b19">gemini-3-8-flash: composite_joins_and_dimensions</text>
+<rect x="330.0" y="502" width="300.6" height="11" fill="#b0413e" opacity="0.85"/>
+<text x="634.6" y="512" font-size="10" fill="#5f5b55">188.6</text>
+<path d="M669.6 501 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="531" font-size="11" text-anchor="end" fill="#1c1b19">composer-2-5: returns-and-inventory</text>
+<rect x="330.0" y="521" width="301.4" height="11" fill="#7a7a7a" opacity="0.85"/>
+<text x="635.4" y="531" font-size="10" fill="#5f5b55">188.6</text>
+<path d="M679.4 520 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="550" font-size="11" text-anchor="end" fill="#1c1b19">composer-2-5: minimal-store-date-item</text>
+<rect x="330.0" y="540" width="302.9" height="11" fill="#7a7a7a" opacity="0.85"/>
+<text x="636.9" y="550" font-size="10" fill="#5f5b55">188.8</text>
+<path d="M689.3 539 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="569" font-size="11" text-anchor="end" fill="#1c1b19">gemini-3-8-flash: returns_and_address_fks</text>
+<rect x="330.0" y="559" width="303.3" height="11" fill="#b0413e" opacity="0.85"/>
+<text x="637.3" y="569" font-size="10" fill="#5f5b55">188.8</text>
+<path d="M671.1 558 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="588" font-size="11" text-anchor="end" fill="#1c1b19">claude-fable-5-1: secondary-date-and-time-keys</text>
+<rect x="330.0" y="578" width="306.2" height="11" fill="#6b4a9a" opacity="0.85"/>
+<text x="640.2" y="588" font-size="10" fill="#5f5b55">189.0</text>
+<path d="M780.7 577 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="607" font-size="11" text-anchor="end" fill="#1c1b19">composer-2-5: tri-channel-facts</text>
+<rect x="330.0" y="597" width="308.1" height="11" fill="#7a7a7a" opacity="0.85"/>
+<text x="642.1" y="607" font-size="10" fill="#5f5b55">189.2</text>
+<path d="M685.8 596 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="626" font-size="11" text-anchor="end" fill="#1c1b19">claude-fable-5-1: lean-order-number-semijoins</text>
+<rect x="330.0" y="616" width="314.9" height="11" fill="#6b4a9a" opacity="0.85"/>
+<text x="648.9" y="626" font-size="10" fill="#5f5b55">189.7</text>
+<path d="M747.8 615 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="322" y="645" font-size="11" text-anchor="end" fill="#1c1b19">none: none</text>
+<rect x="330.0" y="635" width="327.3" height="11" fill="#111" opacity="0.85"/>
+<text x="661.3" y="645" font-size="10" fill="#5f5b55">190.7</text>
+<path d="M771.4 634 l4 6 l-4 6 l-4 -6z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+</svg>
+<div class="legend"><span><i class="sw" style="background:#1d4e89"></i>grok-4-7</span><span><i class="sw" style="background:#8a5a12"></i>claude-opus-5</span><span><i class="sw" style="background:#6b4a9a"></i>claude-fable-5-1</span><span><i class="sw" style="background:#1e6b3c"></i>gpt-5-6-sol</span><span><i class="sw" style="background:#b0413e"></i>gemini-3-8-flash</span><span><i class="sw" style="background:#7a7a7a"></i>composer-2-5</span><span><i class="sw" style="background:#2a8f8f"></i>hypopg</span><span><i class="sw" style="background:#111"></i>none</span><span>&#9671; second full-database run</span></div>
+<figcaption>Source: <code>results/truth_sf1.jsonl</code> and <code>results/truth_sf1_rep.jsonl</code>. The bar axis starts at 165 s, so the visual gaps are larger than the real ones.</figcaption>
+</figure>
+<table>
+<tr><th class="num">Rank</th><th>Source</th><th>Configuration</th><th class="num">Indexes</th><th class="num">Build (s)</th><th class="num">Run 1 (s)</th><th class="num">Run 2 (s)</th></tr>
+<tr><td class='num'>1</td><td>grok-4-7</td><td>small-dimension-filters</td><td class='num'>8</td><td class='num'>1</td><td class='num'>172.9</td><td class='num'>177.3</td></tr><tr><td class='num'>2</td><td>claude-opus-5</td><td>light dimension covering</td><td class='num'>6</td><td class='num'>0</td><td class='num'>175.4</td><td class='num'>184.9</td></tr><tr><td class='num'>3</td><td>grok-4-7</td><td>cross-channel-date-item</td><td class='num'>8</td><td class='num'>4</td><td class='num'>183.7</td><td class='num'>189.1</td></tr><tr><td class='num'>4</td><td>claude-opus-5</td><td>aggressive broad coverage</td><td class='num'>8</td><td class='num'>14</td><td class='num'>183.9</td><td class='num'>189.6</td></tr><tr><td class='num'>5</td><td>gpt-5-6-sol</td><td>aggressive bottlenecks</td><td class='num'>8</td><td class='num'>11</td><td class='num'>185.1</td><td class='num'>190.0</td></tr><tr><td class='num'>6</td><td>grok-4-7</td><td>store-channel-fks</td><td class='num'>8</td><td class='num'>4</td><td class='num'>185.5</td><td class='num'>190.9</td></tr><tr><td colspan='7' class='muted'>… 21 configurations between 185 and 189 s …</td></tr><tr><td class='num'>31</td><td>composer-2-5</td><td>tri-channel-facts</td><td class='num'>3</td><td class='num'>2</td><td class='num'>189.2</td><td class='num'>192.9</td></tr><tr><td class='num'>32</td><td>claude-fable-5-1</td><td>lean-order-number-semijoins</td><td class='num'>4</td><td class='num'>1</td><td class='num'>189.7</td><td class='num'>197.8</td></tr><tr><td class='num'>33</td><td>none</td><td>none</td><td class='num'>0</td><td class='num'>0</td><td class='num'>190.7</td><td class='num'>199.6</td></tr>
+</table>
+<div class="grid2">
+<div>
+<p><b>By source (run 1, seconds).</b></p>
+<table>
+<tr><th>Source</th><th class="num">Configs</th><th class="num">Best</th><th class="num">Median</th><th class="num">Worst</th></tr>
+<tr><td>grok-4-7</td><td class='num'>5</td><td class='num'>172.9</td><td class='num'>185.5</td><td class='num'>187.3</td></tr><tr><td>claude-opus-5</td><td class='num'>5</td><td class='num'>175.4</td><td class='num'>187.1</td><td class='num'>187.7</td></tr><tr><td>gpt-5-6-sol</td><td class='num'>5</td><td class='num'>185.1</td><td class='num'>186.1</td><td class='num'>188.1</td></tr><tr><td>hypopg</td><td class='num'>2</td><td class='num'>185.9</td><td class='num'>187.1</td><td class='num'>187.1</td></tr><tr><td>composer-2-5</td><td class='num'>5</td><td class='num'>186.4</td><td class='num'>188.6</td><td class='num'>189.2</td></tr><tr><td>gemini-3-8-flash</td><td class='num'>5</td><td class='num'>186.4</td><td class='num'>187.8</td><td class='num'>188.8</td></tr><tr><td>claude-fable-5-1</td><td class='num'>5</td><td class='num'>186.5</td><td class='num'>187.6</td><td class='num'>189.7</td></tr><tr><td>none</td><td class='num'>1</td><td class='num'>190.7</td><td class='num'>190.7</td><td class='num'>190.7</td></tr>
+</table>
+</div>
+<div class="box">
+<p><span class="tag t-fact">FACT</span><b>The spread is small.</b></p>
+<ul>
+<li>No extra index: <b>190.7 s</b>. Best: <b>172.9 s</b>. About 9% apart.</li>
+<li>Seven queries hit the 20 s cap under <i>every</i> configuration, so 140 s of every total is fixed.</li>
+<li>The empty configuration is the slowest of the 33 in run 1. Every one of the 32 index sets beats it, but 31 of the 33 totals fall within 183.7 to 190.7 s.</li>
+</ul>
+</div>
+</div>
+
+<h3>9.2 Noise ceiling: the full database against itself</h3>
+<p>Same 33 configurations, same schema, same statistics fingerprint, the next morning (<code>results/truth_sf1_rep.log</code>).</p>
+<table>
+<tr><th></th><th class="num">tau (runtime)</th><th>95% interval</th><th>Top-1</th><th class="num">Regret</th></tr>
+<tr><td>Second full run vs first</td><td class="num">0.45</td><td>0.18 to 0.67</td><td>yes</td><td class="num">1.000</td></tr>
+</table>
+<ul>
+<li>The winner is the same both times (Grok's small dimension filters), and so is second place (Claude Opus's light dimension covering). Below that the order moves.</li>
+<li><b>Every configuration was slower on the second run</b>, by a median of 5.3 s (the winner went from 172.9 to 177.3 s). That is a shift of the whole machine, not shuffling around a fixed mean, and it is about a third of the 17.8 s best-to-worst spread.</li>
+<li>Adding build time to the score lifts tau between runs to 0.59, with the same winner.</li>
+</ul>
+<div class="box"><p><b>Implication.</b> A tau of about 0.45 is the ceiling to compare samples against, not 1.0. A sample at 0.45 matches the full database as well as the full database matches itself.</p></div>
+
+<h3>9.3 Ranking agreement of each sample</h3>
+<figure>
+<svg viewBox="0 0 900 288" role="img" aria-label="Kendall tau of each sample versus the full database">
+<line x1="333.3" y1="10" x2="333.3" y2="258" stroke="#e3dfd6"/><text x="333.3" y="274" font-size="11" text-anchor="middle" fill="#8a847b">0</text>
+<line x1="460.0" y1="10" x2="460.0" y2="258" stroke="#e3dfd6"/><text x="460.0" y="274" font-size="11" text-anchor="middle" fill="#8a847b">0.2</text>
+<line x1="586.7" y1="10" x2="586.7" y2="258" stroke="#e3dfd6"/><text x="586.7" y="274" font-size="11" text-anchor="middle" fill="#8a847b">0.4</text>
+<line x1="713.3" y1="10" x2="713.3" y2="258" stroke="#e3dfd6"/><text x="713.3" y="274" font-size="11" text-anchor="middle" fill="#8a847b">0.6</text>
+<line x1="840.0" y1="10" x2="840.0" y2="258" stroke="#e3dfd6"/><text x="840.0" y="274" font-size="11" text-anchor="middle" fill="#8a847b">0.8</text>
+<line x1="618.3" y1="10" x2="618.3" y2="258" stroke="#444" stroke-dasharray="4 3"/>
+<text x="555.0" y="287" font-size="11" text-anchor="middle" fill="#5f5b55">Kendall tau-b against the first full-database run (dashed = noise ceiling 0.45)</text>
+<text x="260" y="33.0" font-size="12" text-anchor="end">Full database, second run</text>
+<line x1="447.3" y1="29.0" x2="757.7" y2="29.0" stroke="#111" stroke-width="2"/><line x1="447.3" y1="24.0" x2="447.3" y2="34.0" stroke="#111" stroke-width="2"/><line x1="757.7" y1="24.0" x2="757.7" y2="34.0" stroke="#111" stroke-width="2"/>
+<circle cx="618.3" cy="29.0" r="5" fill="#111"/><text x="848" y="33.0" font-size="12" font-weight="600" fill="#111">0.45</text>
+<text x="260" y="63.0" font-size="12" text-anchor="end">Bernoulli 5%</text>
+<line x1="498.0" y1="59.0" x2="789.3" y2="59.0" stroke="#2a6299" stroke-width="2"/><line x1="498.0" y1="54.0" x2="498.0" y2="64.0" stroke="#2a6299" stroke-width="2"/><line x1="789.3" y1="54.0" x2="789.3" y2="64.0" stroke="#2a6299" stroke-width="2"/>
+<circle cx="656.3" cy="59.0" r="5" fill="#2a6299"/><text x="848" y="63.0" font-size="12" font-weight="600" fill="#2a6299">0.51</text>
+<text x="260" y="93.0" font-size="12" text-anchor="end">Page 5%</text>
+<line x1="460.0" y1="89.0" x2="770.3" y2="89.0" stroke="#2a6299" stroke-width="2"/><line x1="460.0" y1="84.0" x2="460.0" y2="94.0" stroke="#2a6299" stroke-width="2"/><line x1="770.3" y1="84.0" x2="770.3" y2="94.0" stroke="#2a6299" stroke-width="2"/>
+<circle cx="624.7" cy="89.0" r="5" fill="#2a6299"/><text x="848" y="93.0" font-size="12" font-weight="600" fill="#2a6299">0.46</text>
+<text x="260" y="123.0" font-size="12" text-anchor="end">Universe 5%</text>
+<line x1="504.3" y1="119.0" x2="732.3" y2="119.0" stroke="#2a6299" stroke-width="2"/><line x1="504.3" y1="114.0" x2="504.3" y2="124.0" stroke="#2a6299" stroke-width="2"/><line x1="732.3" y1="114.0" x2="732.3" y2="124.0" stroke="#2a6299" stroke-width="2"/>
+<circle cx="618.3" cy="119.0" r="5" fill="#2a6299"/><text x="848" y="123.0" font-size="12" font-weight="600" fill="#2a6299">0.45</text>
+<text x="260" y="153.0" font-size="12" text-anchor="end">FK closure 5%</text>
+<line x1="441.0" y1="149.0" x2="726.0" y2="149.0" stroke="#2a6299" stroke-width="2"/><line x1="441.0" y1="144.0" x2="441.0" y2="154.0" stroke="#2a6299" stroke-width="2"/><line x1="726.0" y1="144.0" x2="726.0" y2="154.0" stroke="#2a6299" stroke-width="2"/>
+<circle cx="599.3" cy="149.0" r="5" fill="#2a6299"/><text x="848" y="153.0" font-size="12" font-weight="600" fill="#2a6299">0.42</text>
+<text x="260" y="183.0" font-size="12" text-anchor="end">Stratified 5%</text>
+<line x1="327.0" y1="179.0" x2="688.0" y2="179.0" stroke="#2a6299" stroke-width="2"/><line x1="327.0" y1="174.0" x2="327.0" y2="184.0" stroke="#2a6299" stroke-width="2"/><line x1="688.0" y1="174.0" x2="688.0" y2="184.0" stroke="#2a6299" stroke-width="2"/>
+<circle cx="510.7" cy="179.0" r="5" fill="#2a6299"/><text x="848" y="183.0" font-size="12" font-weight="600" fill="#2a6299">0.28</text>
+<text x="260" y="213.0" font-size="12" text-anchor="end">Bernoulli 5%, full-DB statistics</text>
+<line x1="339.7" y1="209.0" x2="650.0" y2="209.0" stroke="#8a5a12" stroke-width="2"/><line x1="339.7" y1="204.0" x2="339.7" y2="214.0" stroke="#8a5a12" stroke-width="2"/><line x1="650.0" y1="204.0" x2="650.0" y2="214.0" stroke="#8a5a12" stroke-width="2"/>
+<circle cx="485.3" cy="209.0" r="5" fill="#8a5a12"/><text x="848" y="213.0" font-size="12" font-weight="600" fill="#8a5a12">0.24</text>
+<text x="260" y="243.0" font-size="12" text-anchor="end">Universe 5%, full-DB statistics</text>
+<line x1="352.3" y1="239.0" x2="662.7" y2="239.0" stroke="#8a5a12" stroke-width="2"/><line x1="352.3" y1="234.0" x2="352.3" y2="244.0" stroke="#8a5a12" stroke-width="2"/><line x1="662.7" y1="234.0" x2="662.7" y2="244.0" stroke="#8a5a12" stroke-width="2"/>
+<circle cx="523.3" cy="239.0" r="5" fill="#8a5a12"/><text x="848" y="243.0" font-size="12" font-weight="600" fill="#8a5a12">0.30</text>
+</svg>
+<figcaption>Bars are 95% bootstrap intervals over the 33 configurations. Blue: 5% samples with their own statistics. Brown: the same rows with full-database statistics copied on. Source: <code>results/rank_sf1_p5.md</code>.</figcaption>
+</figure>
+
+<table>
+<tr><th>Sample</th><th class="num">tau (A)</th><th>95% CI</th><th>Top-1</th><th class="num">Regret</th><th>Top-3</th><th class="num">Cost reduction</th><th class="num">with sample build</th><th>Sample's pick</th></tr>
+<tr><td>Bernoulli</td><td class="num">0.51</td><td>0.26 to 0.72</td><td>no</td><td class="num">1.014</td><td>yes</td><td class="num">42.6x</td><td class="num">25.2x</td><td>Opus light</td></tr>
+<tr><td>Page</td><td class="num">0.46</td><td>0.20 to 0.69</td><td>no</td><td class="num">1.014</td><td>yes</td><td class="num">89.5x</td><td class="num">32.6x</td><td>Opus light</td></tr>
+<tr><td>Universe</td><td class="num">0.45</td><td>0.27 to 0.63</td><td>no</td><td class="num">1.014</td><td>yes</td><td class="num">2.6x</td><td class="num">2.5x</td><td>Opus light</td></tr>
+<tr><td>FK closure</td><td class="num">0.42</td><td>0.17 to 0.62</td><td>no</td><td class="num">1.014</td><td>yes</td><td class="num">3.5x</td><td class="num">3.3x</td><td>Opus light</td></tr>
+<tr><td>Stratified</td><td class="num">0.28</td><td>-0.01 to 0.56</td><td>yes</td><td class="num">1.000</td><td>yes</td><td class="num">3.4x</td><td class="num">3.2x</td><td>Grok small</td></tr>
+<tr class="hl"><td>Bernoulli, full stats</td><td class="num">0.24</td><td>0.01 to 0.50</td><td>no</td><td class="num">1.014</td><td>no</td><td class="num">29.5x</td><td class="num">19.9x</td><td>Opus light</td></tr>
+<tr class="hl"><td>Universe, full stats</td><td class="num">0.30</td><td>0.03 to 0.52</td><td>no</td><td class="num">1.078</td><td>yes</td><td class="num">2.4x</td><td class="num">2.3x</td><td>Composer aggressive</td></tr>
+</table>
+<p class="muted">"Opus light" is <code>claude-opus-5:light_dimension_covering</code>. "Grok small" is <code>grok-4-7:small-dimension-filters</code>, the true best. Score B (build plus runtime) raises tau a little for most samples (page goes to 0.64) and does not change the picks, except stratified, which then also misses. Q59 divides by zero on the universe sample under every configuration. The harness counts that as the cap, adds the same amount to all 33, and so does not change the ranking.</p>
+
+<h3>9.4 What the samples actually agree on <span class="tag t-derived">DERIVED</span></h3>
+<p>I computed the true-best's and each pick's position from the result files for this guide.</p>
+<ul>
+<li>On all five native samples, the sample's top two are <b>the same two configurations as the full database's top two</b>, with ranks 1 and 2 swapped in four of them (Bernoulli, page, universe, FK closure). Stratified has them in the right order. The third place differs (full-database rank 14 in all five samples).</li>
+<li>With full statistics copied on, Bernoulli pushes the true best down to sample rank 11, and Universe's pick becomes a configuration that is only 11th on the full database.</li>
+<li>Workload time on the no-index configuration: 190.7 s full, 4.4 s Bernoulli, 2.1 s page, 72.7 s universe, 53.6 s FK closure, 55.2 s stratified. The last three keep the dimension tables whole, which is where their lower savings come from.</li>
+</ul>
+
+<h3>9.5 Statistics transplant</h3>
+<table>
+<tr><th></th><th class="num">tau</th><th>CI</th><th>Top-3</th><th class="num">Regret</th></tr>
+<tr><td>Bernoulli, own statistics</td><td class="num">0.51</td><td>0.26 to 0.72</td><td>yes</td><td class="num">1.014</td></tr>
+<tr class="hl"><td>Bernoulli, full statistics</td><td class="num">0.24</td><td>0.01 to 0.50</td><td>no</td><td class="num">1.014</td></tr>
+<tr><td>Universe, own statistics</td><td class="num">0.45</td><td>0.27 to 0.63</td><td>yes</td><td class="num">1.014</td></tr>
+<tr class="hl"><td>Universe, full statistics</td><td class="num">0.30</td><td>0.03 to 0.52</td><td>yes</td><td class="num">1.078</td></tr>
+</table>
+<p>Copying full statistics made both rankings worse. The intervals overlap with the own-statistics ones, so this is a direction, not a measured gap. It is the opposite of what I expected, and in the earlier per-query pilot the same transplant helped slightly (<code>docs/lab-notes.md</code>), so I would not treat it as settled.</p>
+
+<h2 id="why">10. Why the numbers look like this <span class="tag t-derived">DERIVED</span></h2>
+<p>This section is my own reading of the per-query rows in <code>truth_sf1.jsonl</code> and goes beyond what the project docs say. <b>Please check it before relying on it.</b></p>
+<h3>The two winners win mainly by fixing one capped query</h3>
+<p>Comparing each configuration's per-query times with the no-index run:</p>
+<ul>
+<li>The two best configurations (Grok small dimension filters, Opus light dimension covering) each bring <b>Q6 from the 20 s cap to about 10 s</b> and Q14 from 7.0 s to about 3.7 s. Their timeouts drop from 7 to 6.</li>
+<li>The third-best (Grok cross-channel) fixes only Q14. That alone is worth about 3.4 s, and it lands at 183.7 s.</li>
+<li>Both winners put indexes on the filtered columns of <code>date_dim</code> (<code>d_year, d_moy</code>, <code>d_month_seq</code>, <code>d_date</code>). Q6 filters on exactly those columns. I have not run an ablation to prove the causal link, so treat it as likely.</li>
+</ul>
+<div class="box warn"><p><b>What follows.</b></p>
+<ul>
+<li>Most of the 33 configurations are effectively equal. The order among the middle 20 or so is mostly noise, and that is why tau cannot exceed about 0.45 even on a repeat.</li>
+<li>The real signal is coarse: "does this configuration fix Q6 and Q14?" The samples agree on that, which is why they find the same top two.</li>
+<li>The winner's true advantage is understated, since Q6 is censored at 20 s. Its real unconstrained time is unknown.</li>
+<li>The 2.4 s gap between first and second on the full database (1.4%) is the "regret" of four of the five samples. Whether the sample picks first or second is nearly a coin flip, and the repeat run has the same two at 177.3 and 184.9 s.</li>
+</ul></div>
+<h3>Why cost reduction differs so much between samplers</h3>
+<p>Bernoulli and page shrink every table, including dimension tables, so everything runs 40 to 90 times faster. Universe, FK closure and stratified keep dimension tables in full, so queries that are dominated by dimension scans still cost a lot, giving only about 3x.</p>
+
+<h2 id="expected">11. What was expected, and what happened</h2>
+<table>
+<tr><th>Expectation</th><th>Outcome</th></tr>
+<tr><td>A small sample can identify the execution-time-best configuration.</td><td><b>Partly.</b> The exact best is found by 1 of 5 native samples. The pick is within 1.4% of the best in the other 4, and the best is always in the top 3.</td></tr>
+<tr><td>Join-aware samplers (universe, FK closure) beat random.</td><td><b>No.</b> Equal ranking quality at about 3x savings instead of 40x or more.</td></tr>
+<tr><td>Copying the full statistics makes the planner choose full-database plans and improves fidelity.</td><td><b>No.</b> Both transplanted samples ranked worse.</td></tr>
+<tr><td>Stratified sampling protects against skew.</td><td><b>No clear effect.</b> It gets top-1 but has the lowest tau (0.28, interval reaches 0). With build time added it misses too.</td></tr>
+<tr><td>Samples rank like the full database.</td><td><b>To within noise.</b> tau 0.42 to 0.51 against a ceiling of 0.45.</td></tr>
+<tr><td>(Not expected) The repeat full-database run disagrees with itself.</td><td>tau 0.45. This is the most important context for reading everything else.</td></tr>
+</table>
+
+<h2 id="threats">12. Threats to validity <span class="tag t-risk">RISK</span></h2>
+<ol>
+<li><b>One seed and one sampling rate.</b> Every sample number is one random draw. Differences between samplers of 0.05 in tau are well inside the intervals.</li>
+<li><b>Tiny differences between configurations.</b> 31 of 33 within 4%, and the ceiling is 0.45. The experiment has limited power to separate samplers even in principle.</li>
+<li><b>Censoring.</b> Seven queries are capped under every configuration, and Q6 (a main differentiator) is capped under the empty configuration. Real gains are understated.</li>
+<li><b>Scale.</b> SF=1 fits in memory, so I/O behaviour at scale is not tested. Queries on the sample that take milliseconds may behave differently from the full ones. The earlier SF=10 work was a per-query pilot, not a protocol result.</li>
+<li><b>Different engine from the assignment.</b> PostgreSQL's planner, not SQL Server's. Sampling and statistics behaviour may differ.</li>
+<li><b>Measurement drift.</b> The second full run was uniformly 5 s slower. The first-run ranking is itself one noisy draw, and the comparison target is that single run.</li>
+<li><b>Candidate pool.</b> 33 configurations from six LLMs, heavily clustered. Wide diversity (clearly bad configurations, clearly good ones) would make ranking easier and may change conclusions. The empty configuration is the only clearly bad one.</li>
+<li><b>Statistics transplant is crude.</b> Statistics are copied by column name and indexes are not rebuilt to match. A negative result is for this implementation, not for the idea in general.</li>
+<li><b>The Q6/Q14 explanation in section 10 is inferred</b> from per-query times and not tested by ablation.</li>
+<li><b>Not compared against optimizer cost.</b> The motivation relies on Wu et al. We did not re-measure how often HypoPG's pick differs from the runtime pick on this workload.</li>
+<li><b>Not independent of the author.</b> The protocol, the scoring and the interpretation were chosen by the same person who ran the experiment. Several choices (score, cap, repeats) were informed by the earlier pilot data, so they are not blind to it. The history is in <code>docs/lab-notes.md</code>.</li>
+</ol>
+
+<h2 id="history">13. How the work got here (so you can judge the process)</h2>
+<ul>
+<li><b>Early pilot (September).</b> Per-query ranking of single HypoPG indexes on an index-sensitive subset of queries, on 5% samples. Agreement with the full-database winner was 27 to 40%.</li>
+<li><b>Repeat showed the target was noisy.</b> The full database re-run against itself agreed on the winner only 47% of the time per query, with tau 0.32. The pilot therefore could not separate sampler quality from noise, and the conclusion was not to claim success or failure.</li>
+<li><b>Q72 retraction.</b> An early positive result on one query (Q72) was withdrawn after cache state, unfrozen statistics and timeouts were found to explain it. Those problems became the measurement rules above. Retracted files are marked in <code>docs/files.md</code>.</li>
+<li><b>SF=10 attempt.</b> A cold first pass produced speedups of 1000x that were just cache warmth. A warm re-screen kept 21 of 25 queries. Single queries ran for hours, which is why the protocol moved to SF=1.</li>
+<li><b>5 October redesign.</b> I noticed the work had drifted from the protocol (per query, single indexes, no LLM, filtered queries). The experiment was redone as specified: configurations, whole workload, LLM advisors, all 99 queries.</li>
+<li><b>Plan skeleton check.</b> In the pilot, 143 of 151 query-index pairs had a different plan shape on the Bernoulli sample than on the full database. A matching winner is therefore not evidence of a matching plan.</li>
+</ul>
+
+<h2 id="guidance">14. Guidance for you as the reviewer</h2>
+<h3>What I most want feedback on</h3>
+<ol>
+<li><b>Is the headline defensible?</b> "5% samples rank about as well as the full database ranks itself, and pick a configuration 1.4% from the best". Given the small spread and one seed, would you phrase it differently?</li>
+<li><b>Is the ranking score the right one?</b> A sum of 99 times is dominated by Q6, Q14 and the capped queries. Would you prefer a per-query comparison, a log-ratio score, or only the uncapped queries?</li>
+<li><b>Should the cap be raised or removed?</b> It hides the size of the main effect. The cost is wall-clock time.</li>
+<li><b>Is the noise ceiling argument fair?</b> I use one repeat run as the ceiling. Would you want more repeats before treating 0.45 as the bound?</li>
+<li><b>What would convince you the statistics-transplant result is real or an artifact?</b></li>
+</ol>
+
+<h3>Questions to ask that I think are the most revealing</h3>
+<ul>
+<li>If the full database's own repeat gives tau 0.45, what would a sample have to score to count as "worse" than the full database?</li>
+<li>Does the sample keep its top two because the sample is faithful, or because Q6 and Q14 are so large that anything notices them?</li>
+<li>If 20 of the 33 configurations are indistinguishable, is the ranking metric measuring the sampler at all, or mostly measuring noise among ties?</li>
+<li>Would a candidate pool with more clearly good and clearly bad configurations change the answer?</li>
+<li>Do the conclusions survive a different seed, rate (1%, 10%), or scale (SF=10)?</li>
+</ul>
+
+<h3>What would change my mind</h3>
+<ul>
+<li>Several seeds per sampler showing a consistent ordering between samplers would turn the "no difference" finding into a real result in either direction.</li>
+<li>A repeat full run with a narrower noise band (for example after fixing the machine-level drift).</li>
+<li>An ablation of the two winners without the indexes that touch Q6 and Q14. If the ranking among the rest collapses, the results are about two queries, not about index quality in general.</li>
+</ul>
+
+<h3>Suggested next experiments (in order)</h3>
+<ol>
+<li>Three to five seeds at 5%, with the same 33 configurations.</li>
+<li>1% and 10% samples, as the assignment asks.</li>
+<li>Repeat the full database a third and fourth time, to tighten the noise ceiling.</li>
+<li>Raise the cap (or measure the capped queries separately) and re-score.</li>
+<li>SF=10 for the best two or three samplers, on a reduced configuration set.</li>
+<li>A workload-aware sampler that keeps the rows touched by the filter predicates.</li>
+<li>The same study on SQL Server, as the assignment specifies.</li>
+</ol>
+
+<h3>Review checklist</h3>
+<ul class="check">
+<li>The protocol in <code>docs/protocol.md</code> is the same one that the code in <code>scripts/eval_configs.py</code> implements.</li>
+<li>The same rules (cap, repeats, statistics) were applied to the full database and to every sample.</li>
+<li>Advisor transcripts show no access to measured results (Gemini's first run is excluded for that reason).</li>
+<li>Every claim in sections 9 and 11 has an interval or a "one seed" note next to it.</li>
+<li>The numbers in the tables above match <code>results/rank_sf1_p5.md</code>.</li>
+<li>The deviations from the assignment in section 2 are acceptable.</li>
+</ul>
+
+<h2 id="files">15. Where things are</h2>
+<table>
+<tr><th>What</th><th>Where</th></tr>
+<tr><td>The assignment</td><td><code>problem_statement.md</code></td></tr>
+<tr><td>Protocol and decisions</td><td><code>docs/protocol.md</code></td></tr>
+<tr><td>Number tables and narrative</td><td><code>docs/results.md</code>, <code>results/rank_sf1_p5.md</code>, one-page figures in <code>results.html</code></td></tr>
+<tr><td>Why measurement rules exist</td><td><code>docs/lab-notes.md</code>, <code>docs/meeting-notes.md</code></td></tr>
+<tr><td>Related work, taxonomy, reading list</td><td><code>docs/related-work.md</code>, <code>docs/sampling-taxonomy.md</code>, <code>docs/literature.md</code>, <code>papers/</code></td></tr>
+<tr><td>Raw measurements</td><td><code>results/truth_sf1.jsonl</code> and <code>truth_sf1_rep.jsonl</code> (full database, two runs), <code>results/dprime_tpcds_sf1_*.jsonl</code> (samples), <code>results/samples.jsonl</code> (sample builds)</td></tr>
+<tr><td>Candidates</td><td><code>advisors/prompt.md</code>, <code>results/advisors/*.json</code>, <code>results/configs_sf1.json</code></td></tr>
+<tr><td>Code</td><td><code>scripts/make_sample.py</code>, <code>scripts/eval_configs.py</code>, <code>scripts/rank_metrics.py</code>, <code>scripts/transplant_stats.py</code>, <code>scripts/build_configs.py</code></td></tr>
+<tr><td>Step-by-step diagrams</td><td><code>protocol.html</code></td></tr>
+<tr><td>Reproduce one run</td><td><code>README.md</code></td></tr>
+</table>
+<p class="muted">Quick re-check of the headline numbers: <code>python3 scripts/rank_metrics.py --truth results/truth_sf1.jsonl --sample results/dprime_tpcds_sf1_b0_p5.jsonl</code>.</p>
+
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the experiment is built</title>
+<style>
+  :root {
+    --ink: #1c1b19;
+    --muted: #5f5b55;
+    --faint: #8a847b;
+    --line: #e3dfd6;
+    --paper: #fffcf7;
+    --blue: #1d4e89;
+    --fill: #eef3f8;
+    --amber: #8a5a12;
+    --amber-fill: #f6eee0;
+    --green: #1e6b3c;
+    --green-fill: #e6f2ea;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 28px 72px; }
+  h1 { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; margin: 0 0 8px; }
+  h2 { font-size: 18px; font-weight: 650; margin: 40px 0 8px; }
+  h3 { font-size: 15px; font-weight: 650; margin: 20px 0 6px; }
+  p { margin: 0 0 10px; }
+  .lede { color: var(--muted); max-width: 72ch; }
+  .meta { color: var(--faint); font-size: 13px; margin-bottom: 28px; }
+  .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; margin: 16px 0 8px; }
+  .box {
+    flex: 1 1 140px;
+    min-width: 120px;
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .box strong { display: block; font-size: 12px; color: var(--blue); margin-bottom: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .arrow { align-self: center; color: var(--faint); font-size: 20px; flex: 0 0 auto; }
+  .note { font-size: 13px; color: var(--muted); }
+  .math {
+    font-family: "Times New Roman", Times, serif;
+    background: var(--fill);
+    padding: 12px 14px;
+    margin: 8px 0 12px;
+    font-size: 15px;
+    overflow-x: auto;
+  }
+  .math small { display: block; font-family: inherit; color: var(--muted); font-size: 13px; margin-top: 6px; }
+  figure { margin: 16px 0 8px; }
+  figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; max-width: 80ch; }
+  svg { display: block; width: 100%; height: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0 16px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; font-weight: 650; color: var(--muted); }
+  .tag { display: inline-block; font-size: 11px; padding: 1px 6px; border: 1px solid var(--line); margin-left: 6px; color: var(--muted); }
+  .done { background: var(--green-fill); }
+  .partial { background: var(--amber-fill); }
+  .todo { background: #f3f1ec; }
+  details { margin: 8px 0; border: 1px solid var(--line); padding: 8px 12px; background: #fff; }
+  summary { cursor: pointer; font-weight: 650; font-size: 14px; }
+  ol.tight { margin: 8px 0 12px 20px; padding: 0; }
+  ol.tight li { margin: 4px 0; }
+  @media print { body { background: #fff; } main { padding: 0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>What the experiment does, step by step</h1>
+  <p class="lede">The question is whether the index configuration that wins on a sample of the database is the same one that wins on the full database, and whether that depends on how the sample is built.</p>
+  <p class="meta">TPC-DS, PostgreSQL 14, 99 queries. A configuration is a set of indexes. Ground truth is a real CREATE INDEX and a measured runtime, not optimizer cost. This page is the procedure. The numbers are in results.html.</p>
+
+  <h2>1. The question in one picture</h2>
+  <p class="lede">Wu et al. showed that the cheapest plan under the optimizer is often not the fastest plan when you run it. Checking that properly means building indexes and timing them, which is expensive. The sample is supposed to be a cheaper stand-in for that check.</p>
+  <figure>
+    <svg viewBox="0 0 920 220" role="img" aria-label="Full database ranking versus sample ranking">
+      <rect x="20" y="30" width="360" height="150" fill="#fff" stroke="#e3dfd6"/>
+      <text x="40" y="58" font-size="13" fill="#1d4e89" font-family="inherit">FULL DATABASE D</text>
+      <text x="40" y="84" font-size="13" fill="#1c1b19" font-family="inherit">Build each configuration C</text>
+      <text x="40" y="104" font-size="13" fill="#1c1b19" font-family="inherit">Time all 99 queries</text>
+      <text x="40" y="124" font-size="13" fill="#1c1b19" font-family="inherit">Score(C) = sum of query times</text>
+      <text x="40" y="154" font-size="13" fill="#5f5b55" font-family="inherit">Rank: C*(D) = argmin Score(C)</text>
+
+      <rect x="540" y="30" width="360" height="150" fill="#eef3f8" stroke="#e3dfd6"/>
+      <text x="560" y="58" font-size="13" fill="#1d4e89" font-family="inherit">SAMPLE D'</text>
+      <text x="560" y="84" font-size="13" fill="#1c1b19" font-family="inherit">Same configurations</text>
+      <text x="560" y="104" font-size="13" fill="#1c1b19" font-family="inherit">Same 99 queries</text>
+      <text x="560" y="124" font-size="13" fill="#1c1b19" font-family="inherit">Same scoring rule</text>
+      <text x="560" y="154" font-size="13" fill="#5f5b55" font-family="inherit">Rank: C*(D') = argmin Score'(C)</text>
+
+      <path d="M390 105 L530 105" stroke="#1c1b19" fill="none"/>
+      <polygon points="530,105 518,99 518,111" fill="#1c1b19"/>
+      <text x="460" y="96" text-anchor="middle" font-size="12" fill="#5f5b55" font-family="inherit">compare</text>
+    </svg>
+    <figcaption>Success is not "the sample is faster." Success is C*(D') = C*(D), plus a ranking that agrees, at a much lower evaluation cost.</figcaption>
+  </figure>
+
+  <h2>2. The six steps Srinivas asked for</h2>
+  <div class="flow">
+    <div class="box"><strong>1</strong>Generate candidate configurations. A configuration may contain more than one index.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>2</strong>Evaluate every configuration on the full database: index build time, and total workload runtime.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>3</strong>That ranking is ground truth.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>4</strong>Build a reduced database D'.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>5</strong>Evaluate the same workload on D'.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>6</strong>Compare rankings: Kendall tau, top-1, evaluation cost reduction.</div>
+  </div>
+  <p class="note">All 99 queries are kept. Candidates come from several models, not only HypoPG.</p>
+
+  <h2>3. How a configuration is made</h2>
+  <p class="lede">The advisor sees the schema, the existing primary keys, and the 99 query texts. It does not see the data and does not run SQL. Each model writes five sets of at most eight indexes.</p>
+  <ol class="tight">
+    <li>Six models, isolated: Claude Opus 5, Claude Fable 5.1, GPT 5.6 Sol, Gemini 3.8 Flash, Grok 4.7, Composer 2.5.</li>
+    <li>Plus an empty configuration (no extra index).</li>
+    <li>Plus HypoPG greedy: the five and eight indexes with the largest summed optimizer-cost gain. That is a baseline, not the ground truth.</li>
+    <li><code>build_configs.py</code> drops unknown columns, tables under 1000 rows, indexes that already exist, and duplicates. Result: 33 configurations, 194 indexes, in <code>results/configs_sf1.json</code>.</li>
+  </ol>
+  <figure>
+    <svg viewBox="0 0 920 130" role="img" aria-label="Advisor inputs to configuration file">
+      <rect x="10" y="20" width="170" height="90" fill="#fff" stroke="#e3dfd6"/>
+      <text x="24" y="48" font-size="12" fill="#1c1b19" font-family="inherit">schema_tables.txt</text>
+      <text x="24" y="68" font-size="12" fill="#1c1b19" font-family="inherit">existing_indexes.txt</text>
+      <text x="24" y="88" font-size="12" fill="#1c1b19" font-family="inherit">01.sql … 99.sql</text>
+      <path d="M180 65 L250 65" stroke="#1c1b19"/>
+      <rect x="250" y="20" width="200" height="90" fill="#eef3f8" stroke="#e3dfd6"/>
+      <text x="264" y="58" font-size="12" fill="#1c1b19" font-family="inherit">6 models × 5 configs</text>
+      <text x="264" y="78" font-size="12" fill="#5f5b55" font-family="inherit">no database access</text>
+      <path d="M450 65 L520 65" stroke="#1c1b19"/>
+      <rect x="520" y="20" width="180" height="90" fill="#fff" stroke="#e3dfd6"/>
+      <text x="534" y="58" font-size="12" fill="#1c1b19" font-family="inherit">+ none</text>
+      <text x="534" y="78" font-size="12" fill="#1c1b19" font-family="inherit">+ HypoPG top 5, 8</text>
+      <path d="M700 65 L770 65" stroke="#1c1b19"/>
+      <rect x="770" y="20" width="140" height="90" fill="#e6f2ea" stroke="#e3dfd6"/>
+      <text x="784" y="68" font-size="12" fill="#1c1b19" font-family="inherit">33 configs</text>
+    </svg>
+  </figure>
+
+  <h2>4. How one configuration is timed</h2>
+  <p class="lede">One configuration at a time, so they do not share indexes. Statistics are analyzed once per database and then frozen. Autovacuum is off. Each result row stores a statistics fingerprint.</p>
+  <div class="flow">
+    <div class="box"><strong>Create</strong>CREATE INDEX for every index in the set. Sum of those wall times is the build time.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>Warm-up</strong>Run each query once and throw the time away.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>Time</strong>If warm-up ≤ 2 s, two timed runs; else one. Report the median. Cap 20 s, counted as 20 s.</div>
+    <div class="arrow">→</div>
+    <div class="box"><strong>Drop</strong>DROP INDEX, then the next configuration.</div>
+  </div>
+  <div class="math">
+    Score<sub>A</sub>(C) = Σ<sub>q=1..99</sub> median_time(q, C) &nbsp;&nbsp;&nbsp; (primary)
+    <br>
+    Score<sub>B</sub>(C) = build_time(C) + Score<sub>A</sub>(C) &nbsp;&nbsp;&nbsp; (secondary)
+    <small>Lower is better. A query that errors or hits the cap is recorded as 20 s. The same rule is used on D and on D'.</small>
+  </div>
+
+  <h2>5. How a sample is built</h2>
+  <p class="lede">TPC-DS is a snowflake: fact tables join to dimensions on foreign keys. If you sample two tables independently, the join is about p² of the original, often empty. That is why there is more than one sampler. After loading, primary keys are applied and VACUUM (ANALYZE) is run once.</p>
+  <p class="note">Notation: table T has n<sub>T</sub> rows. Target rate p = pct / 100 (here 0.05). Seed s = 42. Fact tables are store/catalog/web sales and returns, plus inventory. Everything else is a dimension.</p>
+
+  <h3>SQL:Trek sizing (used by Bernoulli and page)</h3>
+  <div class="math">
+    k<sub>T</sub> = min( max(p · n<sub>T</sub>, 20 000), 1 000 000 · (p / 0.05), n<sub>T</sub> )
+    <br>
+    r<sub>T</sub> = k<sub>T</sub> / n<sub>T</sub>
+    <small>Floor 20 000 rows, cap 1 million at 5% (scaled with p). Tiny dimension tables are kept in full because r<sub>T</sub> hits 1.</small>
+  </div>
+
+  <h3>B0. Bernoulli, independent per table</h3>
+  <p>Each row of each table is kept independently. In PostgreSQL this is <code>TABLESAMPLE BERNOULLI (100 r_T) REPEATABLE (s)</code>.</p>
+  <div class="math">
+    For row x in T: &nbsp; P(x ∈ D') = r<sub>T</sub>
+    <br>
+    E[ |T'| ] = r<sub>T</sub> n<sub>T</sub>
+    <br>
+    For an FK join T ⋈ U on key k, if both are sampled: &nbsp; E[ |T' ⋈ U'| ] ≈ r<sub>T</sub> r<sub>U</sub> |T ⋈ U|
+    <small>That product is the TPC-DS trap. At p = 0.05 the join is about 0.25% of the original if both sides shrink.</small>
+  </div>
+
+  <h3>B1. Page sampling</h3>
+  <p>Same target size r<sub>T</sub>, but whole pages are kept or dropped. <code>TABLESAMPLE SYSTEM</code>. Cheaper to build. Biased if values cluster on disk (TPC-DS loaded by COPY is ordered by date).</p>
+  <div class="math">
+    For page π of T: &nbsp; P(π ∈ D') = r<sub>T</sub>
+    <br>
+    Rows in a kept page are all kept. Rows in a dropped page are all gone.
+    <small>Not IID. Adjacent keys are correlated. Fine as a cheap baseline; not a model of a uniform row sample.</small>
+  </div>
+
+  <h3>C2. Universe on the item key</h3>
+  <p>A hash of the item key decides membership, the same hash in every fact table. Dimension tables are copied in full. Per-item join fan-out is preserved. The set of items shrinks.</p>
+  <div class="math">
+    Keep buckets B = round(100 p) out of 10 000.
+    <br>
+    Keep fact row x iff &nbsp; (hash<sub>s</sub>(item_sk(x)) mod 10 000) &lt; B
+    <br>
+    Keep every dimension row.
+    <small>If two facts join on item_sk, a pair survives iff the item is in the kept universe. Expected fraction of such pairs is about p, not p². A query that filters on date still sees a full date_dim and a thinned fact.</small>
+  </div>
+
+  <h3>C1. Foreign-key closure</h3>
+  <p>Sample the three sales facts independently at rate p. Keep a returns row if its matching sale was kept. Keep inventory rows for sampled items, then Bernoulli-thin inventory at rate p. Dimensions in full.</p>
+  <div class="math">
+    Sales S: &nbsp; P(row ∈ D') = p &nbsp; (Bernoulli)
+    <br>
+    Returns R of sale s: &nbsp; keep iff s ∈ S'
+    <br>
+    Inventory I: keep with probability p, among rows whose item appears in S'
+    <br>
+    Dimensions: copy in full
+    <small>This is a join synopsis on the sale → return edge. Sales of different channels are still independent of each other.</small>
+  </div>
+
+  <h3>C3. Stratified on sold date</h3>
+  <p>On each sales table, partition by sold-date key. Keep at least 5 rows per date, then keep further rows with probability p. Other facts use the Bernoulli sizing rule. Dimensions in full.</p>
+  <div class="math">
+    For sales table S, stratum d = sold_date_sk:
+    <br>
+    keep row x if rank_d(x) ≤ 5 &nbsp; or &nbsp; U<sub>x</sub> &lt; p &nbsp; (U uniform on [0,1])
+    <small>Stops a rare date from vanishing. Not the full STRAT optimiser (Chaudhuri, Das, Narasayya 2007), which picks strata to minimise workload error. This is date-stratified sampling with a floor.</small>
+  </div>
+
+  <h3>C4. Statistics transplant (not a different set of rows)</h3>
+  <p>Keep the sample's rows. Overwrite <code>pg_statistic</code> and <code>pg_class.reltuples / relpages</code> with the full database's values. The planner is told the table is large. The index built on the sample is still small. Do not ANALYZE afterwards.</p>
+  <div class="math">
+    data(D') unchanged, &nbsp; stats(D') ← stats(D)
+    <small>SQL:Trek listed this as future work ("virtual statistics"). The question is whether a wrong ranking was caused by the rows or by ANALYZE on the sample. Index statistics are not copied.</small>
+  </div>
+
+  <h3>Not built</h3>
+  <p>C5 workload-aware / predicate-witness sampling (keep rows the queries actually touch). That is still in the proposal and in the taxonomy. It was not implemented.</p>
+
+  <h2>6. How the two rankings are compared</h2>
+  <p class="lede">Let x<sub>C</sub> be Score<sub>A</sub>(C) on the full database and y<sub>C</sub> the same score on D'. There are n = 33 configurations.</p>
+  <div class="math">
+    Kendall tau-b: over pairs {C, C'}, count concordant vs discordant orderings of (x, y), with ties handled.
+    <br>
+    τ ∈ [-1, 1]. Interval: 1000 bootstrap resamples of the 33 configurations, 2.5 and 97.5 percentiles.
+    <br><br>
+    Top-1: &nbsp; argmin_C y<sub>C</sub> &nbsp;=?&nbsp; argmin_C x<sub>C</sub>
+    <br>
+    Regret: &nbsp; x<sub>pick</sub> / min_C x<sub>C</sub> &nbsp; (1.0 is perfect)
+    <br>
+    Top-3: is argmin x among the three smallest y?
+    <br>
+    Cost reduction: &nbsp; Σ_C (build + workload)_D &nbsp;/&nbsp; Σ_C (build + workload)<sub>D'</sub>
+    <small>The "including sample build" column adds the time in results/samples.jsonl to the denominator.</small>
+  </div>
+
+  <h2>7. What has been run, and what has not</h2>
+  <table>
+    <thead>
+      <tr><th>Step</th><th>Status</th><th>Where</th></tr>
+    </thead>
+    <tbody>
+      <tr class="done"><td>33 configurations from six models + none + HypoPG</td><td>done</td><td>results/configs_sf1.json</td></tr>
+      <tr class="done"><td>Full SF=1 ranking, 99 queries, 20 s cap</td><td>done</td><td>results/truth_sf1.jsonl</td></tr>
+      <tr class="done"><td>Repeat of that ranking (noise ceiling)</td><td>done</td><td>results/truth_sf1_rep.jsonl</td></tr>
+      <tr class="done"><td>5% B0, B1, C1, C2, C3, own statistics</td><td>done</td><td>results/dprime_tpcds_sf1_*_p5.jsonl</td></tr>
+      <tr class="partial"><td>C4 on Bernoulli and universe only</td><td>two of five</td><td>results/dprime_*_c4.jsonl</td></tr>
+      <tr class="todo"><td>Rates 0.1%, 1%, 10%; extra seeds</td><td>not started</td><td></td></tr>
+      <tr class="todo"><td>C5 workload-aware sample</td><td>not built</td><td></td></tr>
+      <tr class="todo"><td>Configuration-level run at SF=10 or 100 GB SQL Server</td><td>not started</td><td>SF=10 was only a per-query screen</td></tr>
+    </tbody>
+  </table>
+  <p class="note">The SF=1 full-database ranking only agrees with itself at tau 0.45. Sampler comparisons at this scale sit on that ceiling. The next honest test is a scale where the winner is stable. Details in docs/protocol.md and docs/results.md. Numbers in results.html.</p>
+
+  <details>
+    <summary>Scripts that implement each box</summary>
+    <p class="note" style="margin-top:8px">
+      Advisors: <code>advisors/prompt.md</code>. Merge: <code>scripts/build_configs.py</code>.
+      Time a configuration: <code>scripts/eval_configs.py</code>.
+      Build D': <code>scripts/make_sample.py</code>.
+      Copy stats: <code>scripts/transplant_stats.py</code>.
+      Score: <code>scripts/rank_metrics.py</code>.
+      What each file is: <code>docs/files.md</code>.
+    </p>
+  </details>
+</main>
+</body>
+</html>
