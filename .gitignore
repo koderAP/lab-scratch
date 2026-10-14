@@ -1,6 +1,12 @@
 data/
-results/*.jsonl
 .DS_Store
 __pycache__/
 *.pyc
 papers/*.pdf
+review.aux
+review.fdb_latexmk
+review.fls
+review.log
+review.out
+review.toc
+review.synctex.gz

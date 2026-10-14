@@ -1,15 +1,16 @@
 """Shared PostgreSQL helpers used by the protocol scripts.
 
-Database is always `col868`. Query text lives in workloads/tpcds/NN.sql.
+Database is `col868` unless COL868_DB is set. Query text lives in workloads/tpcds/NN.sql.
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
 
-DB = "col868"
+DB = os.environ.get("COL868_DB", "col868")
 ROOT = Path(__file__).resolve().parents[1]
 QUERY_DIR = ROOT / "workloads" / "tpcds"
 

@@ -20,9 +20,10 @@ Usage: transplant_stats.py --src tpcds_sf1 --dst tpcds_sf1_b0_p5
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 
-DB = "col868"
+DB = os.environ.get("COL868_DB", "col868")
 
 COPY_STATS = """
 DELETE FROM pg_statistic s

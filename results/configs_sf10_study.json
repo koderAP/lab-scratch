@@ -1,0 +1,461 @@
+{
+ "schema": "tpcds_sf10",
+ "queries": [
+  10,
+  13,
+  17,
+  21,
+  23,
+  25,
+  26,
+  27,
+  28,
+  29,
+  36,
+  41,
+  44,
+  58,
+  63,
+  65,
+  70,
+  76,
+  88,
+  90,
+  94,
+  96,
+  99
+ ],
+ "configs": [
+  {
+   "id": "none:none",
+   "n": 0,
+   "source": "none",
+   "name": "none",
+   "rationale": "no extra index",
+   "indexes": []
+  },
+  {
+   "id": "screen:q10",
+   "n": 10,
+   "source": "hypopg-screen",
+   "name": "q10",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q10",
+   "indexes": [
+    {
+     "table": "customer",
+     "columns": [
+      "c_current_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c10_0",
+     "ddl": "CREATE INDEX ix_c10_0 ON customer (c_current_addr_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q13",
+   "n": 13,
+   "source": "hypopg-screen",
+   "name": "q13",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q13",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c13_0",
+     "ddl": "CREATE INDEX ix_c13_0 ON date_dim (d_date_sk, d_year)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q17",
+   "n": 17,
+   "source": "hypopg-screen",
+   "name": "q17",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q17",
+   "indexes": [
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c17_0",
+     "ddl": "CREATE INDEX ix_c17_0 ON store_returns (sr_returned_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q21",
+   "n": 21,
+   "source": "hypopg-screen",
+   "name": "q21",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q21",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date",
+      "d_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c21_0",
+     "ddl": "CREATE INDEX ix_c21_0 ON date_dim (d_date, d_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q23",
+   "n": 23,
+   "source": "hypopg-screen",
+   "name": "q23",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q23",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c23_0",
+     "ddl": "CREATE INDEX ix_c23_0 ON date_dim (d_date_sk, d_year)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q25",
+   "n": 25,
+   "source": "hypopg-screen",
+   "name": "q25",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q25",
+   "indexes": [
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c25_0",
+     "ddl": "CREATE INDEX ix_c25_0 ON store_returns (sr_returned_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q26",
+   "n": 26,
+   "source": "hypopg-screen",
+   "name": "q26",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q26",
+   "indexes": [
+    {
+     "table": "item",
+     "columns": [
+      "i_item_id"
+     ],
+     "include": [],
+     "name": "ix_c26_0",
+     "ddl": "CREATE INDEX ix_c26_0 ON item (i_item_id)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q27",
+   "n": 27,
+   "source": "hypopg-screen",
+   "name": "q27",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q27",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_cdemo_sk"
+     ],
+     "include": [],
+     "name": "ix_c27_0",
+     "ddl": "CREATE INDEX ix_c27_0 ON store_sales (ss_cdemo_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q28",
+   "n": 28,
+   "source": "hypopg-screen",
+   "name": "q28",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q28",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_quantity"
+     ],
+     "include": [],
+     "name": "ix_c28_0",
+     "ddl": "CREATE INDEX ix_c28_0 ON store_sales (ss_quantity)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q29",
+   "n": 29,
+   "source": "hypopg-screen",
+   "name": "q29",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q29",
+   "indexes": [
+    {
+     "table": "store_returns",
+     "columns": [
+      "sr_returned_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c29_0",
+     "ddl": "CREATE INDEX ix_c29_0 ON store_returns (sr_returned_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q36",
+   "n": 36,
+   "source": "hypopg-screen",
+   "name": "q36",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q36",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_year"
+     ],
+     "include": [],
+     "name": "ix_c36_0",
+     "ddl": "CREATE INDEX ix_c36_0 ON date_dim (d_date_sk, d_year)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q41",
+   "n": 41,
+   "source": "hypopg-screen",
+   "name": "q41",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q41",
+   "indexes": [
+    {
+     "table": "item",
+     "columns": [
+      "i_manufact",
+      "i_manufact_id"
+     ],
+     "include": [],
+     "name": "ix_c41_0",
+     "ddl": "CREATE INDEX ix_c41_0 ON item (i_manufact, i_manufact_id)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q44",
+   "n": 44,
+   "source": "hypopg-screen",
+   "name": "q44",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q44",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_store_sk",
+      "ss_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c44_0",
+     "ddl": "CREATE INDEX ix_c44_0 ON store_sales (ss_store_sk, ss_addr_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q58",
+   "n": 58,
+   "source": "hypopg-screen",
+   "name": "q58",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q58",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date",
+      "d_week_seq"
+     ],
+     "include": [],
+     "name": "ix_c58_0",
+     "ddl": "CREATE INDEX ix_c58_0 ON date_dim (d_date, d_week_seq)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q63",
+   "n": 63,
+   "source": "hypopg-screen",
+   "name": "q63",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q63",
+   "indexes": [
+    {
+     "table": "item",
+     "columns": [
+      "i_brand"
+     ],
+     "include": [],
+     "name": "ix_c63_0",
+     "ddl": "CREATE INDEX ix_c63_0 ON item (i_brand)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q65",
+   "n": 65,
+   "source": "hypopg-screen",
+   "name": "q65",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q65",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_month_seq"
+     ],
+     "include": [],
+     "name": "ix_c65_0",
+     "ddl": "CREATE INDEX ix_c65_0 ON date_dim (d_date_sk, d_month_seq)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q70",
+   "n": 70,
+   "source": "hypopg-screen",
+   "name": "q70",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q70",
+   "indexes": [
+    {
+     "table": "date_dim",
+     "columns": [
+      "d_date_sk",
+      "d_month_seq"
+     ],
+     "include": [],
+     "name": "ix_c70_0",
+     "ddl": "CREATE INDEX ix_c70_0 ON date_dim (d_date_sk, d_month_seq)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q76",
+   "n": 76,
+   "source": "hypopg-screen",
+   "name": "q76",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q76",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_addr_sk"
+     ],
+     "include": [],
+     "name": "ix_c76_0",
+     "ddl": "CREATE INDEX ix_c76_0 ON catalog_sales (cs_ship_addr_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q88",
+   "n": 88,
+   "source": "hypopg-screen",
+   "name": "q88",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q88",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c88_0",
+     "ddl": "CREATE INDEX ix_c88_0 ON store_sales (ss_sold_time_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q90",
+   "n": 90,
+   "source": "hypopg-screen",
+   "name": "q90",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q90",
+   "indexes": [
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_web_page_sk"
+     ],
+     "include": [],
+     "name": "ix_c90_0",
+     "ddl": "CREATE INDEX ix_c90_0 ON web_sales (ws_web_page_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q94",
+   "n": 94,
+   "source": "hypopg-screen",
+   "name": "q94",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q94",
+   "indexes": [
+    {
+     "table": "web_sales",
+     "columns": [
+      "ws_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c94_0",
+     "ddl": "CREATE INDEX ix_c94_0 ON web_sales (ws_ship_date_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q96",
+   "n": 96,
+   "source": "hypopg-screen",
+   "name": "q96",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q96",
+   "indexes": [
+    {
+     "table": "store_sales",
+     "columns": [
+      "ss_sold_time_sk"
+     ],
+     "include": [],
+     "name": "ix_c96_0",
+     "ddl": "CREATE INDEX ix_c96_0 ON store_sales (ss_sold_time_sk)"
+    }
+   ]
+  },
+  {
+   "id": "screen:q99",
+   "n": 99,
+   "source": "hypopg-screen",
+   "name": "q99",
+   "rationale": "SF=10 warm-screen cheapest HypoPG index for Q99",
+   "indexes": [
+    {
+     "table": "catalog_sales",
+     "columns": [
+      "cs_ship_date_sk"
+     ],
+     "include": [],
+     "name": "ix_c99_0",
+     "ddl": "CREATE INDEX ix_c99_0 ON catalog_sales (cs_ship_date_sk)"
+    }
+   ]
+  }
+ ]
+}

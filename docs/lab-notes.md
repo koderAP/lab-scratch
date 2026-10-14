@@ -2,6 +2,8 @@
 
 Running notes on why the experiment went the way it did. Dates are when the run happened.
 
+The per-query jsonl files and the Q72 dumps named below were removed on 14 Oct 2026 when the tree was cleaned for the server move. The protocol jsonl files (`truth_sf1`, `dprime_*`) remain. The measurement rules this note explains are still the rules.
+
 ## 2026-10-02. What the 5% pilot is allowed to say
 
 The five 5% samples on SF=1 (Bernoulli, page, universe, FK closure, stratified) agree with the full database on the winning index 27% to 40% of the time, with median regret about 1.2x. One seed. The database fits in memory. The indexes are HypoPG's shortlist, not an LLM advisor.

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -26,7 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DB = "col868"
+DB = os.environ.get("COL868_DB", "col868")
 
 FACT_ITEM = {
     "store_sales": "ss_item_sk", "store_returns": "sr_item_sk",

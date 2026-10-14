@@ -23,12 +23,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DB = "col868"
+DB = os.environ.get("COL868_DB", "col868")
 MAX_INDEXES = 8
 
 

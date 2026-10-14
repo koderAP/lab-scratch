@@ -1,5 +1,0 @@
-query_id,status,execution_ms,planning_ms,wall_seconds,node_type,shared_hit,shared_read,temp_read,temp_written
-3,ok,1103.49,0.861,1.126,Limit,6252,65067,0,0
-7,ok,482.799,0.522,0.511,Limit,10180,85997,0,0
-12,ok,365.276,0.602,0.391,Limit,7547,23605,0,0
-19,ok,184.306,0.752,0.207,Limit,10282,65191,0,0
